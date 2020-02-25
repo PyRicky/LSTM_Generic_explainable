@@ -20,35 +20,26 @@ under the License.
 import numpy as np
 import pandas as pd
 from keras.models import Sequential
-from keras.layers import LSTM, GRU, Dropout, Dense, Input, Activation
-from keras.layers.embeddings import Embedding
+from keras.layers import LSTM, Dense, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.models import model_from_json
 from keras.preprocessing import sequence
-from keras import metrics
 from load_dataset import load_dataset
 from write_results import write_results_to_be_plotted, write_scores, prepare_df, plot_precision_recall_curve, plot_auroc_curve
-from sklearn.metrics import mean_squared_error, mean_absolute_error
 import tensorflow as tf
 from keras import backend as K
-import sys
+import argparse
 import os
 import json
-from math import sqrt
 from explainable import compute_shap_values, calculate_histogram_for_shap_values, compute_shap_values_for_running_cases, find_explanations_for_running_cases
 
+
 def clean_name(filename, pred_column, n_neurons, n_layers):
-    row_process_name = filename.replace('_anonimyzed', '').replace('.csv', '').replace('_features', '').replace('data/', '')
+    row_process_name = filename.replace('_anonimyzed', '').replace('.csv', '').replace('data/', '')
     row_process_name = row_process_name + "_" + pred_column
     file_trained = "model/model_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".json"
-    file_trained = file_trained.replace('_running', '')
-    if 'running' in row_process_name:
-        running = 1
-    else:
-        running = 0
-    row_process_name = row_process_name.replace('_running', '')
-    return row_process_name, file_trained, running
+    return row_process_name, file_trained
 
 def cast_predictions_to_days_hours(df):
     days = [int(str(x).split('.')[0]) for x in df['Predictions']]
@@ -150,42 +141,42 @@ def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_leve
     print("Created model and saved weights")
     return model
 
-def prepare_data_to_be_returned(df):
-    # we have to return only the latest or the max prediction for every case (seconds if remaining time)
-    # df = df.groupby('CASE ID').agg(['last'])
-    # df = df.groupby('CASE ID').max()
-    results = []
-    # return structure like [{'caseid' : 0, 'predictions': 100, 'test' = 200}, {..}, ...]
-    for i in range(df.shape[0]):
-        columns = {}
-        for column in df.columns:
-            columns[column] = df.loc[i, column]
-        results.append(columns)
-    return results
 
+# python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY True
+# --end_date_position 3 --model model/model_bac_1_9_1_less_rows_ACTIVITY_100_8.json --pred_attribute "ACTIVITY 11"
 
+# python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2
+# "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3
+#python LSTM_sequence_mae.py --help to get informations
 
-if len(sys.argv) < 7:
-    sys.exit("python LSTM_sequence.py n_neurons n_layers filename case_id_position start_date_position date_format "
-             "kafka pred_column (end_position)")
-n_neurons = int(sys.argv[1])
-n_layers = int(sys.argv[2])
-filename = sys.argv[3]
-case_id_position = int(sys.argv[4])
-start_date_position = int(sys.argv[5])
-date_column_format = sys.argv[6]
-kafka = int(sys.argv[7])
-pred_column = sys.argv[8] # remaining_time if you want to predict that
-end_date_position = None
-# if also end date is passed
-if len(sys.argv) == 10:
-    end_date_position = int(sys.argv[9])
+n_neurons = 100
+n_layers = 8
+
+parser = argparse.ArgumentParser(description='6 parameters are mandatory, while 3 are optional')
+parser.add_argument('--mandatory', nargs=6, help='filename case_id_position start_date_position date_format pred_column shap', required=True)
+parser.add_argument('--end_date_position', default=None)
+parser.add_argument('--model', default=None)
+parser.add_argument('--pred_attribute', default=None)
+
+args = parser.parse_args()
+mandatory = args.mandatory
+end_date_position = args.end_date_position
+model_name = args.model
+pred_attribute = args.pred_attribute
+
+filename = mandatory[0]
+case_id_position = int(mandatory[1])
+start_date_position = int(mandatory[2])
+date_column_format = mandatory[3]
+pred_column = mandatory[4]  # remaining_time if you want to predict that
+shap_calculation = mandatory[5]
+import ipdb; ipdb.set_trace()
 
 # fix random seed for reproducibility
 np.random.seed(7)
 
 #TODO: alcuni parametri non saranno più da mettere in input / non usare più il nome ma il modello in input per capire che modello ricaricare per predire
-row_process_name, file_trained, running = clean_name(filename, pred_column, n_neurons, n_layers)
+row_process_name, file_trained = clean_name(filename, pred_column, n_neurons, n_layers)
 
 
 # limit the quantity of memory you wanna use in your gpu
@@ -194,48 +185,39 @@ config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
 K.set_session(sess)
 
-#train model (if it's already trained and it's not the running csv just reshow the results)
-if not os.path.isfile(file_trained) or running == 0:
-    X_train, y_train, X_test, y_test, test_case_ids, target_column_name, event_level, column_type, class_weights, feature_columns = load_dataset(filename, file_trained, row_process_name,
+# train model
+if model_name is None:
+    X_train, y_train, X_test, y_test, test_case_ids, target_column_name, event_level, column_type, class_weights, feature_columns = load_dataset(filename, row_process_name,
                                                                                        case_id_position, start_date_position,
-                                                                                       date_column_format, kafka, end_date_position, pred_column, running)
+                                                                                       date_column_format, end_date_position, pred_column, model_name)
     X_train = sequence.pad_sequences(X_train, dtype="float32")
     print("DEBUG: training shape", X_train.shape)
     maxlen = X_train.shape[1]
     X_test = sequence.pad_sequences(X_test, maxlen=X_train.shape[1], dtype="float32")
     print("DEBUG: test shape", X_test.shape)
 
-    #here we have to train the model or load it in order to produce the same results as before
-    if not os.path.isfile(file_trained):
-        model = train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, row_process_name, file_trained)
-        df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, running)
-        write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layers)
-        scores = model.evaluate(X_test, y_test, verbose=0)
-        write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level)
-    else:
-        #TODO tieni questo pezzo di codice solo per provare l'istogramma degli shap values
-        model = model_from_json(open(file_trained).read())
-        # load saved weigths to the test model
-        model.load_weights("model/model_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + "_weights_best.h5")
-        print("Loaded model and weights from file")
-        df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, running)
+    model = train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, row_process_name, file_trained)
+    df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name)
+    write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layers)
+    scores = model.evaluate(X_test, y_test, verbose=0)
+    write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level)
 
-    # TODO: nei write_scores scriviamo anche AUC-precision-recall quando abbiamo da predire un attributo categorico
     if column_type == "Categorical":
         predictions_names = target_column_name
         target_column_name = ['TEST_' + x for x in target_column_name]
         plot_auroc_curve(df, predictions_names, target_column_name, row_process_name)
         plot_precision_recall_curve(df, predictions_names, target_column_name, row_process_name)
-    #with front end enabled
-    #results = prepare_data_to_be_returned(df)
-    shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
-    explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
+
+    if shap_calculation is True:
+        shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
+        explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
 #TODO be sure also that if works if someone gives you a csv with the columns shifted
 #model already trained (here is the case when you have the true test - no response variable)
-elif os.path.isfile(file_trained):
-    X_test, test_case_ids, target_column_name, feature_columns = load_dataset(filename, file_trained, row_process_name, case_id_position, start_date_position,
-                                                                   date_column_format, kafka, end_date_position, pred_column, running)
+elif model_name is not None:
+    import ipdb; ipdb.set_trace()
+    X_test, test_case_ids, target_column_name, feature_columns = load_dataset(filename, row_process_name, case_id_position, start_date_position,
+                                                                   date_column_format, end_date_position, pred_column, model_name)
     # shape needed to fit test data in the already trained model
     shape = json.load(open("model/" + row_process_name + "_train_shape.json"))['shape']
     X_test = sequence.pad_sequences(X_test, maxlen=shape[1], dtype="float32")

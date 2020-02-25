@@ -7,7 +7,7 @@ from scipy import interp
 from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, average_precision_score
 #import matplotlib.pyplot as plt
 
-def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, running):
+def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name):
     # calculate and reshape predictions
     predictions = model.predict(X_test)
     predictions = np.squeeze(predictions)
@@ -18,12 +18,12 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
     else:
         predictions = pd.DataFrame(predictions)
         predictions.columns = target_column_name
-        if running == 0:
+        if model_name is None:
             target_column_name = ['TEST_' + x for x in target_column_name]
             y_test.columns = target_column_name
 
     # compute a df with predictions against the real values to be plotted later
-    if running == 0:
+    if model_name is None:
         df = pd.concat([test_case_ids.reset_index(drop=True), predictions.reset_index(drop=True), y_test.reset_index(drop=True)], axis=1)
     else:
         #if you are in real running cases you have only one prediction per case
@@ -52,7 +52,6 @@ def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layer
 
 def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level):
     with open("results/scores_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".txt", "w") as file:
-        #file.write(str(scores))
         if pred_column == 'remaining_time':
             file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
             print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1] / ((24.0 * 3600) ** 2)), scores[2] / (24.0 * 3600), scores[3]))
@@ -65,8 +64,6 @@ def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, col
         else:
             file.write("\nAccuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
             print("Accuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
-    #print(scores)
-    #print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
 
 
 def plot_auroc_curve(df, predictions_names, target_column_names, row_process_name):

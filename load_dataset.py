@@ -23,10 +23,10 @@ import numpy as np
 import os
 from sklearn.preprocessing import MinMaxScaler
 from statistics import median
-from consumer import create_consumer, read_messages_and_create_df
+#from consumer import create_consumer, read_messages_and_create_df
 import json
 import math
-from producer import generate_data
+#from producer import generate_data
 
 
 def calculateTimeFromMidnight(actual_datetime):
@@ -200,7 +200,7 @@ def add_features(df, filename, end_date_position):
     df.to_csv(filename, index=False)
     return df
 
-def generate_sequences_for_lstm(dataset, running):
+def generate_sequences_for_lstm(dataset, model):
     """
     Input: dataset
     Output: sequences of partial traces and remaining times to feed LSTM
@@ -217,7 +217,7 @@ def generate_sequences_for_lstm(dataset, running):
             trace.append(line[1:].tolist())
         else:
             caseID = case
-            if running == 0:
+            if model is None:
                 for j in range(1, len(trace) + 1):
                     data.append(trace[:j])
             else:
@@ -225,7 +225,7 @@ def generate_sequences_for_lstm(dataset, running):
             trace = []
             trace.append(line[1:].tolist())
     # last case
-    if running == 0:
+    if model is None:
         for i in range(1, len(trace) + 1):
             data.append(trace[:i])
     else:
@@ -235,7 +235,7 @@ def generate_sequences_for_lstm(dataset, running):
 def pad_columns_in_real_data(df, case_ids, row_process_name):
     #fill real test df with empty missing columns (one-hot encoding can generate much more columns in train)
     train_columns = json.load(open("model/" + row_process_name + "_column_names.json"))['columns']
-    #TODO problems: if some columns never seen in train set, now we just drop them
+    # if some columns never seen in train set, now we just drop them
     # we should retrain the model with also this new columns (that will be 0 in the original train)
     columns_not_in_test = [x for x in train_columns if x not in df.columns]
     df2 = pd.DataFrame(columns=columns_not_in_test)
@@ -269,7 +269,7 @@ def prepare_data_and_add_features(df, filename, case_id_position, start_date_pos
     df = add_features(df, filename, end_date_position)
     return df
 
-def normalize_data(df, target_column, target_column_name, file_trained, running):
+def normalize_data(df, target_column, target_column_name, model):
     # normalize data (except for case id column and test column)
     case_column = df.iloc[:, 0].reset_index(drop=True)
     case_column_name = df.columns[0]
@@ -280,7 +280,7 @@ def normalize_data(df, target_column, target_column_name, file_trained, running)
     # reinsert case id column and target column
     df.insert(0, case_column_name, case_column)
     # if train phase and only one test column (numeric) reattach test column
-    if (not os.path.isfile(file_trained)) or running == 0:
+    if model is None:
         #if it is a string the target column is one (otherwise it would cycle on the letters of the column)
         if not type(target_column_name) == np.str:
             for i, name in enumerate(target_column_name):
@@ -337,9 +337,6 @@ def generate_train_and_test_sets(df, test_case_ids, target_column_name, event_le
     third_quartile = median(np.unique(df[df.iloc[:, 0] > second_quartile].iloc[:, 0]))
     dfTrain = df[df.iloc[:, 0] < ((second_quartile + third_quartile) / 2)]
     dfTest = df[df.iloc[:, 0] >= ((second_quartile + third_quartile) / 2)]
-    # dfTrain.to_csv("data/" + row_process_name + "_train.csv", sep=',', index=False)
-    # dfTest.to_csv("data/" + row_process_name + "_test.csv", sep=',', index=False)
-    # sys.exit()
     if column_type == 'Categorical':
         class_weights = create_class_weights(dfTrain, target_column_name)
     else:
@@ -393,29 +390,14 @@ def label_target_columns(df, case_ids, pred_column):
     return df
 
 
-def load_dataset(filename, file_trained, row_process_name, case_id_position, start_date_position, date_column_format,
-                 kafka, end_date_position, pred_column, running):
-    #if csv with additional features not in memory add features, prepare data and then save
-    if "features" not in filename and kafka == 0:
-        df = pd.read_csv(filename, header=0)
-        df = prepare_data_and_add_features(df, filename, case_id_position, start_date_position, date_column_format,
-                                           end_date_position)
-    else:
-        if kafka == 0:
-            df = pd.read_csv(filename, header=0)
-        # if data arrives from kafka activate consumer to read data
-        elif not os.path.isfile(filename):
-            #generate_data()
-            consumer, lastOffset = create_consumer()
-            df = read_messages_and_create_df(consumer, lastOffset)
-            df = prepare_data_and_add_features(df, filename, case_id_position, start_date_position, date_column_format,
-                                               end_date_position)
-        else:
-            df = pd.read_csv(filename, header=0)
+def load_dataset(filename, row_process_name, case_id_position, start_date_position, date_column_format,
+                 end_date_position, pred_column, model):
+    df = pd.read_csv(filename, header=0)
+    df = prepare_data_and_add_features(df, filename, case_id_position, start_date_position, date_column_format, end_date_position)
 
     df = convert_datetime_columns_to_seconds(df)
-    #if target column != remaining time exclude target column
-    if (pred_column != 'remaining_time' and not os.path.isfile(file_trained)) or (pred_column != 'remaining_time' and running == 0):
+    # if target column != remaining time exclude target column
+    if pred_column != 'remaining_time' and model is None:
         event_level = detect_case_level_attribute(df, pred_column)
         if event_level == 0:
             # case level - test column as is
@@ -428,13 +410,13 @@ def load_dataset(filename, file_trained, row_process_name, case_id_position, sta
                 target_column = pd.concat([target_column, df['remaining_time']], axis=1)
                 del df[pred_column]
             else:
-                #case level string (you want to discover if a client recess will be performed)
+                # case level string (you want to discover if a client recess will be performed)
                 column_type = 'Categorical'
                 pred_values = df[pred_column].unique()
-                #add one more test column for every value to be predicted
+                # add one more test column for every value to be predicted
                 for value in pred_values:
                     df[value] = 0
-                #assign 1 to the column corresponding to that value
+                # assign 1 to the column corresponding to that value
                 for value in pred_values:
                     df.loc[df[pred_column] == value, value] = 1
                 #eliminate old test column and take columns that are one-hot encoded test
@@ -468,7 +450,7 @@ def load_dataset(filename, file_trained, row_process_name, case_id_position, sta
                 df.drop(pred_values, axis=1, inplace=True)
                 target_column = target_column.join(df['remaining_time'])
 
-    elif (pred_column == 'remaining_time' and not os.path.isfile(file_trained)) or (pred_column == 'remaining_time' and running == 0):
+    elif pred_column == 'remaining_time' and model is None:
         column_type = 'Numeric'
         event_level = 1
         df = df[df.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
@@ -493,7 +475,7 @@ def load_dataset(filename, file_trained, row_process_name, case_id_position, sta
         del df['remaining_time']
 
     #eliminate rows where remaining time = 0 (nothing to predict) - only in train
-    if (not os.path.isfile(file_trained) and pred_column != 'remaining_time') or (pred_column != 'remaining_time' and 'running' not in row_process_name):
+    if model is None and pred_column != 'remaining_time':
         df = df[df.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
         target_column = target_column[target_column.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
         del df['remaining_time']
@@ -501,7 +483,7 @@ def load_dataset(filename, file_trained, row_process_name, case_id_position, sta
 
     # one-hot encoding(except for case id column and remaining time column)
     df = one_hot_encoding(df)
-    df = normalize_data(df, target_column, target_column_name, file_trained, running)
+    df = normalize_data(df, target_column, target_column_name, model)
 
     # around 2/3 cases are the training set, 1/3 is the test set
     # use median since you have no more cases with only one event (distribution changed)
@@ -514,12 +496,12 @@ def load_dataset(filename, file_trained, row_process_name, case_id_position, sta
         df.iloc[:, 0] = pd.to_numeric(df.iloc[:, 0])
     except ValueError:
         df.iloc[:, 0] = pd.Series(df.iloc[:, 0]).astype('category').cat.codes.values
-    if not os.path.isfile(file_trained) or running == 0:
-        X_train, y_train, X_test, y_test, test_case_ids, class_weights, feature_columns = generate_train_and_test_sets(df, test_case_ids, target_column_name, event_level, column_type, row_process_name, running)
+    if model is None:
+        X_train, y_train, X_test, y_test, test_case_ids, class_weights, feature_columns = generate_train_and_test_sets(df, test_case_ids, target_column_name, event_level, column_type, row_process_name, model)
         return X_train, y_train, X_test, y_test, test_case_ids, target_column_name, event_level, column_type, class_weights, feature_columns
     else:
         df = pad_columns_in_real_data(df.iloc[:, 1:], df.iloc[:, 0], row_process_name)
         #here we have only the true running cases to predict
         feature_columns = df.columns[1:]
-        X_test = generate_sequences_for_lstm(df.values, running)
+        X_test = generate_sequences_for_lstm(df.values, model)
         return X_test, test_case_ids, target_column_name, feature_columns
