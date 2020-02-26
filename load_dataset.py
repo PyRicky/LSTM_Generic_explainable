@@ -196,8 +196,6 @@ def add_features(df, filename, end_date_position):
                         "weekday+1", "remaining_time"])
     df = pd.DataFrame(traces, columns=columns)
     print("Features added")
-    filename = filename.replace(".csv", "_features.csv")
-    df.to_csv(filename, index=False)
     return df
 
 def generate_sequences_for_lstm(dataset, model):

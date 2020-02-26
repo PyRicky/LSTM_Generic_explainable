@@ -30,27 +30,31 @@ from write_results import write_results_to_be_plotted, write_scores, prepare_df,
 import tensorflow as tf
 from keras import backend as K
 import argparse
-import os
 import json
 from explainable import compute_shap_values, calculate_histogram_for_shap_values, compute_shap_values_for_running_cases, find_explanations_for_running_cases
 
 
-def clean_name(filename, pred_column, n_neurons, n_layers):
-    row_process_name = filename.replace('_anonimyzed', '').replace('.csv', '').replace('data/', '')
-    row_process_name = row_process_name + "_" + pred_column
+def clean_name(filename, pred_column, n_neurons, n_layers, model_name):
+    if model_name is None:
+        row_process_name = filename.replace('_anonimyzed', '').replace('.csv', '').replace('data/', '')
+        row_process_name = row_process_name + "_" + pred_column
+    else:
+        row_process_name = model_name.replace('model/model_', '').replace('_100_8.json', '')
     file_trained = "model/model_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".json"
     return row_process_name, file_trained
 
-def cast_predictions_to_days_hours(df):
-    days = [int(str(x).split('.')[0]) for x in df['Predictions']]
-    hours = [round((24 / 100 * int(str(x).split('.')[1][:2]))) for x in df['Predictions']]
+def cast_predictions_to_days_hours(df, pred_column):
+    days = [int(str(x).split('.')[0]) for x in df[pred_column]]
+    hours = [round((24 / 100 * int(str(x).split('.')[1][:2]))) for x in df[pred_column]]
     # increment day by 1 if hours are 24 and set hours to 0
     days = [i + 1 if j == 24 else i for i, j in zip(days, hours)]
     hours = [0 if j == 24 else j for i, j in zip(days, hours)]
     hours = [str(x) + 'h' if x != 0 else '' for x in hours]
     days = [str(x) + 'd' for x in days]
     res = [i + ' ' + j if j != '' else i for i, j in zip(days, hours)]
-    df['Predictions'] = res
+    #delete 0d becuase it makes no sense
+    res = [x.replace('0d ', '') if '0d ' in x else x for x in res]
+    df[pred_column] = res
     return df
 
 def f1(y_true, y_pred):
@@ -141,26 +145,20 @@ def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_leve
     print("Created model and saved weights")
     return model
 
-
-# python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY True
-# --end_date_position 3 --model model/model_bac_1_9_1_less_rows_ACTIVITY_100_8.json --pred_attribute "ACTIVITY 11"
-
-# python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2
-# "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3
-#python LSTM_sequence_mae.py --help to get informations
-
 n_neurons = 100
 n_layers = 8
 
-parser = argparse.ArgumentParser(description='6 parameters are mandatory, while 3 are optional')
-parser.add_argument('--mandatory', nargs=6, help='filename case_id_position start_date_position date_format pred_column shap', required=True)
+parser = argparse.ArgumentParser(description='5 parameters are mandatory, while 4 are optional')
+parser.add_argument('--mandatory', nargs=5, help='filename case_id_position start_date_position date_format pred_column shap', required=True)
+parser.add_argument('--shap', default=False)
 parser.add_argument('--end_date_position', default=None)
 parser.add_argument('--model', default=None)
 parser.add_argument('--pred_attribute', default=None)
 
 args = parser.parse_args()
 mandatory = args.mandatory
-end_date_position = args.end_date_position
+shap_calculation = args.shap
+end_date_position = int(args.end_date_position)
 model_name = args.model
 pred_attribute = args.pred_attribute
 
@@ -169,21 +167,18 @@ case_id_position = int(mandatory[1])
 start_date_position = int(mandatory[2])
 date_column_format = mandatory[3]
 pred_column = mandatory[4]  # remaining_time if you want to predict that
-shap_calculation = mandatory[5]
-import ipdb; ipdb.set_trace()
 
 # fix random seed for reproducibility
 np.random.seed(7)
 
-#TODO: alcuni parametri non saranno più da mettere in input / non usare più il nome ma il modello in input per capire che modello ricaricare per predire
-row_process_name, file_trained = clean_name(filename, pred_column, n_neurons, n_layers)
-
+row_process_name, file_trained = clean_name(filename, pred_column, n_neurons, n_layers, model_name)
 
 # limit the quantity of memory you wanna use in your gpu
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
 K.set_session(sess)
+
 
 # train model
 if model_name is None:
@@ -212,10 +207,8 @@ if model_name is None:
         shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
         explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
-#TODO be sure also that if works if someone gives you a csv with the columns shifted
 #model already trained (here is the case when you have the true test - no response variable)
 elif model_name is not None:
-    import ipdb; ipdb.set_trace()
     X_test, test_case_ids, target_column_name, feature_columns = load_dataset(filename, row_process_name, case_id_position, start_date_position,
                                                                    date_column_format, end_date_position, pred_column, model_name)
     # shape needed to fit test data in the already trained model
@@ -223,21 +216,20 @@ elif model_name is not None:
     X_test = sequence.pad_sequences(X_test, maxlen=shape[1], dtype="float32")
     print("DEBUG: test shape", X_test.shape)
 
-    model = model_from_json(open(file_trained).read())
+    model = model_from_json(open(model_name).read())
     # load saved weigths to the test model
     model.load_weights("model/model_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + "_weights_best.h5")
     print("Loaded model and weights from file")
     y_test = None
-    df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, running)
+    df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name)
     # if you are predicting remaining time you should cast results to days and hours
     if pred_column == 'remaining_time':
-        df = cast_predictions_to_days_hours(df)
-    #results = prepare_data_to_be_returned(df)
-    # TODO: the user wants to know only one activity, so discard other predictions (for example with bac take ACTIVITY=11)
+        df = cast_predictions_to_days_hours(df, pred_column)
     shapley_test = compute_shap_values_for_running_cases(row_process_name, X_test, model)
-    df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns)
-    df.to_csv("results/results_running_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
+    df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute)
+    print("Generated predictions for running cases along with explanations")
+    if pred_attribute is not None:
+        df.to_csv("results/results_running_" + row_process_name + "_" + pred_attribute + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
+    else:
+        df.to_csv("results/results_running_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
 
-
-else:
-    print("You are requiring predictions for running cases but you haven't trained the model yet!")

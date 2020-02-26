@@ -14,7 +14,7 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
     # qui deve appendere o una serie o un dataframe
     if np.issubdtype(type(predictions[0]), np.number):
         predictions = pd.Series(predictions)
-        predictions.rename('Predictions', inplace=True)
+        predictions.rename(pred_column, inplace=True)
     else:
         predictions = pd.DataFrame(predictions)
         predictions.columns = target_column_name
