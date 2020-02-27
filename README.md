@@ -2,33 +2,41 @@
 
 This is the code associated to the paper:
 
-**LSTM Networks for Data-Aware Remaining Time Prediction of Business Process Instances**, Nicolò Navarin, Beatrice Vincenzi, Mirko Polato and Alessandro Sperduti. In 2017 IEEE Symposium on Deep Learning @ SSCI, to appear.
+**On the Explanations of Business Process Predictions of Generic KPIs**, Riccardo Galanti, Bernat Coma Puig, Josep Carmona, Massimiliano de Leoni, Nicolò Navarin. In BPM 2020: 18th International Conference on Business Process Management, to appear.
 
-The preprint of the paper is available in [arXiv](https://arxiv.org/abs/1711.03822).
+The preprint of the paper is available in [arXiv]
 
 ## Code Example
 
 Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
 
-You can run the code with the following command
-python LSTM_sequence_mae.py neurons layers dataset case_id_position start_date_position date_format kafka pred_column (end_date_position)
+Command examples to run the code:
+1) Build you neural network
+python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --shap=True
+python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --shap=True
 
-where neurons is the number of LSTM units per layer, layers is the number of layers and dataset is one among: HELPDESK17, BPI12OEA or BPI12
-case_id_position and start_date_position are needed to elaborate different csv in a dinamic way
-kafka=1 means that you will receive a stream of data from kafka, so you need to activate a consumer
-pred_position indicates the column you wish to predict (remaining_time)
-end_date_position is an optional parameter
+2) Test the trained neural network on running cases
+python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_running.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --model model/model_bac_1_9_1_less_rows_remaining_time_100_8.json
+python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_running.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --model model/model_bac_1_9_1_less_rows_ACTIVITY_100_8.json --pred_attribute "ACTIVITY 11"
 
-For example:
-python LSTM_sequence_mae.py 10 1 BPI12 0 2 "%Y-%m-%d %H:%M:%S" 0 remaining_time
+where there are 5 mandatory parameters: csv, case_id_position, start_date_position, timestamp, column_to_be_predicted (remaining_time or ACTIVITY as an example)
+and up to 4 optional parameters: 
+--shap (default False) --> if you want to calculate also the shapley values for explainability (train phase)
+--end_date_position --> if the csv has also end_date for every activity
+--model --> when you want to predicted real running cases you need the trained json model
+--pred_attribute --> when you predict a categorical attribute for real running cases (example if a certain activity will be performed or not)
 
-The best (validation) parameters for each dataset are reported in the paper.
 
-NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead.
+NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
+NOTE: Also the calculation of the shapley values in the train phase could be very slow, so we suggest to train only the model to replicate the results and then obtain explanations only for running cases
 
 ## Installation
-The code requires python 3 and the following libraries:
+The code requires python 3.6+ and the following libraries:
+pandas
 keras
+tensorflow-gpu==1.15
+shap==0.31
+matplotlib
 
 ## Contributors
 
