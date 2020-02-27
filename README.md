@@ -28,15 +28,16 @@ where there are 5 mandatory parameters: csv, case_id_position, start_date_positi
 and up to 4 optional parameters: 
 --shap (default False) --> if you want to calculate also the shapley values for explainability (train phase)
 
---end_date_position --> if the csv has also end_date for every activity
+--end_date_position --> if the csv has also end_date column for every activity
 
---model --> when you want to predicted real running cases you need the trained json model
+--model --> when you want to predict real running cases you need the neural network trained json model
 
 --pred_attribute --> when you predict a categorical attribute for real running cases (example if a certain activity will be performed or not)
 
 
 NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
-NOTE: Also the calculation of the shapley values in the train phase could be very slow, so we suggest to train only the model to replicate the results and then obtain explanations only for running cases
+
+NOTE: The calculation of the shapley values in the train phase could be very slow even on GPUs, so we suggest to train only the model and then obtain explanations only for running cases
 
 ## Installation
 The code requires python 3.6+ and the following libraries:
