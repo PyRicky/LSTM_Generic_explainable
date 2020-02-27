@@ -12,7 +12,9 @@ Show what the library does as concisely as possible, developers should be able t
 
 Command examples to run the code:
 1) Build you neural network
+
 python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --shap=True
+
 python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --shap=True
 
 2) Test the trained neural network on running cases
@@ -20,6 +22,7 @@ python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_runn
 python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_running.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --model model/model_bac_1_9_1_less_rows_ACTIVITY_100_8.json --pred_attribute "ACTIVITY 11"
 
 where there are 5 mandatory parameters: csv, case_id_position, start_date_position, timestamp, column_to_be_predicted (remaining_time or ACTIVITY as an example)
+
 and up to 4 optional parameters: 
 --shap (default False) --> if you want to calculate also the shapley values for explainability (train phase)
 --end_date_position --> if the csv has also end_date for every activity
@@ -32,10 +35,15 @@ NOTE: Also the calculation of the shapley values in the train phase could be ver
 
 ## Installation
 The code requires python 3.6+ and the following libraries:
+
 pandas
+
 keras
+
 tensorflow-gpu==1.15
+
 shap==0.31
+
 matplotlib
 
 ## Contributors
