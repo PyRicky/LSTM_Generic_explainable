@@ -16,17 +16,11 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 """
-import sys
-
 import pandas as pd
 import numpy as np
-import os
 from sklearn.preprocessing import MinMaxScaler
 from statistics import median
-#from consumer import create_consumer, read_messages_and_create_df
 import json
-import math
-#from producer import generate_data
 
 
 def calculateTimeFromMidnight(actual_datetime):
@@ -48,8 +42,6 @@ def createActivityFeatures(line, starttime, lastevtime, caseID, current_activity
     activity.append(activityTimestamp.weekday() + 1)
     # if there is also end_date add features time from last_enddate_event and event_duration
     if current_activity_end_date is not None:
-        #this feature has been removed since sometimes could be negative if the previous activity finishes later
-        #activity.append((activityTimestamp - previous_activity_end_date).total_seconds())
         activity.append((current_activity_end_date - activityTimestamp).total_seconds())
         # add timestamp end or start to calculate remaining time later
         activity.append(current_activity_end_date)
@@ -74,7 +66,7 @@ def one_hot_encoding(df):
     for column in df.columns[1:]:
         # if column don't numbers encode
         if not np.issubdtype(df[column], np.number):
-            # TODO è giusto encodare le colonne di tipo data? O facciamo la diff da 1970 in secondi e poi normalizziamo
+            # Possibile modifica: encodare le colonne di tipo data, o facciamo la diff da 1970 in secondi e poi normalizziamo
             # Get one hot encoding (convert to str eventual 0 to avoid strange duplicate columns)
             one_hot = pd.get_dummies(df[column].apply(str), prefix=column)
             print("Encoded column:{} - Different keys: {}".format(column, one_hot.shape[1]))
@@ -132,7 +124,7 @@ def convert_datetime_columns_to_seconds(df):
             pass
     return df
 
-def add_features(df, filename, end_date_position):
+def add_features(df, end_date_position):
     dataset = df.values
     traces = []
     # analyze first dataset line
@@ -162,8 +154,6 @@ def add_features(df, filename, end_date_position):
 
             # lasteventtimes become the actual
             lastevtime = activityTimestamp
-            # if end_date_position is not None:
-            #     previous_activity_end_date = current_activity_end_date
             traces.append(activity)
             num_activities += 1
         else:
@@ -256,7 +246,7 @@ def clean_df(df, case_id_position):
     return df
 
 
-def prepare_data_and_add_features(df, filename, case_id_position, start_date_position, date_column_format, end_date_position):
+def prepare_data_and_add_features(df, case_id_position, start_date_position, date_column_format, end_date_position):
     df = clean_df(df, case_id_position)
     df = df.fillna(0)
     if end_date_position is not None:
@@ -264,7 +254,7 @@ def prepare_data_and_add_features(df, filename, case_id_position, start_date_pos
     df = convert_strings_to_datetime(df, date_column_format, end_date_position)
     df = move_essential_columns(df, case_id_position, start_date_position)
     df = sort_df(df)
-    df = add_features(df, filename, end_date_position)
+    df = add_features(df, end_date_position)
     return df
 
 def normalize_data(df, target_column, target_column_name, model):
@@ -391,7 +381,7 @@ def label_target_columns(df, case_ids, pred_column):
 def load_dataset(filename, row_process_name, case_id_position, start_date_position, date_column_format,
                  end_date_position, pred_column, model):
     df = pd.read_csv(filename, header=0)
-    df = prepare_data_and_add_features(df, filename, case_id_position, start_date_position, date_column_format, end_date_position)
+    df = prepare_data_and_add_features(df, case_id_position, start_date_position, date_column_format, end_date_position)
 
     df = convert_datetime_columns_to_seconds(df)
     # if target column != remaining time exclude target column
@@ -457,7 +447,6 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
         del df[target_column_name]
     else:
         # case when you have true data to be predicted (running cases)
-        #TODO assicurati di avere tutte le colonne e le train shape per tutti i dataset
         type_test = json.load(open("model/" + row_process_name + "_column_names.json"))['test']
         target_column_name = json.load(open("model/" + row_process_name + "_column_names.json"))['y_columns']
         #clean name (you have this when you save event-level column)

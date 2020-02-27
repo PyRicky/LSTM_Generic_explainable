@@ -1,7 +1,7 @@
 import numpy as np
 import shap
-import os, json
-#import matplotlib.pyplot as plt
+import os
+import matplotlib.pyplot as plt
 
 
 def plot_histogram(explanation_histogram, row_process_name):
@@ -99,7 +99,7 @@ def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_t
     # order results of the histogram by value (python >= 3.6)
     explanation_histogram = {k: v for k, v in
                              sorted(explanation_histogram.items(), key=lambda item: abs(item[1]), reverse=True)}
-    # plot_histogram(explanation_histogram, row_process_name)
+    plot_histogram(explanation_histogram, row_process_name)
     return explanation_histogram
 
 

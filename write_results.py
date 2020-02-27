@@ -5,7 +5,7 @@ import math, random
 from itertools import cycle
 from scipy import interp
 from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, average_precision_score
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name):
     # calculate and reshape predictions
