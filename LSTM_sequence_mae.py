@@ -203,7 +203,7 @@ if model_name is None:
         plot_auroc_curve(df, predictions_names, target_column_name, row_process_name)
         plot_precision_recall_curve(df, predictions_names, target_column_name, row_process_name)
 
-    if shap_calculation is True:
+    if shap_calculation == "True":
         shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
         explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
