@@ -1,7 +1,7 @@
 import numpy as np
 import shap
 import os
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 def plot_histogram(explanation_histogram, row_process_name):
@@ -29,6 +29,76 @@ def plot_histogram(explanation_histogram, row_process_name):
     plt.savefig("plots/shap_histogram_"+row_process_name+".png", dpi=300, bbox_inches="tight")
 
 
+def calculate_histogram_for_shap_chunk(X_test, shapley_index_chunk, index, feature_columns, explanation_histograms):
+    # if we haven't still created an histogram with that index name create it, otherwise update it from where you left
+    if index not in explanation_histograms:
+        explanation_histogram = {}
+    else:
+        explanation_histogram = explanation_histograms[index]
+    for i in range(shapley_index_chunk.shape[0]):
+        x_test_instance = X_test[i][-1]
+        shap_values_instance = shapley_index_chunk[i][-1]
+        mean = np.mean([x for x in shap_values_instance if x != 0])
+        sd = np.std([x for x in shap_values_instance if x != 0])
+        upper_threshold = mean + 3 * sd
+        lower_threshold = mean - 3 * sd
+        # calculate most important values for explanation (+-3sd from the mean)
+        explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
+        if len(explanation_values) == 0:
+            upper_threshold = mean + 2 * sd
+            lower_threshold = mean - 2 * sd
+            explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
+            if len(explanation_values) == 0:
+                upper_threshold = mean + sd
+                lower_threshold = mean - sd
+                explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
+        # if they are more take only the first 5
+        if len(explanation_values) > 5:
+            explanation_values = explanation_values[:5]
+        for value in explanation_values:
+            # take the column name for every explanation
+            explanation_index = np.where(shap_values_instance == value)[0][0]
+            explanation_name = feature_columns[explanation_index]
+            if x_test_instance[explanation_index] == 1:
+                print("Instance {} --> {} happening: {}".format(i + 1, explanation_name, value))
+                # if in the test there is a 1 means that the particular instance happened (see the contribution of the shapley values)
+                if (explanation_name + " happening") not in explanation_histogram:
+                    explanation_histogram[(explanation_name + " happening")] = 1
+                else:
+                    if value > 0:
+                        explanation_histogram[(explanation_name + " happening")] += 1
+                    else:
+                        explanation_histogram[(explanation_name + " happening")] -= 1
+            elif x_test_instance[explanation_index] == 0:
+                print("Instance {} --> {} not happening: {}".format(i + 1, explanation_name, value))
+                if (explanation_name + " not happening") not in explanation_histogram:
+                    explanation_histogram[(explanation_name + " not happening")] = 1
+                else:
+                    if value > 0:
+                        explanation_histogram[(explanation_name + " not happening")] += 1
+                    else:
+                        explanation_histogram[(explanation_name + " not happening")] -= 1
+            # handle also if for some reason the numeric value has importance in the prediction
+            elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
+                if (explanation_name + " low value") not in explanation_histogram:
+                    explanation_histogram[(explanation_name + " low value")] = 1
+                else:
+                    if value > 0:
+                        explanation_histogram[(explanation_name + " low value")] += 1
+                    else:
+                        explanation_histogram[(explanation_name + " low value")] -= 1
+            else:
+                if (explanation_name + " high value") not in explanation_histogram:
+                    explanation_histogram[(explanation_name + " high value")] = 1
+                else:
+                    if value > 0:
+                        explanation_histogram[(explanation_name + " high value")] += 1
+                    else:
+                        explanation_histogram[(explanation_name + " high value")] -= 1
+    # you have updated the histogram, put it back where it was
+    explanation_histograms[index] = explanation_histogram
+    return explanation_histograms
+
 def find_instance_explanation_values(X_test, shapley_test, i, more_explanation_values=False):
     x_test_instance = X_test[i][-1]
     shap_values_instance = shapley_test[0][i][-1]
@@ -50,6 +120,66 @@ def find_instance_explanation_values(X_test, shapley_test, i, more_explanation_v
     if len(explanation_values) > 5 and more_explanation_values is False:
         explanation_values = explanation_values[:5]
     return x_test_instance, shap_values_instance, explanation_values
+
+
+def compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
+                         feature_columns, indexes_to_plot, activities_to_plot):
+    if column_type == 'Numeric':
+        # first run you compute the values and then save them
+        if not os.path.isfile("shap/" + row_process_name + "_background"):
+            background = X_train[:100]
+            explainer = shap.DeepExplainer(model, background)
+            print("prepared explainer")
+            shapley_test = explainer.shap_values(X_test)
+            np.save("shap/" + row_process_name + "_shap_values_test.npy", shapley_test)
+            np.save("shap/" + row_process_name + "_background", background)
+            calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test,
+                                                feature_columns,
+                                                row_process_name)
+        else:
+            shapley_test = np.load("shap/" + row_process_name + "_shap_values_test.npy", allow_pickle=True)
+            calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test,
+                                                feature_columns,
+                                                row_process_name)
+    else:
+        # column of type categorical (multioutput) need data to be splitted (huge amount of memory)
+        partition = int(len(X_test) / 25)
+        explanation_histograms = {}
+        if not os.path.isfile("shap/" + row_process_name + "_background"):
+            background = X_train[:100]
+            explainer = shap.DeepExplainer(model, background)
+            print("prepared explainer")
+        for i in range(25):
+            if not os.path.isfile("shap/" + row_process_name + "_background"):
+                if i != 24:
+                    shapley_test = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
+                else:
+                    shapley_test = explainer.shap_values(X_test[partition * i:])
+                np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", shapley_test)
+            else:
+                shapley_test = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
+
+            # extract only the shapley values for the attributes that you want to plot
+            for j, index in enumerate(indexes_to_plot):
+                shapley_index_chunk = shapley_test[index, :, :, :]
+                index_name = activities_to_plot[j]
+                if i != 24:
+                    explanation_histograms = calculate_histogram_for_shap_chunk(X_test[partition * i:partition * (i + 1)],
+                                                                                shapley_index_chunk, index_name,
+                                                                                feature_columns, explanation_histograms)
+                else:
+                    explanation_histograms = calculate_histogram_for_shap_chunk(X_test[partition * i:],
+                                                                                shapley_index_chunk, index_name,
+                                                                                feature_columns, explanation_histograms)
+        if not os.path.isfile("shap/" + row_process_name + "_background"):
+            np.save("shap/" + row_process_name + "_background", background)
+        # order results of the histograms by value and plot them
+        for index_name in activities_to_plot:
+            explanation_histogram = explanation_histograms[index_name]
+            explanation_histogram = {k: v for k, v in sorted(explanation_histogram.items(), key=lambda item: abs(item[1]),
+                                            reverse=True)}
+            row_process_name = row_process_name + '_' + index_name
+            plot_histogram(explanation_histogram, row_process_name)
 
 
 def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns,
@@ -103,46 +233,46 @@ def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_t
     return explanation_histogram
 
 
-def compute_shap_values(row_process_name, X_train, X_test, model, column_type):
-    # first run you compute the values and then save them
-    if not os.path.isfile("shap/" + row_process_name + "_background"):
-        background = X_train[:100]
-        np.save("shap/" + row_process_name + "_background", background)
-        explainer = shap.DeepExplainer(model, background)
-        print("prepared explainer")
-        if column_type == 'Numeric':
-            shapley_test = explainer.shap_values(X_test)
-            np.save("shap/" + row_process_name + "_shap_values_test.npy", shapley_test)
-        else:
-            #column of type categorical (multioutput) need data to be splitted (huge amount of memory)
-            partition = int(len(X_test) / 25)
-            shapley_test = []
-            for i in range(25):
-                if i != 24:
-                    if i == 0:
-                        chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
-                        shapley_test = chunk
-                    else:
-                        chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
-                        shapley_test = np.append(shapley_test, chunk, 1)
-                else:
-                    chunk = explainer.shap_values(X_test[partition * i:])
-                    shapley_test = np.append(shapley_test, chunk, 1)
-                np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", chunk)
-
-    # already saved values
-    else:
-        if column_type == 'Numeric':
-            shapley_test = np.load("shap/" + row_process_name + "_shap_values_test.npy", allow_pickle=True)
-        else:
-            shapley_test = []
-            for i in range(25):
-                if len(shapley_test) == 0:
-                    shapley_test = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
-                else:
-                    chunk = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
-                    shapley_test = np.append(shapley_test, chunk, 1)
-    return shapley_test
+# def compute_shap_values(row_process_name, X_train, X_test, model, column_type):
+#     # first run you compute the values and then save them
+#     if not os.path.isfile("shap/" + row_process_name + "_background"):
+#         background = X_train[:100]
+#         np.save("shap/" + row_process_name + "_background", background)
+#         explainer = shap.DeepExplainer(model, background)
+#         print("prepared explainer")
+#         if column_type == 'Numeric':
+#             shapley_test = explainer.shap_values(X_test)
+#             np.save("shap/" + row_process_name + "_shap_values_test.npy", shapley_test)
+#         else:
+#             #column of type categorical (multioutput) need data to be splitted (huge amount of memory)
+#             partition = int(len(X_test) / 25)
+#             shapley_test = []
+#             for i in range(25):
+#                 if i != 24:
+#                     if i == 0:
+#                         chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
+#                         shapley_test = chunk
+#                     else:
+#                         chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
+#                         shapley_test = np.append(shapley_test, chunk, 1)
+#                 else:
+#                     chunk = explainer.shap_values(X_test[partition * i:])
+#                     shapley_test = np.append(shapley_test, chunk, 1)
+#                 np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", chunk)
+#
+#     # already saved values
+#     else:
+#         if column_type == 'Numeric':
+#             shapley_test = np.load("shap/" + row_process_name + "_shap_values_test.npy", allow_pickle=True)
+#         else:
+#             shapley_test = []
+#             for i in range(25):
+#                 if len(shapley_test) == 0:
+#                     shapley_test = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
+#                 else:
+#                     chunk = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
+#                     shapley_test = np.append(shapley_test, chunk, 1)
+#     return shapley_test
 
 
 def compute_shap_values_for_running_cases(row_process_name, X_test, model):

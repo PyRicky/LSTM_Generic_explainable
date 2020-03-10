@@ -5,7 +5,7 @@ import math, random
 from itertools import cycle
 from scipy import interp
 from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, average_precision_score
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name):
     # calculate and reshape predictions
@@ -118,8 +118,8 @@ def plot_auroc_curve(df, predictions_names, target_column_names, row_process_nam
     plt.ylim([0.0, 1.05])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('Some extension of Receiver operating characteristic to multi-class')
-    plt.legend(loc=(1.1, -.20))
+    #plt.title('Some extension of Receiver operating characteristic to multi-class')
+    plt.legend(loc=(1, -.10))
     plt.savefig("plots/auroc_" + row_process_name + ".png", dpi=300, bbox_inches="tight")
 
 
@@ -165,6 +165,6 @@ def plot_precision_recall_curve(df, predictions_names, target_column_names, row_
     plt.ylim([0.0, 1.05])
     plt.xlabel('Recall')
     plt.ylabel('Precision')
-    plt.title('Extension of Precision-Recall curve to multi-class')
-    plt.legend(lines, labels, loc=(1.1, -.20), prop=dict(size=14))
+    #plt.title('Extension of Precision-Recall curve to multi-class')
+    plt.legend(lines, labels, loc=(1.02,+.01), prop=dict(size=14))
     plt.savefig("plots/apr_curve_" + row_process_name + ".png", dpi=300, bbox_inches="tight")

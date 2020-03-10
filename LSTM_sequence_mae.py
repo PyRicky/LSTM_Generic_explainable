@@ -148,9 +148,10 @@ def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_leve
 n_neurons = 100
 n_layers = 8
 
-parser = argparse.ArgumentParser(description='5 parameters are mandatory, while 4 are optional')
+parser = argparse.ArgumentParser(description='5 mandatory parameters, 5 optional')
 parser.add_argument('--mandatory', nargs=5, help='filename case_id_position start_date_position date_format pred_column shap', required=True)
 parser.add_argument('--shap', default=False)
+parser.add_argument('--shap_attributes', default=False)
 parser.add_argument('--end_date_position', default=None)
 parser.add_argument('--model', default=None)
 parser.add_argument('--pred_attribute', default=None)
@@ -158,6 +159,8 @@ parser.add_argument('--pred_attribute', default=None)
 args = parser.parse_args()
 mandatory = args.mandatory
 shap_calculation = args.shap
+shap_attributes = args.shap_attributes
+shap_attributes = shap_attributes.split(',')
 end_date_position = int(args.end_date_position)
 model_name = args.model
 pred_attribute = args.pred_attribute
@@ -204,8 +207,17 @@ if model_name is None:
         plot_precision_recall_curve(df, predictions_names, target_column_name, row_process_name)
 
     if shap_calculation == "True":
-        shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
-        explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
+        indexes_to_plot = []
+        attributes_to_plot = []
+        # if column of type numeric you have only one shap histogram to plot
+        if column_type != "Numeric":
+            attributes_to_plot = shap_attributes
+            for attribute in attributes_to_plot:
+                indexes_to_plot.append(target_column_name.index(attribute))
+        compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
+                             feature_columns, indexes_to_plot, attributes_to_plot)
+        #shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
+        #explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
 #model already trained (here is the case when you have the true test - no response variable)
 elif model_name is not None:
