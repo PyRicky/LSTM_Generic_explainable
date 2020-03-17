@@ -1,0 +1,172 @@
+REQUEST_ID,ACTIVITY,START_DATE,END_DATE,CE_UO,ROLE,AUTOMATIC,CLOSURE_TYPE,CLOSURE_REASON,WORKING_STATE,CE_STATE,GENERAL_STATE
+201811004369,Request created,2018-11-13 09:22:55.000,2018-11-13 09:23:26.000,00632,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811004369,Evaluating Request (NO registered letter),2018-11-13 09:23:26.000,2018-11-13 09:26:26.000,00128,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201811004369,Service closure Request with network responsibility,2018-11-13 09:27:31.000,2018-11-13 09:27:55.000,00128,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811004369,Service closure Request with BO responsibility,2018-11-13 09:27:55.000,2018-11-21 13:38:57.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812004214,Request created,2018-12-12 10:48:48.000,2018-12-12 10:50:43.000,00724,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201812004214,Service closure Request with network responsibility,2018-12-12 10:50:43.000,2018-12-17 10:04:04.000,,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S010,Conclusa regolarmente
+201812004214,Authorization Requested,2018-12-17 10:04:04.000,2018-12-17 11:50:48.000,00573,DIRECTOR,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S020,Conclusa regolarmente
+201812004214,Service closure Request with BO responsibility,2018-12-17 11:50:48.000,2018-12-18 14:55:10.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S040,Conclusa regolarmente
+201812004214,Pending Request for Reservation Closure,2018-12-18 14:55:10.000,2018-12-18 14:59:11.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S050,Conclusa regolarmente
+201812004214,Pending Liquidation Request,2018-12-18 14:59:11.000,2018-12-20 03:18:54.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S051,Conclusa regolarmente
+201811011499,Request created,2018-11-30 08:06:53.000,2018-12-06 15:56:32.000,00130,APPLICANT,HUMAN,Client Recess,,Completed,S000,Conclusa regolarmente
+201812000512,Request created,2018-12-03 16:23:32.000,2018-12-03 16:25:23.000,00236,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812000512,Evaluating Request (WITH registered letter),2018-12-03 16:25:23.000,2018-12-03 16:32:32.000,00264,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201812000512,Service closure Request with network responsibility,2018-12-03 17:02:29.000,2018-12-03 17:21:30.000,00264,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812000512,Service closure Request with BO responsibility,2018-12-03 17:21:30.000,2018-12-11 09:05:39.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812000512,Pending Request for Reservation Closure,2018-12-11 09:05:39.000,2018-12-11 09:07:19.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201810001257,Request created,2018-10-03 12:47:00.000,2018-10-03 12:47:16.000,00593,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811004043,Request created,2019-01-10 13:05:33.000,2019-01-10 13:05:46.000,00232,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811004043,Service closure Request with network responsibility,2019-01-10 13:05:46.000,2019-01-10 13:06:47.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811004043,Authorization Requested,2019-01-10 13:06:47.000,2019-01-10 15:20:13.000,00031,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201811004043,Service closure Request with BO responsibility,2019-01-10 15:20:13.000,2019-01-15 11:52:54.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811004043,Pending Request for Reservation Closure,2019-01-15 11:52:54.000,2019-01-15 11:55:04.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201811004043,Pending Liquidation Request,2019-01-15 11:55:04.000,2019-01-17 03:16:45.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S051,Conclusa regolarmente
+201810008080,Request created,2018-10-22 14:51:51.000,2018-10-22 14:52:12.000,00611,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810008080,Service closure Request with network responsibility,2018-10-22 14:52:12.000,2018-10-22 14:52:41.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201810008080,Authorization Requested,2018-10-22 14:52:41.000,2018-10-22 14:53:35.000,00643,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201810008080,Service closure Request with BO responsibility,2018-10-22 14:53:35.000,2018-10-24 15:26:10.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812009020,Request created,2018-12-27 12:59:54.000,2018-12-27 13:00:39.000,00646,APPLICANT,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S000,Conclusa regolarmente
+201812009020,Evaluating Request (NO registered letter),2018-12-27 13:00:39.000,2018-12-27 21:32:17.000,00137,DIRECTOR,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S005,Conclusa regolarmente
+201812009020,Service closure Request with network responsibility,2019-01-03 12:23:10.000,2019-01-03 12:23:49.000,00137,APPLICANT,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S010,Conclusa regolarmente
+201812009020,Service closure Request with BO responsibility,2019-01-03 12:23:49.000,2019-01-14 09:03:45.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S040,Conclusa regolarmente
+201812009020,Pending Request for Reservation Closure,2019-01-14 09:03:45.000,2019-01-14 09:06:52.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S050,Conclusa regolarmente
+201812009020,Pending Liquidation Request,2019-01-14 09:06:52.000,2019-01-16 03:12:43.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S051,Conclusa regolarmente
+201811007240,Request created,2018-11-20 11:13:40.000,2018-11-20 11:17:48.000,00021,APPLICANT,HUMAN,Inheritance,,Completed,S000,Conclusa regolarmente
+201811007240,Service closure Request with network responsibility,2018-11-20 11:17:48.000,2018-11-22 15:04:42.000,,APPLICANT,HUMAN,Inheritance,,Completed,S010,Conclusa regolarmente
+201811007240,Authorization Requested,2018-11-22 15:04:42.000,2018-11-22 15:05:55.000,00040,DIRECTOR,HUMAN,Inheritance,,Completed,S020,Conclusa regolarmente
+201811007240,Service closure Request with BO responsibility,2018-11-22 15:05:55.000,2018-11-29 16:01:26.000,BOF,BACK-OFFICE,HUMAN,Inheritance,,Completed,S040,Conclusa regolarmente
+201811007240,Pending Request for Reservation Closure,2018-11-29 16:01:26.000,2018-11-29 16:03:22.000,BOF,BACK-OFFICE,HUMAN,Inheritance,,Completed,S050,Conclusa regolarmente
+201811007240,Pending Liquidation Request,2018-11-29 16:03:22.000,2018-12-01 03:09:57.000,BOF,BACK-OFFICE,HUMAN,Inheritance,,Completed,S051,Conclusa regolarmente
+201812007456,Request created,2018-12-19 17:24:34.000,2018-12-19 17:25:42.000,00588,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812007456,Evaluating Request (WITH registered letter),2018-12-19 17:25:42.000,2018-12-20 09:14:18.000,SB22,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201812007456,Service closure Request with network responsibility,2018-12-20 09:16:04.000,2019-01-09 10:53:17.000,SB22,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811008538,Request created,2018-11-22 12:53:23.000,2018-11-22 12:53:43.000,00244,APPLICANT,HUMAN,Bank Recess,,Completed,S000,Conclusa regolarmente
+201811008538,Service closure Request with BO responsibility,2018-11-22 12:53:43.000,2018-11-22 12:56:23.000,,BACK-OFFICE,HUMAN,Bank Recess,,Completed,S040,Conclusa regolarmente
+201811008538,Pending Request for Reservation Closure,2018-11-22 12:56:23.000,2018-11-22 12:58:16.000,BOCSER,BACK-OFFICE,HUMAN,Bank Recess,,Completed,S050,Conclusa regolarmente
+201810007093,Request created,2018-10-18 12:40:13.000,2018-10-18 12:57:55.000,00092,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810000251,Request created,2018-10-01 12:35:19.000,2018-10-03 12:50:11.000,00225,APPLICANT,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S000,Conclusa regolarmente
+201810000251,Evaluating Request (NO registered letter),2018-10-03 12:50:11.000,2018-10-03 15:28:08.000,00360,DIRECTOR,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S005,Conclusa regolarmente
+201810000251,Service closure Request with network responsibility,2018-10-03 16:04:05.000,2018-10-03 16:07:08.000,00360,APPLICANT,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S010,Conclusa regolarmente
+201810000251,Service closure Request with BO responsibility,2018-10-03 16:07:08.000,2018-10-10 13:45:26.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S040,Conclusa regolarmente
+201810000251,Pending Request for Reservation Closure,2018-10-10 13:46:36.000,2018-10-10 13:46:37.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S050,Conclusa regolarmente
+201810000251,Pending Liquidation Request,2018-10-10 13:46:37.000,2018-10-12 03:38:27.000,BOF,BACK-OFFICE,HUMAN,Client Recess,7 - Keep other relationships. Same dip,Completed,S051,Conclusa regolarmente
+201811003618,Request created,2018-11-09 16:27:02.000,2018-11-09 16:27:35.000,SB72,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811003618,Service closure Request with network responsibility,2018-11-09 16:27:35.000,2018-11-09 16:28:55.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811003618,Authorization Requested,2018-11-09 16:28:55.000,2018-11-09 16:29:52.000,00448,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201811003618,Service closure Request with BO responsibility,2018-11-09 16:29:52.000,2018-11-13 09:32:50.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811010069,Request created,2018-11-27 12:25:44.000,2018-11-27 12:29:15.000,00695,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811010069,Evaluating Request (WITH registered letter),2018-11-27 12:29:15.000,2018-11-27 13:28:59.000,00695,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201811010069,Service closure Request with network responsibility,2018-11-27 14:25:11.000,2018-11-27 14:25:38.000,00695,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811010069,Service closure Request with BO responsibility,2018-11-27 14:25:38.000,2018-11-29 12:06:38.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811010069,Pending Request for Reservation Closure,2018-11-29 12:06:38.000,2018-11-29 12:07:34.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812004764,Request created,2018-12-13 10:35:43.000,2018-12-13 10:36:24.000,00206,APPLICANT,HUMAN,Inheritance,,Completed,S000,Conclusa regolarmente
+201812004764,Service closure Request with network responsibility,2018-12-13 10:36:24.000,2018-12-13 10:41:56.000,,APPLICANT,HUMAN,Inheritance,,Completed,S010,Conclusa regolarmente
+201812004764,Evaluating Request (WITH registered letter),2018-12-13 10:41:56.000,2018-12-13 12:09:57.000,00823,DIRECTOR,HUMAN,Inheritance,,Completed,S008,Conclusa regolarmente
+201812004764,Service closure Request with BO responsibility,2018-12-13 12:09:57.000,2018-12-17 11:59:32.000,00823,BACK-OFFICE,HUMAN,Inheritance,,Completed,S040,Conclusa regolarmente
+201812004764,Pending Request for Reservation Closure,2018-12-17 11:59:32.000,2018-12-17 12:02:55.000,BOF,BACK-OFFICE,HUMAN,Inheritance,,Completed,S050,Conclusa regolarmente
+201810000982,Request created,2018-10-02 20:10:53.000,2018-10-02 20:11:04.000,00448,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810000982,Evaluating Request (NO registered letter),2018-10-02 20:11:04.000,2018-10-02 20:12:12.000,00305,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201810003626,Request created,2018-10-10 10:21:48.000,2018-10-10 10:22:10.000,00325,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810003626,Service closure Request with network responsibility,2018-10-10 10:22:10.000,2018-10-10 10:22:46.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811007163,Request created,2018-11-20 10:14:54.000,2018-11-20 10:16:43.000,00192,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811007163,Evaluating Request (WITH registered letter),2018-11-20 10:16:43.000,2018-11-20 10:28:07.000,00567,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201810011074,Request created,2018-10-29 12:23:05.000,2018-10-29 12:24:29.000,00003,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810011074,Service closure Request with network responsibility,2018-10-29 12:24:29.000,2018-10-29 12:25:02.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201810002538,Request created,2018-10-08 11:00:04.000,2018-10-08 11:02:40.000,00321,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201812006445,Request created,2018-12-18 09:53:07.000,2018-12-18 09:56:25.000,00616,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201812006445,Service closure Request with network responsibility,2018-12-18 09:56:25.000,2018-12-18 10:05:04.000,,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S010,Conclusa regolarmente
+201811003709,Request created,2018-11-12 08:06:20.000,2018-11-12 08:07:47.000,SB44,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811003709,Evaluating Request (NO registered letter),2018-11-12 08:07:47.000,2018-11-12 09:24:20.000,00349,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812001221,Request created,2018-12-05 08:02:42.000,2018-12-06 15:11:44.000,00012,APPLICANT,HUMAN,Client Recess,,Completed,S000,Conclusa regolarmente
+201812008711,Request created,2018-12-24 13:02:04.000,2018-12-24 13:03:30.000,00375,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812008711,Evaluating Request (NO registered letter),2018-12-24 13:03:30.000,2019-01-02 08:41:49.000,00145,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812008711,Service closure Request with network responsibility,2019-01-03 10:04:40.000,2019-01-03 10:05:25.000,00145,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812008711,Service closure Request with BO responsibility,2019-01-03 10:05:25.000,2019-01-11 11:13:16.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812008711,Pending Request for Reservation Closure,2019-01-11 11:15:32.000,2019-01-11 11:15:45.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812008711,Pending Liquidation Request,2019-01-11 11:15:45.000,2019-01-15 03:09:25.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S051,Conclusa regolarmente
+201810001390,Request created,2018-10-03 16:02:11.000,2018-10-03 16:05:03.000,00490,APPLICANT,HUMAN,Inheritance,,Completed,S000,Conclusa regolarmente
+201810001390,Service closure Request with network responsibility,2018-10-03 16:05:03.000,2018-10-03 16:05:36.000,,APPLICANT,HUMAN,Inheritance,,Completed,S010,Conclusa regolarmente
+201810001390,Authorization Requested,2018-10-03 16:05:36.000,2018-10-03 16:47:55.000,00328,DIRECTOR,HUMAN,Inheritance,,Completed,S020,Conclusa regolarmente
+201810001390,Service closure Request with BO responsibility,2018-10-03 16:47:55.000,2018-10-09 09:39:17.000,BOF,BACK-OFFICE,HUMAN,Inheritance,,Completed,S040,Conclusa regolarmente
+201811011377,Request created,2018-11-29 16:02:14.000,2018-11-29 16:05:19.000,00553,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201811011377,Service closure Request with network responsibility,2018-12-05 10:48:12.000,2018-12-05 10:48:41.000,,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S010,Conclusa regolarmente
+201811011377,Authorization Requested,2018-12-05 10:48:41.000,2018-12-05 10:49:57.000,00532,DIRECTOR,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S020,Conclusa regolarmente
+201811011377,Service closure Request with BO responsibility,2018-12-05 10:49:57.000,2018-12-11 13:16:48.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S040,Conclusa regolarmente
+201811011377,Pending Request for Reservation Closure,2018-12-11 13:16:48.000,2018-12-11 13:19:05.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S050,Conclusa regolarmente
+201812002854,Request created,2018-12-10 09:54:50.000,2018-12-10 09:55:48.000,00318,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812002854,Service closure Request with network responsibility,2018-12-10 09:55:48.000,2018-12-10 10:17:47.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812002854,Authorization Requested,2018-12-10 10:17:47.000,2018-12-10 10:29:22.000,00476,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201810008185,Request created,2018-10-22 11:08:50.000,2018-10-22 11:09:05.000,00644,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811010091,Request created,2018-11-27 12:43:55.000,2018-11-27 12:47:43.000,00524,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811010091,Evaluating Request (WITH registered letter),2018-11-27 12:47:43.000,2018-11-30 09:25:45.000,00379,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201811010091,Service closure Request with network responsibility,2018-11-30 10:33:25.000,2018-11-30 10:35:18.000,00379,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811010091,Service closure Request with BO responsibility,2018-11-30 10:35:18.000,2018-11-30 16:02:43.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811010091,Pending Request for Reservation Closure,2018-11-30 16:02:43.000,2018-11-30 16:03:41.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812008221,Request created,2018-12-21 12:50:48.000,2018-12-21 12:50:59.000,00058,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812008221,Evaluating Request (NO registered letter),2018-12-21 12:50:59.000,2018-12-21 12:51:49.000,00120,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812008221,Service closure Request with network responsibility,2018-12-21 12:52:24.000,2018-12-21 12:55:03.000,00120,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812002726,Request created,2018-12-07 17:06:34.000,2018-12-07 17:06:52.000,00557,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812002726,Evaluating Request (NO registered letter),2018-12-07 17:06:52.000,2018-12-10 09:03:22.000,00005,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812002726,Service closure Request with network responsibility,2018-12-13 11:18:42.000,2018-12-13 11:18:58.000,00005,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812002726,Service closure Request with BO responsibility,2018-12-13 11:18:58.000,2018-12-13 12:13:02.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812002726,Pending Request for Reservation Closure,2018-12-13 12:13:02.000,2018-12-13 12:15:22.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812002726,Pending Liquidation Request,2018-12-13 12:15:22.000,2018-12-15 03:31:05.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S051,Conclusa regolarmente
+201812005620,Request created,2018-12-14 15:55:51.000,2018-12-14 15:56:11.000,SB84,APPLICANT,HUMAN,Client Recess,,Completed,S000,Conclusa regolarmente
+201810000519,Request created,2018-10-02 09:26:09.000,2018-10-02 09:26:23.000,00394,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811007483,Request created,2018-11-20 15:18:37.000,2018-11-20 15:18:55.000,SB94,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811007483,Evaluating Request (NO registered letter),2018-11-20 15:18:55.000,2018-12-03 11:12:08.000,00592,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201811007483,Service closure Request with network responsibility,2018-12-13 11:14:16.000,2018-12-13 11:14:34.000,00592,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811007483,Service closure Request with BO responsibility,2018-12-13 11:14:34.000,2018-12-13 14:21:02.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811007483,Pending Request for Reservation Closure,2018-12-13 14:21:02.000,2018-12-13 14:23:18.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201811000461,Request created,2018-11-02 16:09:18.000,2018-11-02 16:10:43.000,00155,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811000461,Evaluating Request (NO registered letter),2018-11-02 16:10:43.000,2018-11-02 16:15:45.000,00643,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201811000461,Service closure Request with network responsibility,2018-11-02 16:15:45.000,2018-11-02 16:16:11.000,00643,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811008567,Request created,2018-11-22 13:21:15.000,2018-11-22 13:22:11.000,00195,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811008567,Evaluating Request (WITH registered letter),2018-11-22 13:22:11.000,2018-11-22 15:56:00.000,00271,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S008,Conclusa regolarmente
+201811008567,Service closure Request with network responsibility,2018-11-22 16:17:42.000,2018-11-22 16:18:00.000,00271,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811008567,Service closure Request with BO responsibility,2018-11-22 16:18:00.000,2018-11-26 15:50:54.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811008567,Pending Request for Reservation Closure,2018-11-26 15:50:54.000,2018-11-26 15:54:54.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201811008567,Pending Liquidation Request,2018-11-26 15:54:54.000,2018-11-28 03:16:26.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S051,Conclusa regolarmente
+201810009086,Request created,2018-10-23 15:52:57.000,2018-10-23 15:53:55.000,00400,APPLICANT,HUMAN,Inheritance,,Completed,S000,Conclusa regolarmente
+201810009086,Service closure Request with network responsibility,2018-10-23 15:53:55.000,2018-10-23 15:56:05.000,,APPLICANT,HUMAN,Inheritance,,Completed,S010,Conclusa regolarmente
+201810009603,Request created,2018-10-24 13:19:09.000,2018-10-24 13:20:20.000,00738,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201810009603,Evaluating Request (NO registered letter),2018-10-24 13:20:20.000,2018-10-24 13:21:49.000,00428,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201811004002,Request created,2018-11-12 12:13:22.000,2018-11-12 12:13:33.000,00036,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811004002,Service closure Request with network responsibility,2018-11-12 12:13:33.000,2018-11-12 12:25:55.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811004002,Authorization Requested,2018-11-12 12:25:55.000,2018-11-16 09:17:15.000,00468,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201812006262,Request created,2018-12-17 16:43:11.000,2018-12-17 16:51:22.000,00502,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201812006262,Service closure Request with network responsibility,2018-12-17 16:51:22.000,2018-12-17 16:52:37.000,,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S010,Conclusa regolarmente
+201812006262,Authorization Requested,2018-12-17 16:52:37.000,2018-12-17 17:07:21.000,SB31,DIRECTOR,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S020,Conclusa regolarmente
+201812006262,Service closure Request with BO responsibility,2018-12-17 17:07:21.000,2018-12-20 14:25:31.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S040,Conclusa regolarmente
+201812006262,Pending Request for Reservation Closure,2018-12-20 14:25:31.000,2018-12-20 14:27:23.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S050,Conclusa regolarmente
+201812008324,Request created,2018-12-21 15:21:53.000,2018-12-21 15:22:18.000,00532,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812008324,Evaluating Request (NO registered letter),2018-12-21 15:22:18.000,2018-12-21 15:27:24.000,00414,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812007493,Request created,2018-12-20 08:04:26.000,2018-12-20 10:50:18.000,00026,APPLICANT,HUMAN,Client Recess,,Completed,S000,Conclusa regolarmente
+201812007493,Service closure Request with BO responsibility,2018-12-20 10:50:18.000,2018-12-20 10:51:49.000,BOF,BACK-OFFICE,HUMAN,Client Recess,,Completed,S040,Conclusa regolarmente
+201810006219,Request created,2018-10-17 10:09:32.000,2018-10-17 10:09:47.000,00398,APPLICANT,HUMAN,Client Recess,,Completed,S000,Conclusa regolarmente
+201812004691,Request created,2018-12-13 09:44:50.000,2018-12-13 09:45:15.000,00613,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S000,Conclusa regolarmente
+201812004691,Service closure Request with network responsibility,2018-12-13 09:45:15.000,2018-12-21 13:12:56.000,,APPLICANT,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S010,Conclusa regolarmente
+201812004691,Authorization Requested,2018-12-21 13:12:56.000,2018-12-21 13:14:18.000,00567,DIRECTOR,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S020,Conclusa regolarmente
+201812004691,Service closure Request with BO responsibility,2018-12-21 13:14:18.000,2018-12-21 15:41:57.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S040,Conclusa regolarmente
+201812004691,Pending Request for Reservation Closure,2018-12-21 15:41:57.000,2018-12-21 15:45:22.000,BOF,BACK-OFFICE,HUMAN,Client Recess,2 - Keep bank account. Same dip,Completed,S050,Conclusa regolarmente
+201811011338,Request created,2018-11-29 15:25:39.000,2018-11-29 15:32:50.000,00524,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201811011338,Evaluating Request (NO registered letter),2018-11-29 15:32:50.000,2018-11-29 15:35:41.000,00441,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201811011338,Service closure Request with network responsibility,2018-12-07 08:23:32.000,2018-12-07 08:25:16.000,00441,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201811011338,Service closure Request with BO responsibility,2018-12-07 08:25:16.000,2018-12-11 16:56:37.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201811011338,Pending Request for Reservation Closure,2018-12-11 16:56:37.000,2018-12-11 16:59:01.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812006450,Request created,2018-12-18 09:56:40.000,2018-12-18 09:57:25.000,00640,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812006450,Evaluating Request (NO registered letter),2018-12-18 09:57:25.000,2018-12-18 10:00:42.000,00745,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201711007735,Request created,2018-09-19 12:28:26.000,2018-10-02 15:48:45.000,00646,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201711007735,Service closure Request with network responsibility,2018-10-02 15:48:45.000,2018-10-02 15:50:23.000,,APPLICANT,HUMAN,Bank Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201711007735,Authorization Requested,2018-10-02 15:50:23.000,2018-10-02 16:01:37.000,SB77,DIRECTOR,HUMAN,Bank Recess,1 - Client lost,Completed,S020,Conclusa regolarmente
+201711007735,Service closure Request with BO responsibility,2018-10-02 16:01:37.000,2018-10-05 14:35:00.000,BOF,BACK-OFFICE,HUMAN,Bank Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812007026,Request created,2018-12-19 09:27:28.000,2018-12-19 09:28:42.000,00054,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812007026,Evaluating Request (NO registered letter),2018-12-19 09:28:42.000,2018-12-19 15:26:27.000,00616,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812007026,Service closure Request with network responsibility,2018-12-19 16:16:36.000,2018-12-19 16:17:21.000,00616,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812003071,Request created,2018-12-10 12:23:58.000,2018-12-10 12:27:31.000,00356,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S000,Conclusa regolarmente
+201812003071,Evaluating Request (NO registered letter),2018-12-10 12:27:31.000,2018-12-10 12:40:13.000,00708,DIRECTOR,HUMAN,Client Recess,1 - Client lost,Completed,S005,Conclusa regolarmente
+201812003071,Service closure Request with network responsibility,2018-12-14 15:08:22.000,2018-12-17 09:39:45.000,00708,APPLICANT,HUMAN,Client Recess,1 - Client lost,Completed,S010,Conclusa regolarmente
+201812003071,Service closure Request with BO responsibility,2018-12-17 09:39:45.000,2018-12-18 15:04:39.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S040,Conclusa regolarmente
+201812003071,Pending Request for Reservation Closure,2018-12-18 15:04:39.000,2018-12-18 15:07:14.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S050,Conclusa regolarmente
+201812003071,Pending Liquidation Request,2018-12-18 15:07:14.000,2018-12-20 03:12:16.000,BOF,BACK-OFFICE,HUMAN,Client Recess,1 - Client lost,Completed,S051,Conclusa regolarmente

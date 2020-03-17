@@ -30,8 +30,8 @@ from write_results import write_results_to_be_plotted, write_scores, prepare_df,
 import tensorflow as tf
 from keras import backend as K
 import argparse
-import json
-from explainable import compute_shap_values, calculate_histogram_for_shap_values, compute_shap_values_for_running_cases, find_explanations_for_running_cases
+import json, sys
+from explainable import compute_shap_values, compute_shap_values_for_running_cases, find_explanations_for_running_cases
 
 
 def clean_name(filename, pred_column, n_neurons, n_layers, model_name):
@@ -160,7 +160,8 @@ args = parser.parse_args()
 mandatory = args.mandatory
 shap_calculation = args.shap
 shap_attributes = args.shap_attributes
-shap_attributes = shap_attributes.split(',')
+if shap_attributes is True:
+    shap_attributes = shap_attributes.split(',')
 end_date_position = int(args.end_date_position)
 model_name = args.model
 pred_attribute = args.pred_attribute
@@ -181,7 +182,6 @@ config = tf.ConfigProto()
 config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
 K.set_session(sess)
-
 
 # train model
 if model_name is None:
@@ -211,6 +211,9 @@ if model_name is None:
         attributes_to_plot = []
         # if column of type numeric you have only one shap histogram to plot
         if column_type != "Numeric":
+            #if you haven't defined which categorical attributes you want to plot exit
+            if shap_attributes is False:
+                sys.exit("you must define which categorical attributes you want to plot for explainability!")
             attributes_to_plot = shap_attributes
             for attribute in attributes_to_plot:
                 indexes_to_plot.append(target_column_name.index(attribute))
@@ -237,9 +240,16 @@ elif model_name is not None:
     # if you are predicting remaining time you should cast results to days and hours
     if pred_column == 'remaining_time':
         df = cast_predictions_to_days_hours(df, pred_column)
+    #if you have only one attribute to predict shapley values will be in position 0
+    prediction_index = 0
+    if pred_attribute is not None:
+        # if you have defined which categorical attribute you want to be explained (ex. ACT=1 find its position)
+        prediction_feature = pred_attribute
+        prediction_index = target_column_name.index(prediction_feature)
     shapley_test = compute_shap_values_for_running_cases(row_process_name, X_test, model)
-    df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute)
+    df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute, prediction_index)
     print("Generated predictions for running cases along with explanations")
+    # TODO: qui genera i results solo per una feature se è categorico, dove lo fai?
     if pred_attribute is not None:
         df.to_csv("results/results_running_" + row_process_name + "_" + pred_attribute + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
     else:

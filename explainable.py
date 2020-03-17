@@ -1,6 +1,6 @@
 import numpy as np
 import shap
-import os
+import os, json
 #import matplotlib.pyplot as plt
 
 
@@ -99,9 +99,9 @@ def calculate_histogram_for_shap_chunk(X_test, shapley_index_chunk, index, featu
     explanation_histograms[index] = explanation_histogram
     return explanation_histograms
 
-def find_instance_explanation_values(X_test, shapley_test, i, more_explanation_values=False):
+def find_instance_explanation_values(X_test, shapley_test, i, prediction_index=0, more_explanation_values=False):
     x_test_instance = X_test[i][-1]
-    shap_values_instance = shapley_test[0][i][-1]
+    shap_values_instance = shapley_test[prediction_index][i][-1]
     mean = np.mean([x for x in shap_values_instance if x != 0])
     sd = np.std([x for x in shap_values_instance if x != 0])
     upper_threshold = mean + 3 * sd
@@ -233,51 +233,9 @@ def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_t
     return explanation_histogram
 
 
-# def compute_shap_values(row_process_name, X_train, X_test, model, column_type):
-#     # first run you compute the values and then save them
-#     if not os.path.isfile("shap/" + row_process_name + "_background"):
-#         background = X_train[:100]
-#         np.save("shap/" + row_process_name + "_background", background)
-#         explainer = shap.DeepExplainer(model, background)
-#         print("prepared explainer")
-#         if column_type == 'Numeric':
-#             shapley_test = explainer.shap_values(X_test)
-#             np.save("shap/" + row_process_name + "_shap_values_test.npy", shapley_test)
-#         else:
-#             #column of type categorical (multioutput) need data to be splitted (huge amount of memory)
-#             partition = int(len(X_test) / 25)
-#             shapley_test = []
-#             for i in range(25):
-#                 if i != 24:
-#                     if i == 0:
-#                         chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
-#                         shapley_test = chunk
-#                     else:
-#                         chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
-#                         shapley_test = np.append(shapley_test, chunk, 1)
-#                 else:
-#                     chunk = explainer.shap_values(X_test[partition * i:])
-#                     shapley_test = np.append(shapley_test, chunk, 1)
-#                 np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", chunk)
-#
-#     # already saved values
-#     else:
-#         if column_type == 'Numeric':
-#             shapley_test = np.load("shap/" + row_process_name + "_shap_values_test.npy", allow_pickle=True)
-#         else:
-#             shapley_test = []
-#             for i in range(25):
-#                 if len(shapley_test) == 0:
-#                     shapley_test = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
-#                 else:
-#                     chunk = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
-#                     shapley_test = np.append(shapley_test, chunk, 1)
-#     return shapley_test
-
-
 def compute_shap_values_for_running_cases(row_process_name, X_test, model):
     # you should already have the background and you shouldn't need no partition
-    background = np.load("shap/" + row_process_name + "_background", allow_pickle=True)
+    background = np.load("shap/" + row_process_name + "_background.npy", allow_pickle=True)
     explainer = shap.DeepExplainer(model, background)
     shapley_test = explainer.shap_values(X_test)
     return shapley_test
@@ -290,35 +248,38 @@ def find_explanation_for_categorical_prediction(df, x_test_instance, explanation
         # keep only positive shap values (those who say attribute will be performed)
         if value > 0:
             if x_test_instance[explanation_index] == 1:
-                explainable_response += explanation_name + " happening has predicted that " + pred_attribute \
+                explainable_response += explanation_name + " has predicted that " + pred_attribute \
                                         + " will be performed; "
             elif x_test_instance[explanation_index] == 0:
-                explainable_response += explanation_name + " not happening has predicted that " + pred_attribute \
+                explanation_name = explanation_name.replace("=", "!=")
+                explainable_response += explanation_name + " has predicted that " + pred_attribute \
                                         + " will be performed; "
-            elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                explainable_response += " A low value of " + explanation_name + " has predicted that " + pred_attribute \
-                                        + " will be performed; "
-            else:
-                explainable_response += " An high value of " + explanation_name + " has predicted that " + pred_attribute \
-                                        + " will be performed; "
+            # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
+            #     explainable_response += " A low value of " + explanation_name + " has predicted that " + pred_attribute \
+            #                             + " will be performed; "
+            # else:
+            #     explainable_response += " An high value of " + explanation_name + " has predicted that " + pred_attribute \
+            #                             + " will be performed; "
     else:
         if value < 0:
             if x_test_instance[explanation_index] == 1:
-                explainable_response += explanation_name + " happening has predicted that " + pred_attribute \
+                explainable_response += explanation_name + " has predicted that " + pred_attribute \
                                         + " won't be performed; "
             elif x_test_instance[explanation_index] == 0:
-                explainable_response += explanation_name + " not happening has predicted that " + pred_attribute \
+                explanation_name = explanation_name.replace("=", "!=")
+                explainable_response += explanation_name + " has predicted that " + pred_attribute \
                                         + " won't be performed; "
-            elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                explainable_response += " A low value of " + explanation_name + "has predicted that " + pred_attribute \
-                                        + " won't be performed; "
-            else:
-                explainable_response += " An high value of " + explanation_name + "has predicted that " + pred_attribute \
-                                        + " won't be performed; "
+            # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
+            #     explainable_response += " A low value of " + explanation_name + "has predicted that " + pred_attribute \
+            #                             + " won't be performed; "
+            # else:
+            #     explainable_response += " An high value of " + explanation_name + "has predicted that " + pred_attribute \
+            #                             + " won't be performed; "
     return explainable_response
 
 
-def find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute):
+def find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute, prediction_index):
+    not_useful_explanations = json.load(open("conf/ignore_explanation_columns.json"))['columns']
     df['Explanation'] = 'No explanation found'
     column_type = 'Numeric'
     # shape > 3 means that there is more than one value to be predicted --> categorical case
@@ -327,45 +288,60 @@ def find_explanations_for_running_cases(shapley_test, X_test, df, feature_column
         # keep only the attribute the user wants to predict and round it between 0 and 1
         df = df[['CASE ID', pred_attribute]]
         df.loc[:, pred_attribute] = df.loc[:, pred_attribute].round(0)
-    for i in range(len(shapley_test[0])):
-        x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i)
+    for i in range(len(shapley_test[prediction_index])):
+        x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, prediction_index)
         explainable_response = ""
         for value in explanation_values:
+            skip = False
             # take the column name for every explanation
             explanation_index = np.where(shap_values_instance == value)[0][0]
             explanation_name = feature_columns[explanation_index]
+            for useless_explanation in not_useful_explanations:
+                if useless_explanation in explanation_name:
+                    skip = True
+            if skip is True:
+                continue
             if column_type != 'Categorical':
                 if x_test_instance[explanation_index] == 1:
                     if value >= 0:
-                        explainable_response += explanation_name + " happening has increased the prediction; "
+                        #if column=something it remains as it is
+                        explainable_response += explanation_name + " has increased the prediction; "
                     else:
-                        explainable_response += explanation_name + " happening has decreased the prediction; "
+                        explainable_response += explanation_name + " has decreased the prediction; "
                 elif x_test_instance[explanation_index] == 0:
+                    explanation_name = explanation_name.replace("=", "!=")
                     if value >= 0:
-                        explainable_response += explanation_name + " not happening has increased the prediction; "
+                        #change = to !=
+                        explainable_response += explanation_name + " has increased the prediction; "
                     else:
-                        explainable_response += explanation_name + " not happening has decreased the prediction; "
+                        explainable_response += explanation_name + " has decreased the prediction; "
                 # an high or low value of the numeric feature normalized can higher or lower the prediction
-                elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                    if value >= 0:
-                        explainable_response += "A low value of " + explanation_name + " has increased the prediction; "
-                    else:
-                        explainable_response += "A low value of " + explanation_name + " has decreased the prediction; "
-                else:
-                    if value >= 0:
-                        explainable_response += "An high value of " + explanation_name + " has increased the prediction; "
-                    else:
-                        explainable_response += "An high value of " + explanation_name + " has decreased the prediction; "
+                # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
+                #     if value >= 0:
+                #         explainable_response += "A low value of " + explanation_name + " has increased the prediction; "
+                #     else:
+                #         explainable_response += "A low value of " + explanation_name + " has decreased the prediction; "
+                # else:
+                #     if value >= 0:
+                #         explainable_response += "An high value of " + explanation_name + " has increased the prediction; "
+                #     else:
+                #         explainable_response += "An high value of " + explanation_name + " has decreased the prediction; "
             else:
                 explainable_response = find_explanation_for_categorical_prediction(df, x_test_instance, explanation_index, explanation_name,
                                                             explainable_response, pred_attribute, value, i)
         #if we haven't found any explanation for categorical prediction we should find more explanations
         if explainable_response == "" and column_type == 'Categorical':
-            x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, True)
+            x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, prediction_index, True)
             for value in explanation_values:
+                skip = False
                 # take the column name for every explanation
                 explanation_index = np.where(shap_values_instance == value)[0][0]
                 explanation_name = feature_columns[explanation_index]
+                for useless_explanation in not_useful_explanations:
+                    if useless_explanation in explanation_name:
+                        skip = True
+                if skip is True:
+                    continue
                 explainable_response = find_explanation_for_categorical_prediction(df, x_test_instance, explanation_index, explanation_name,
                                                                                    explainable_response, pred_attribute, value, i)
 

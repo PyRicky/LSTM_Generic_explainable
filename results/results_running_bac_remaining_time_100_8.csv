@@ -1,0 +1,51 @@
+CASE ID,remaining_time,Explanation
+201711007735,1d 19h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201810000251,1d 17h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201810000519,7d 21h,ACTIVITY=Request created has increased the prediction; CLOSURE_TYPE=Bank Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810000982,7d 11h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810001257,7d 21h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810001390,3d 22h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201810002538,7d 21h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810003626,7d 22h,CLOSURE_TYPE=Bank Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810006219,2d 21h,CLOSURE_TYPE=Client Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810007093,7d 21h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810008080,1d 18h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201810008185,7d 21h,No explanation found
+201810009086,15d 12h,ROLE!=BACK-OFFICE has increased the prediction; CLOSURE_TYPE=Inheritance has increased the prediction; 
+201810009603,7d 21h,ROLE!=BACK-OFFICE has increased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201810011074,7d 11h,No explanation found
+201811000461,6d 4h,No explanation found
+201811003618,1d 21h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201811003709,7d 21h,ROLE!=BACK-OFFICE has increased the prediction; 
+201811004002,6d 1h,CLOSURE_TYPE=Bank Recess has decreased the prediction; 
+201811004043,1d 17h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201811004369,1d 20h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201811007163,7d 21h,ROLE!=BACK-OFFICE has increased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201811007240,2d 6h,ACTIVITY=Pending Liquidation Request has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201811007483,3d 17h,No explanation found
+201811008538,4d 2h,CE_UO=BOCSER has decreased the prediction; 
+201811008567,1d 15h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201811010069,3d 17h,No explanation found
+201811010091,3d 17h,No explanation found
+201811011338,1d 16h,ROLE=BACK-OFFICE has decreased the prediction; 
+201811011377,1d 17h,ROLE=BACK-OFFICE has decreased the prediction; 
+201811011499,2d 21h,CLOSURE_TYPE=Client Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812000512,1d 17h,ROLE=BACK-OFFICE has decreased the prediction; 
+201812001221,2d 21h,CLOSURE_TYPE=Client Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812002726,1d 16h,ACTIVITY=Pending Liquidation Request has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201812002854,6d 11h,No explanation found
+201812003071,1d 15h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201812004214,1d 15h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201812004691,3d 17h,No explanation found
+201812004764,1d 21h,ROLE=BACK-OFFICE has decreased the prediction; 
+201812005620,2d 21h,CLOSURE_TYPE=Client Recess has decreased the prediction; CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812006262,3d 17h,No explanation found
+201812006445,7d 21h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812006450,7d 20h,ROLE!=BACK-OFFICE has increased the prediction; 
+201812007026,5d 22h,CE_UO=00616 has decreased the prediction; 
+201812007456,6d 11h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812007493,2d 22h,ACTIVITY=Service closure Request with BO responsibility has decreased the prediction; CE_STATE=S040 has decreased the prediction; 
+201812008221,7d 8h,CLOSURE_TYPE!=Inheritance has decreased the prediction; 
+201812008324,7d 21h,No explanation found
+201812008711,1d 16h,ACTIVITY=Pending Liquidation Request has decreased the prediction; CE_STATE=S051 has decreased the prediction; 
+201812009020,1d 14h,ACTIVITY=Pending Liquidation Request has decreased the prediction; ROLE=BACK-OFFICE has decreased the prediction; CE_STATE=S051 has decreased the prediction; 

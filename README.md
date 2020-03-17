@@ -19,9 +19,9 @@ python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 
 
 2) Test the trained neural network on running cases
 
-python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_running.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --model model/model_bac_1_9_1_less_rows_remaining_time_100_8.json
+python LSTM_sequence_mae.py --mandatory data/bac_running.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --model model/model_bac_remaining_time_100_8.json
 
-python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows_running.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --model model/model_bac_1_9_1_less_rows_ACTIVITY_100_8.json --pred_attribute "ACTIVITY 11"
+python LSTM_sequence_mae.py --mandatory data/bac_running.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --model model/model_bac_ACTIVITY_100_8.json --pred_attribute "Back-Office Adjustment Requested"
 
 where there are 5 mandatory parameters: csv, case_id_position, start_date_position, timestamp, column_to_be_predicted (remaining_time or ACTIVITY as an example)
 

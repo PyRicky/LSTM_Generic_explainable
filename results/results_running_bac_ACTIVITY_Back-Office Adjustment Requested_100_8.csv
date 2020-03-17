@@ -1,0 +1,51 @@
+CASE ID,Back-Office Adjustment Requested,Explanation
+201711007735,0.0,CLOSURE_TYPE=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201810000251,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201810000519,0.0,GENERAL_STATE!=Conclusa regolarmente has predicted that Back-Office Adjustment Requested won't be performed; 
+201810000982,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201810001257,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201810001390,0.0,CLOSURE_TYPE=Inheritance has predicted that Back-Office Adjustment Requested won't be performed; 
+201810002538,0.0,ACTIVITY!=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201810003626,0.0,ACTIVITY!=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; GENERAL_STATE!=Conclusa regolarmente has predicted that Back-Office Adjustment Requested won't be performed; 
+201810006219,1.0,CLOSURE_REASON=0 has predicted that Back-Office Adjustment Requested will be performed; 
+201810007093,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201810008080,0.0,CLOSURE_TYPE=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201810008185,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201810009086,0.0,ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201810009603,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201810011074,0.0,ACTIVITY!=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811000461,0.0,CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811003618,0.0,CLOSURE_TYPE=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_REASON!=0 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811003709,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201811004002,0.0,ROLE!=APPLICANT has predicted that Back-Office Adjustment Requested won't be performed; 
+201811004043,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201811004369,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_REASON!=0 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811007163,0.0,ACTIVITY!=Request created has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=APPLICANT has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; ROLE=DIRECTOR has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S000 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811007240,0.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested won't be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested won't be performed; 
+201811007483,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201811008538,0.0,CLOSURE_TYPE=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_TYPE!=Inheritance has predicted that Back-Office Adjustment Requested won't be performed; 
+201811008567,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201811010069,0.0,No explanation found
+201811010091,0.0,No explanation found
+201811011338,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201811011377,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_REASON!=0 has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_REASON=2 - Keep bank account. Same dip has predicted that Back-Office Adjustment Requested won't be performed; 
+201811011499,1.0,CLOSURE_REASON=0 has predicted that Back-Office Adjustment Requested will be performed; 
+201812000512,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_TYPE=Client Recess has predicted that Back-Office Adjustment Requested won't be performed; CLOSURE_REASON!=0 has predicted that Back-Office Adjustment Requested won't be performed; 
+201812001221,1.0,CLOSURE_REASON=0 has predicted that Back-Office Adjustment Requested will be performed; 
+201812002726,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201812002854,0.0,ROLE=DIRECTOR has predicted that Back-Office Adjustment Requested won't be performed; 
+201812003071,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201812004214,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201812004691,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201812004764,0.0,No explanation found
+201812005620,1.0,CLOSURE_REASON=0 has predicted that Back-Office Adjustment Requested will be performed; 
+201812006262,0.0,CLOSURE_TYPE!=Bank Recess has predicted that Back-Office Adjustment Requested won't be performed; 
+201812006445,0.0,CLOSURE_REASON=2 - Keep bank account. Same dip has predicted that Back-Office Adjustment Requested won't be performed; 
+201812006450,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201812007026,0.0,ACTIVITY!=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201812007456,0.0,CE_UO=SB22 has predicted that Back-Office Adjustment Requested won't be performed; 
+201812007493,1.0,ACTIVITY=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S040 has predicted that Back-Office Adjustment Requested will be performed; 
+201812008221,0.0,ACTIVITY!=Service closure Request with BO responsibility has predicted that Back-Office Adjustment Requested won't be performed; CE_STATE!=S040 has predicted that Back-Office Adjustment Requested won't be performed; 
+201812008324,0.0,CE_UO!=BOF has predicted that Back-Office Adjustment Requested won't be performed; ROLE!=BACK-OFFICE has predicted that Back-Office Adjustment Requested won't be performed; 
+201812008711,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
+201812009020,1.0,ACTIVITY=Pending Liquidation Request has predicted that Back-Office Adjustment Requested will be performed; ROLE=BACK-OFFICE has predicted that Back-Office Adjustment Requested will be performed; CE_STATE=S051 has predicted that Back-Office Adjustment Requested will be performed; 
