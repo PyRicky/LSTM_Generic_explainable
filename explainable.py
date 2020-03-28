@@ -1,7 +1,7 @@
 import numpy as np
 import shap
 import os, json
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 
 def plot_histogram(explanation_histogram, row_process_name):
@@ -28,6 +28,40 @@ def plot_histogram(explanation_histogram, row_process_name):
     ax.set_title('How are predictions going?', fontsize=22)
     plt.savefig("plots/shap_histogram_"+row_process_name+".png", dpi=300, bbox_inches="tight")
 
+def refine_explanation_name(x_test_instance, explanation_index, explanation_name):
+    # TODO: test this histogram
+    if x_test_instance[explanation_index] == 0:
+        if "=" in explanation_name:
+            # if column=something it remains as it is
+            explanation_name = explanation_name.replace("=", "!=")
+    if "=" not in explanation_name:
+        #numerical explanation
+        if x_test_instance[explanation_index] <= 0.5:
+            explanation_name = "Low value of " + explanation_name
+        else:
+            explanation_name = "High value of " + explanation_name
+    return explanation_name
+
+def add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_columns, value, i, explanation_histogram):
+    # take the column name for every explanation
+    #TODO: test
+    explanation_index = np.where(shap_values_instance == value)[0][0]
+    explanation_name = feature_columns[explanation_index]
+    explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name)
+    print("Instance {} --> {} : {}".format(i + 1, explanation_name, value))
+    # if the categorical feature has a 1 means that the particular instance happened (see the contribution of the shapley values)
+    if explanation_name not in explanation_histogram:
+        if value > 0:
+            explanation_histogram[explanation_name] = 1
+        else:
+            explanation_histogram[explanation_name] = -1
+    else:
+        if value > 0:
+            explanation_histogram[explanation_name] += 1
+        else:
+            explanation_histogram[explanation_name] -= 1
+    return explanation_histogram
+
 
 def calculate_histogram_for_shap_chunk(X_test, shapley_index_chunk, index, feature_columns, explanation_histograms):
     # if we haven't still created an histogram with that index name create it, otherwise update it from where you left
@@ -36,65 +70,13 @@ def calculate_histogram_for_shap_chunk(X_test, shapley_index_chunk, index, featu
     else:
         explanation_histogram = explanation_histograms[index]
     for i in range(shapley_index_chunk.shape[0]):
-        x_test_instance = X_test[i][-1]
-        shap_values_instance = shapley_index_chunk[i][-1]
-        mean = np.mean([x for x in shap_values_instance if x != 0])
-        sd = np.std([x for x in shap_values_instance if x != 0])
-        upper_threshold = mean + 3 * sd
-        lower_threshold = mean - 3 * sd
-        # calculate most important values for explanation (+-3sd from the mean)
-        explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-        if len(explanation_values) == 0:
-            upper_threshold = mean + 2 * sd
-            lower_threshold = mean - 2 * sd
-            explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-            if len(explanation_values) == 0:
-                upper_threshold = mean + sd
-                lower_threshold = mean - sd
-                explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-        # if they are more take only the first 5
-        if len(explanation_values) > 5:
-            explanation_values = explanation_values[:5]
+        # TODO test needed
+        x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_index_chunk, i)
+
         for value in explanation_values:
-            # take the column name for every explanation
-            explanation_index = np.where(shap_values_instance == value)[0][0]
-            explanation_name = feature_columns[explanation_index]
-            if x_test_instance[explanation_index] == 1:
-                print("Instance {} --> {} happening: {}".format(i + 1, explanation_name, value))
-                # if in the test there is a 1 means that the particular instance happened (see the contribution of the shapley values)
-                if (explanation_name + " happening") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " happening")] = 1
-                else:
-                    if value > 0:
-                        explanation_histogram[(explanation_name + " happening")] += 1
-                    else:
-                        explanation_histogram[(explanation_name + " happening")] -= 1
-            elif x_test_instance[explanation_index] == 0:
-                print("Instance {} --> {} not happening: {}".format(i + 1, explanation_name, value))
-                if (explanation_name + " not happening") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " not happening")] = 1
-                else:
-                    if value > 0:
-                        explanation_histogram[(explanation_name + " not happening")] += 1
-                    else:
-                        explanation_histogram[(explanation_name + " not happening")] -= 1
-            # handle also if for some reason the numeric value has importance in the prediction
-            elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                if (explanation_name + " low value") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " low value")] = 1
-                else:
-                    if value > 0:
-                        explanation_histogram[(explanation_name + " low value")] += 1
-                    else:
-                        explanation_histogram[(explanation_name + " low value")] -= 1
-            else:
-                if (explanation_name + " high value") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " high value")] = 1
-                else:
-                    if value > 0:
-                        explanation_histogram[(explanation_name + " high value")] += 1
-                    else:
-                        explanation_histogram[(explanation_name + " high value")] -= 1
+            # TODO test needed
+            explanation_histogram = add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_columns,
+                                                                 value, i, explanation_histogram)
     # you have updated the histogram, put it back where it was
     explanation_histograms[index] = explanation_histogram
     return explanation_histograms
@@ -161,6 +143,7 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
 
             # extract only the shapley values for the attributes that you want to plot
             for j, index in enumerate(indexes_to_plot):
+                # TODO: test this line with few instances
                 shapley_index_chunk = shapley_test[index, :, :, :]
                 index_name = activities_to_plot[j]
                 if i != 24:
@@ -179,7 +162,13 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
             explanation_histogram = {k: v for k, v in sorted(explanation_histogram.items(), key=lambda item: abs(item[1]),
                                             reverse=True)}
             row_process_name = row_process_name + '_' + index_name
-            plot_histogram(explanation_histogram, row_process_name)
+            essential_histogram = {}
+            for i, key in enumerate(explanation_histogram.keys()):
+                if i == 15:
+                    break
+                else:
+                    essential_histogram[key] = explanation_histogram[key]
+            plot_histogram(essential_histogram, row_process_name)
 
 
 def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns,
@@ -198,38 +187,21 @@ def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_t
 
         x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i)
         for value in explanation_values:
-            # take the column name for every explanation
-            explanation_index = np.where(shap_values_instance == value)[0][0]
-            explanation_name = feature_columns[explanation_index]
-            if x_test_instance[explanation_index] == 1:
-                print("Instance {} --> {} happening: {}".format(i + 1, explanation_name, value))
-                # if in the test there is a 1 means that the particular instance happened (see the contribution of the shapley values)
-                if (explanation_name + " happening") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " happening")] = value
-                else:
-                    explanation_histogram[(explanation_name + " happening")] += value
-            elif x_test_instance[explanation_index] == 0:
-                print("Instance {} --> {} not happening: {}".format(i + 1, explanation_name, value))
-                if (explanation_name + " not happening") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " not happening")] = value
-                else:
-                    explanation_histogram[(explanation_name + " not happening")] += value
-            # handle also if for some reason the numeric value has importance in the prediction
-            elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                if (explanation_name + " low value") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " low value")] = value
-                else:
-                    explanation_histogram[(explanation_name + " low value")] += value
-            else:
-                if (explanation_name + " high value") not in explanation_histogram:
-                    explanation_histogram[(explanation_name + " high value")] = value
-                else:
-                    explanation_histogram[(explanation_name + " high value")] += value
+            # TODO test needed
+            explanation_histogram = add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_columns,
+                                                                 value, i, explanation_histogram)
 
-    # order results of the histogram by value (python >= 3.6)
+    # order results of the histogram by value (python >= 3.6) and take only the first 15
     explanation_histogram = {k: v for k, v in
                              sorted(explanation_histogram.items(), key=lambda item: abs(item[1]), reverse=True)}
-    plot_histogram(explanation_histogram, row_process_name)
+    essential_histogram = {}
+    for i, key in enumerate(explanation_histogram.keys()):
+        if i == 15:
+            break
+        else:
+            essential_histogram[key] = explanation_histogram[key]
+    # TODO: test plot
+    plot_histogram(essential_histogram, row_process_name)
     return explanation_histogram
 
 
@@ -244,37 +216,16 @@ def find_explanation_for_categorical_prediction(df, x_test_instance, explanation
                                                 explainable_response, pred_attribute, value, i):
     # in categorical case attribute prediction can be 0 or 1 (attribute will be performed or not)
     attribute_prediction = df.loc[i, pred_attribute]
+    explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name)
     if attribute_prediction == 1:
         # keep only positive shap values (those who say attribute will be performed)
         if value > 0:
-            if x_test_instance[explanation_index] == 1:
-                explainable_response += explanation_name + " has predicted that " + pred_attribute \
-                                        + " will be performed; "
-            elif x_test_instance[explanation_index] == 0:
-                explanation_name = explanation_name.replace("=", "!=")
-                explainable_response += explanation_name + " has predicted that " + pred_attribute \
-                                        + " will be performed; "
-            # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-            #     explainable_response += " A low value of " + explanation_name + " has predicted that " + pred_attribute \
-            #                             + " will be performed; "
-            # else:
-            #     explainable_response += " An high value of " + explanation_name + " has predicted that " + pred_attribute \
-            #                             + " will be performed; "
+            explainable_response += explanation_name + " has predicted that " + pred_attribute \
+                                    + " will be performed; "
     else:
         if value < 0:
-            if x_test_instance[explanation_index] == 1:
-                explainable_response += explanation_name + " has predicted that " + pred_attribute \
-                                        + " won't be performed; "
-            elif x_test_instance[explanation_index] == 0:
-                explanation_name = explanation_name.replace("=", "!=")
-                explainable_response += explanation_name + " has predicted that " + pred_attribute \
-                                        + " won't be performed; "
-            # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-            #     explainable_response += " A low value of " + explanation_name + "has predicted that " + pred_attribute \
-            #                             + " won't be performed; "
-            # else:
-            #     explainable_response += " An high value of " + explanation_name + "has predicted that " + pred_attribute \
-            #                             + " won't be performed; "
+            explainable_response += explanation_name + " has predicted that " + pred_attribute \
+                                    + " won't be performed; "
     return explainable_response
 
 
@@ -302,30 +253,11 @@ def find_explanations_for_running_cases(shapley_test, X_test, df, feature_column
             if skip is True:
                 continue
             if column_type != 'Categorical':
-                if x_test_instance[explanation_index] == 1:
-                    if value >= 0:
-                        #if column=something it remains as it is
-                        explainable_response += explanation_name + " has increased the prediction; "
-                    else:
-                        explainable_response += explanation_name + " has decreased the prediction; "
-                elif x_test_instance[explanation_index] == 0:
-                    explanation_name = explanation_name.replace("=", "!=")
-                    if value >= 0:
-                        #change = to !=
-                        explainable_response += explanation_name + " has increased the prediction; "
-                    else:
-                        explainable_response += explanation_name + " has decreased the prediction; "
-                # an high or low value of the numeric feature normalized can higher or lower the prediction
-                # elif x_test_instance[explanation_index] > 0 and x_test_instance[explanation_index] < 0.5:
-                #     if value >= 0:
-                #         explainable_response += "A low value of " + explanation_name + " has increased the prediction; "
-                #     else:
-                #         explainable_response += "A low value of " + explanation_name + " has decreased the prediction; "
-                # else:
-                #     if value >= 0:
-                #         explainable_response += "An high value of " + explanation_name + " has increased the prediction; "
-                #     else:
-                #         explainable_response += "An high value of " + explanation_name + " has decreased the prediction; "
+                explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name)
+                if value >= 0:
+                    explainable_response += explanation_name + " has increased the prediction; "
+                else:
+                    explainable_response += explanation_name + " has decreased the prediction; "
             else:
                 explainable_response = find_explanation_for_categorical_prediction(df, x_test_instance, explanation_index, explanation_name,
                                                             explainable_response, pred_attribute, value, i)

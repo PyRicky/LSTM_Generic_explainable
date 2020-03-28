@@ -2,9 +2,7 @@
 
 This is the code associated to the paper:
 
-**On the Explanations of Business Process Predictions of Generic KPIs**, Riccardo Galanti, Bernat Coma Puig, Josep Carmona, Massimiliano de Leoni, Nicolò Navarin. In BPM 2020: 18th International Conference on Business Process Management, to appear.
-
-The preprint of the paper is available in [arXiv]
+**Explainable Predictive Process Monitoring**, Riccardo Galanti, Bernat Coma Puig, Josep Carmona, Massimiliano de Leoni, Nicolò Navarin. In BPM 2020: 18th International Conference on Business Process Management, to appear.
 
 ## Code Example
 
@@ -57,6 +55,7 @@ matplotlib
 ## Contributors
 
 Riccardo Galanti
+Bernat Coma Puig
 
 ## License
 

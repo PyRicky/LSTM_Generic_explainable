@@ -11,6 +11,7 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
     # calculate and reshape predictions
     predictions = model.predict(X_test)
     predictions = np.squeeze(predictions)
+    # TODO devi testare che nel csv dei results non ci sia test ma remaining time
     # qui deve appendere o una serie o un dataframe
     if np.issubdtype(type(predictions[0]), np.number):
         predictions = pd.Series(predictions)
@@ -52,6 +53,7 @@ def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layer
 
 def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level):
     with open("results/scores_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".txt", "w") as file:
+        # TODO: scrivi l'F1 per le 3 classi che ti interessano
         if pred_column == 'remaining_time':
             file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
             print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1] / ((24.0 * 3600) ** 2)), scores[2] / (24.0 * 3600), scores[3]))
@@ -67,6 +69,7 @@ def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, col
 
 
 def plot_auroc_curve(df, predictions_names, target_column_names, row_process_name):
+    # TODO: disegna auroc e prc solo per gli attributi che scegli
     false_positive_rates = dict()
     true_positive_rates = dict()
     roc_auc = dict()
