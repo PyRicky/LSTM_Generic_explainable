@@ -161,6 +161,7 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
             explanation_histogram = explanation_histograms[index_name]
             explanation_histogram = {k: v for k, v in sorted(explanation_histogram.items(), key=lambda item: abs(item[1]),
                                             reverse=True)}
+            # TODO: test if the name is correct and report it on the shap files
             row_process_name = row_process_name + '_' + index_name
             essential_histogram = {}
             for i, key in enumerate(explanation_histogram.keys()):

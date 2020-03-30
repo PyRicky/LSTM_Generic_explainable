@@ -3,9 +3,10 @@ import pandas as pd
 from math import sqrt
 import math, random
 from itertools import cycle
+from sklearn.metrics import f1_score
 from scipy import interp
 from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, average_precision_score
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name):
     # calculate and reshape predictions
@@ -51,9 +52,8 @@ def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layer
     df.to_csv("results/results_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
 
 
-def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level):
+def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level, target_column_name, df):
     with open("results/scores_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".txt", "w") as file:
-        # TODO: scrivi l'F1 per le 3 classi che ti interessano
         if pred_column == 'remaining_time':
             file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
             print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1] / ((24.0 * 3600) ** 2)), scores[2] / (24.0 * 3600), scores[3]))
@@ -61,15 +61,19 @@ def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, col
             file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
             print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
         elif event_level == 0:
+            for column in target_column_name:
+                print("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
+                file.write("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
             file.write("\nAccuracy: %.4f Categorical Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
             print("Accuracy: %.4f Categorical Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
         else:
+            for column in target_column_name:
+                print("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
+                file.write("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
             file.write("\nAccuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
             print("Accuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
 
-
 def plot_auroc_curve(df, predictions_names, target_column_names, row_process_name):
-    # TODO: disegna auroc e prc solo per gli attributi che scegli
     false_positive_rates = dict()
     true_positive_rates = dict()
     roc_auc = dict()

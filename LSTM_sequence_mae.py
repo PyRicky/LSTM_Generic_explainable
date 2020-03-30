@@ -198,7 +198,7 @@ if model_name is None:
     df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name)
     write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layers)
     scores = model.evaluate(X_test, y_test, verbose=0)
-    write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level)
+    write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level, target_column_name, df)
 
     if column_type == "Categorical":
         predictions_names = target_column_name

@@ -9,13 +9,13 @@ This is the code associated to the paper:
 Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
 
 Command examples to run the code:
-1) Build you neural network
+1) Build you neural network (Off-line phase)
 
-python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --shap True
+python LSTM_sequence_mae.py --mandatory data/bac.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --shap True
 
-python LSTM_sequence_mae.py --mandatory data/bac_1_9_1_anonimyzed_less_rows.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --shap True --shap_attributes "ACTIVITY 11,ACTIVITY 3,ACTIVITY 7"
+python LSTM_sequence_mae.py --mandatory data/bac.csv 0 2 "%Y-%m-%d %H:%M:%S" ACTIVITY --end_date_position 3 --shap True --shap_attributes "Back-Office Adjustment Requested,Authorization Requested,Pending Request for acquittance of heirs"
 
-2) Test the trained neural network on running cases
+2) Test the trained neural network on running cases (On-line phase)
 
 python LSTM_sequence_mae.py --mandatory data/bac_running.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time --end_date_position 3 --model model/model_bac_remaining_time_100_8.json
 
@@ -24,7 +24,7 @@ python LSTM_sequence_mae.py --mandatory data/bac_running.csv 0 2 "%Y-%m-%d %H:%M
 where there are 5 mandatory parameters: csv, case_id_position, start_date_position, timestamp, column_to_be_predicted (remaining_time or ACTIVITY as an example)
 
 and up to 4 optional parameters: 
---shap (default False) --> if you want to calculate also the shapley values for explainability (train phase)
+--shap (default False) --> if you want to calculate also the shapley values for explainability (Off-line phase)
 
 --shap_attributes (default False) --> for categorical attribute decide the histograms you want to show
 
@@ -55,6 +55,7 @@ matplotlib
 ## Contributors
 
 Riccardo Galanti
+
 Bernat Coma Puig
 
 ## License
