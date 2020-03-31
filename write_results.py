@@ -12,11 +12,11 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
     # calculate and reshape predictions
     predictions = model.predict(X_test)
     predictions = np.squeeze(predictions)
-    # TODO devi testare che nel csv dei results non ci sia test ma remaining time
     # qui deve appendere o una serie o un dataframe
     if np.issubdtype(type(predictions[0]), np.number):
         predictions = pd.Series(predictions)
         predictions.rename(pred_column, inplace=True)
+        y_test.rename('TEST', inplace=True)
     else:
         predictions = pd.DataFrame(predictions)
         predictions.columns = target_column_name
@@ -47,8 +47,6 @@ def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layer
         events_from_end = events_from_start[::-1]
         df.loc[df[df.columns[0]] == key, 'Events from start'] = events_from_start
         df.loc[df[df.columns[0]] == key, 'Events from end'] = events_from_end
-    if isinstance(y_test, pd.Series):
-        df.rename(columns={df.columns[2]: 'TEST'}, inplace=True)
     df.to_csv("results/results_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
 
 

@@ -218,7 +218,7 @@ if model_name is None:
             for attribute in attributes_to_plot:
                 indexes_to_plot.append(target_column_name.index(attribute))
         compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
-                             feature_columns, indexes_to_plot, attributes_to_plot)
+                             feature_columns, indexes_to_plot, attributes_to_plot, pred_column)
         #shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
         #explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
@@ -249,7 +249,6 @@ elif model_name is not None:
     shapley_test = compute_shap_values_for_running_cases(row_process_name, X_test, model)
     df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attribute, prediction_index)
     print("Generated predictions for running cases along with explanations")
-    # TODO: qui genera i results solo per una feature se è categorico, dove lo fai?
     if pred_attribute is not None:
         df.to_csv("results/results_running_" + row_process_name + "_" + pred_attribute + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
     else:

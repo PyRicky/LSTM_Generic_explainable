@@ -35,9 +35,12 @@ and up to 4 optional parameters:
 --pred_attribute --> when you predict a categorical attribute for real running cases (example if a certain activity will be performed or not)
 
 
-NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
+**IMPORTANT NOTE**: Please find attached in the repository backgrounds and already trained models for Remaining time and Activity prediction, so you can quickly experiment the tool and
+                    obtain predictions and explanations for real running cases (on line phase). Then if you want to replicate the experiments (offline phase) you should delete the
+				    models and the background (off-line phase). You can just retrain the models or also obtain explanations (setting --shap True), but remember that the shapley values
+				    need some time (at least one day or more). Shapley values haven't been uploaded since they are very heavy.
+				    NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
 
-NOTE: The calculation of the shapley values in the train phase could be very slow even on GPUs, so we suggest to train only the model and then obtain explanations only for running cases
 
 ## Installation
 The code requires python 3.6+ and the following libraries:
