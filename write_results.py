@@ -16,7 +16,8 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
     if np.issubdtype(type(predictions[0]), np.number):
         predictions = pd.Series(predictions)
         predictions.rename(pred_column, inplace=True)
-        y_test.rename('TEST', inplace=True)
+        if model_name is None:
+            y_test.rename('TEST', inplace=True)
     else:
         predictions = pd.DataFrame(predictions)
         predictions.columns = target_column_name

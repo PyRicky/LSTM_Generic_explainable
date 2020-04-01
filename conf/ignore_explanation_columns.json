@@ -1,1 +1,1 @@
-{"columns":["weekday+1", "WORKING_STATE"]}
+{"columns":["weekday+1", "time_from_midnight", "WORKING_STATE"]}
