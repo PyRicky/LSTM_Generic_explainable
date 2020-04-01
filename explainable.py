@@ -61,22 +61,20 @@ def add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_
     return explanation_histogram
 
 
-def calculate_histogram_for_shap_chunk(X_test, shapley_index_chunk, index, feature_columns, explanation_histograms):
+def calculate_histogram_for_shap_chunk(X_test, shapley_chunk, index_name, index, feature_columns, explanation_histograms):
     # if we haven't still created an histogram with that index name create it, otherwise update it from where you left
-    if index not in explanation_histograms:
+    if index_name not in explanation_histograms:
         explanation_histogram = {}
     else:
-        explanation_histogram = explanation_histograms[index]
-    for i in range(shapley_index_chunk.shape[0]):
-        # TODO test needed
-        x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_index_chunk, i)
+        explanation_histogram = explanation_histograms[index_name]
+    for i in range(shapley_chunk[index].shape[0]):
+        x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_chunk, i, index)
 
         for value in explanation_values:
-            # TODO test needed
             explanation_histogram = add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_columns,
                                                                  value, i, explanation_histogram)
-    # you have updated the histogram, put it back where it was
-    explanation_histograms[index] = explanation_histogram
+    # you have updated the histogram with the correspondent index name, put it back where it was
+    explanation_histograms[index_name] = explanation_histogram
     return explanation_histograms
 
 def find_instance_explanation_values(X_test, shapley_test, i, prediction_index=0, more_explanation_values=False):
@@ -130,25 +128,23 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
         for i in range(25):
             if not os.path.isfile("shap/" + row_process_name + "_background.npy"):
                 if i != 24:
-                    shapley_test = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
+                    shapley_chunk = explainer.shap_values(X_test[partition * i:partition * (i + 1)])
                 else:
-                    shapley_test = explainer.shap_values(X_test[partition * i:])
-                np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", shapley_test)
+                    shapley_chunk = explainer.shap_values(X_test[partition * i:])
+                np.save("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", shapley_chunk)
             else:
-                shapley_test = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
+                shapley_chunk = np.load("shap/" + row_process_name + "_shap_values_test_" + str(i) + ".npy", allow_pickle=True)
 
             # extract only the shapley values for the attributes that you want to plot
             for j, index in enumerate(indexes_to_plot):
-                # TODO: test this line with few instances
-                shapley_index_chunk = shapley_test[index, :, :, :]
                 index_name = activities_to_plot[j]
                 if i != 24:
                     explanation_histograms = calculate_histogram_for_shap_chunk(X_test[partition * i:partition * (i + 1)],
-                                                                                shapley_index_chunk, index_name,
+                                                                                shapley_chunk, index_name, index,
                                                                                 feature_columns, explanation_histograms)
                 else:
                     explanation_histograms = calculate_histogram_for_shap_chunk(X_test[partition * i:],
-                                                                                shapley_index_chunk, index_name,
+                                                                                shapley_chunk, index_name, index,
                                                                                 feature_columns, explanation_histograms)
         if not os.path.isfile("shap/" + row_process_name + "_background.npy"):
             np.save("shap/" + row_process_name + "_background", background)
@@ -157,7 +153,6 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
             explanation_histogram = explanation_histograms[index_name]
             explanation_histogram = {k: v for k, v in sorted(explanation_histogram.items(), key=lambda item: abs(item[1]),
                                             reverse=True)}
-            # TODO: test if the name is correct and report it on the shap files
             row_process_name = row_process_name + '_' + index_name
             essential_histogram = {}
             for i, key in enumerate(explanation_histogram.keys()):

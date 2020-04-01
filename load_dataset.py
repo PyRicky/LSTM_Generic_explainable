@@ -325,10 +325,6 @@ def generate_train_and_test_sets(df, test_case_ids, target_column_name, event_le
     third_quartile = median(np.unique(df[df.iloc[:, 0] > second_quartile].iloc[:, 0]))
     dfTrain = df[df.iloc[:, 0] < ((second_quartile + third_quartile) / 2)]
     dfTest = df[df.iloc[:, 0] >= ((second_quartile + third_quartile) / 2)]
-    # dfTrain.to_csv("data/" + row_process_name + "_train.csv", sep=',', index=False)
-    # dfTest.to_csv("data/" + row_process_name + "_test.csv", sep=',', index=False)
-    # import sys
-    # sys.exit()
     if column_type == 'Categorical':
         class_weights = create_class_weights(dfTrain, target_column_name)
     else:

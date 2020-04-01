@@ -59,12 +59,15 @@ def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, col
             file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
             print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
         elif event_level == 0:
+            df.loc[:, target_column_name] = df.loc[:, target_column_name].round(0)
             for column in target_column_name:
                 print("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
                 file.write("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
             file.write("\nAccuracy: %.4f Categorical Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
             print("Accuracy: %.4f Categorical Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
         else:
+            # round results to 1 or 0 in order to use the F1 score
+            df.loc[:, target_column_name] = df.loc[:, target_column_name].round(0)
             for column in target_column_name:
                 print("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))
                 file.write("F1_score for {}: {:0.3f}\n".format(column, f1_score(df['TEST_' + column], df[column])))

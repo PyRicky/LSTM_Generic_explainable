@@ -36,9 +36,9 @@ and up to 4 optional parameters:
 
 
 **IMPORTANT NOTE**: Please find attached in the repository backgrounds and already trained models for Remaining time and Activity prediction, so you can quickly experiment the tool and
-                    obtain predictions and explanations for real running cases (on line phase). Then if you want to replicate the experiments (offline phase) you should delete the
-				    models and the background (off-line phase). You can just retrain the models or also obtain explanations (setting --shap True), but remember that the shapley values
-				    need some time (at least one day or more). Shapley values haven't been uploaded since they are very heavy.
+                    obtain predictions and explanations for real running cases (on line phase). Then if you want to replicate the experiments (Off-line phase) you can just retrain the 
+					models or also recalculate explanations (setting --shap True and deleting the background), but remember that the shapley values need some time (at least one day or more).
+					Shapley values haven't been uploaded since they are very heavy.
 				    NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
 
 

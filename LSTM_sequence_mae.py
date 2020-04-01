@@ -160,7 +160,7 @@ args = parser.parse_args()
 mandatory = args.mandatory
 shap_calculation = args.shap
 shap_attributes = args.shap_attributes
-if shap_attributes is True:
+if shap_attributes is not False:
     shap_attributes = shap_attributes.split(',')
 end_date_position = int(args.end_date_position)
 model_name = args.model
@@ -174,7 +174,6 @@ pred_column = mandatory[4]  # remaining_time if you want to predict that
 
 # fix random seed for reproducibility
 np.random.seed(7)
-
 row_process_name, file_trained = clean_name(filename, pred_column, n_neurons, n_layers, model_name)
 
 # limit the quantity of memory you wanna use in your gpu
@@ -216,11 +215,9 @@ if model_name is None:
                 sys.exit("you must define which categorical attributes you want to plot for explainability!")
             attributes_to_plot = shap_attributes
             for attribute in attributes_to_plot:
-                indexes_to_plot.append(target_column_name.index(attribute))
+                indexes_to_plot.append(target_column_name.index('TEST_'+attribute))
         compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
                              feature_columns, indexes_to_plot, attributes_to_plot, pred_column)
-        #shapley_test = compute_shap_values(row_process_name, X_train, X_test, model, column_type)
-        #explanation_histogram = calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns, row_process_name)
 
 #model already trained (here is the case when you have the true test - no response variable)
 elif model_name is not None:
