@@ -100,7 +100,7 @@ def find_instance_explanation_values(X_test, shapley_test, i, prediction_index=0
     return x_test_instance, shap_values_instance, explanation_values
 
 
-def compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
+def compute_shap_values(df, row_process_name, X_train, X_test, model, column_type,
                          feature_columns, indexes_to_plot, activities_to_plot, pred_column):
     if column_type == 'Numeric':
         # first run you compute the values and then save them
@@ -111,11 +111,11 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
             shapley_test = explainer.shap_values(X_test)
             np.save("shap/" + row_process_name + "_shap_values_test.npy", shapley_test)
             np.save("shap/" + row_process_name + "_background", background)
-            calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test,
+            calculate_histogram_for_shap_values(df, column_type, X_test, shapley_test,
                                                 feature_columns, row_process_name, pred_column)
         else:
             shapley_test = np.load("shap/" + row_process_name + "_shap_values_test.npy", allow_pickle=True)
-            calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test,
+            calculate_histogram_for_shap_values(df, column_type, X_test, shapley_test,
                                                 feature_columns, row_process_name, pred_column)
     else:
         # column of type categorical (multioutput) need data to be splitted (huge amount of memory)
@@ -163,14 +163,14 @@ def compute_shap_values(df, target_column_name, row_process_name, X_train, X_tes
             plot_histogram(essential_histogram, row_process_name)
 
 
-def calculate_histogram_for_shap_values(df, target_column_name, column_type, X_test, shapley_test, feature_columns,
+def calculate_histogram_for_shap_values(df, column_type, X_test, shapley_test, feature_columns,
                                         row_process_name, pred_column):
     explanation_histogram = {}
     # if column numeric if the predictions goes too far from the avg real data discard the prediction from the shap graph
     if column_type == 'Numeric':
-        true_mean = df[target_column_name].mean()
-        prediction_out_of_range_high = df.loc[df[pred_column] > (df[target_column_name] + true_mean), :].index
-        prediction_out_of_range_low = df.loc[df[pred_column] < (df['remaining_time'] - true_mean), :].index
+        true_mean = df['TEST'].mean()
+        prediction_out_of_range_high = df.loc[df[pred_column] > (df['TEST'] + true_mean), :].index
+        prediction_out_of_range_low = df.loc[df[pred_column] < (df['TEST'] - true_mean), :].index
     for i in range(len(shapley_test[0])):
         # if the prediction is wrong don't consider the explanation
         if column_type == 'Numeric':

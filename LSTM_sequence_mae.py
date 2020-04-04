@@ -216,7 +216,7 @@ if model_name is None:
             attributes_to_plot = shap_attributes
             for attribute in attributes_to_plot:
                 indexes_to_plot.append(target_column_name.index('TEST_'+attribute))
-        compute_shap_values(df, target_column_name, row_process_name, X_train, X_test, model, column_type,
+        compute_shap_values(df, row_process_name, X_train, X_test, model, column_type,
                              feature_columns, indexes_to_plot, attributes_to_plot, pred_column)
 
 #model already trained (here is the case when you have the true test - no response variable)
