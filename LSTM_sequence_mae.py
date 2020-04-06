@@ -162,7 +162,9 @@ shap_calculation = args.shap
 shap_attributes = args.shap_attributes
 if shap_attributes is not False:
     shap_attributes = shap_attributes.split(',')
-end_date_position = int(args.end_date_position)
+end_date_position = args.end_date_position
+if end_date_position is not None:
+    end_date_position = int(end_date_position)
 model_name = args.model
 pred_attribute = args.pred_attribute
 
