@@ -10,9 +10,11 @@ __pycache__/
 .Python
 env/
 build/
+data/
 develop-eggs/
 dist/
 downloads/
+data/estinzione_cc_business.csv
 eggs/
 .eggs/
 lib/

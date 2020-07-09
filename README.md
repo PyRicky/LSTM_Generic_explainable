@@ -59,8 +59,6 @@ matplotlib
 
 Riccardo Galanti
 
-Bernat Coma Puig
-
 ## License
 
 If you use this code for research, please cite our paper.

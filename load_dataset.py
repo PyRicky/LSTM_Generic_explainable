@@ -20,7 +20,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from statistics import median
-import json
+import os, json, random
 
 
 def calculateTimeFromMidnight(actual_datetime):
@@ -35,11 +35,11 @@ def createActivityFeatures(line, starttime, lastevtime, caseID, current_activity
     for feature in line[2:]:
         activity.append(feature)
 
-    #add features: time from trace start, time from last_startdate_event, time from midnight, weekday+1
+    #add features: time from trace start, time from last_startdate_event, time from midnight, weekday
     activity.append((activityTimestamp - starttime).total_seconds())
     activity.append((activityTimestamp - lastevtime).total_seconds())
     activity.append(calculateTimeFromMidnight(activityTimestamp))
-    activity.append(activityTimestamp.weekday() + 1)
+    activity.append(activityTimestamp.weekday())
     # if there is also end_date add features time from last_enddate_event and event_duration
     if current_activity_end_date is not None:
         activity.append((current_activity_end_date - activityTimestamp).total_seconds())
@@ -67,8 +67,8 @@ def one_hot_encoding(df):
         # if column don't numbers encode
         if not np.issubdtype(df[column], np.number):
             # Possibile modifica: encodare le colonne di tipo data, o facciamo la diff da 1970 in secondi e poi normalizziamo
-            # Get one hot encoding (convert to str eventual 0 to avoid strange duplicate columns)
-            one_hot = pd.get_dummies(df[column].apply(str), prefix=column, prefix_sep='=')
+            # One hot encoding - eventual categorical nans will be ignored
+            one_hot = pd.get_dummies(df[column], prefix=column, prefix_sep='=')
             print("Encoded column:{} - Different keys: {}".format(column, one_hot.shape[1]))
             # Drop column as it is now encoded
             df = df.drop(column, axis=1)
@@ -77,14 +77,14 @@ def one_hot_encoding(df):
     print("Categorical columns encoded")
     return df
 
-def convert_strings_to_datetime(df, date_column_format, end_date_position):
+def convert_strings_to_datetime(df, date_format):
     # convert string columns that contain datetime to datetime
     for column in df.columns:
         try:
             #if a number do nothing
             if np.issubdtype(df[column], np.number):
                 continue
-            df[column] = pd.to_datetime(df[column], format=date_column_format)
+            df[column] = pd.to_datetime(df[column], format=date_format)
         # exception means it is really a string
         except (ValueError, TypeError, OverflowError):
             pass
@@ -180,15 +180,15 @@ def add_features(df, end_date_position):
     columns = columns.to_list()
     if end_date_position is not None:
         columns.extend(["time_from_start", "time_from_previous_event(start)", "time_from_midnight",
-                        "weekday+1", "event_duration", "remaining_time"])
+                        "weekday", "event_duration", "remaining_time"])
     else:
         columns.extend(["time_from_start", "time_from_previous_event(start)", "time_from_midnight",
-                        "weekday+1", "remaining_time"])
+                        "weekday", "remaining_time"])
     df = pd.DataFrame(traces, columns=columns)
     print("Features added")
     return df
 
-def generate_sequences_for_lstm(dataset, model):
+def generate_sequences_for_lstm(dataset, mode):
     """
     Input: dataset
     Output: sequences of partial traces and remaining times to feed LSTM
@@ -205,7 +205,7 @@ def generate_sequences_for_lstm(dataset, model):
             trace.append(line[1:].tolist())
         else:
             caseID = case
-            if model is None:
+            if mode == "train":
                 for j in range(1, len(trace) + 1):
                     data.append(trace[:j])
             else:
@@ -213,16 +213,16 @@ def generate_sequences_for_lstm(dataset, model):
             trace = []
             trace.append(line[1:].tolist())
     # last case
-    if model is None:
+    if mode == "train":
         for i in range(1, len(trace) + 1):
             data.append(trace[:i])
     else:
         data.append(trace[:len(trace)])
     return data
 
-def pad_columns_in_real_data(df, case_ids, row_process_name):
+def pad_columns_in_real_data(df, case_ids, experiment_name):
     #fill real test df with empty missing columns (one-hot encoding can generate much more columns in train)
-    train_columns = json.load(open("model/" + row_process_name + "_column_names.json"))['columns']
+    train_columns = json.load(open(experiment_name + "/model/data_info.json"))['columns']
     # if some columns never seen in train set, now we just drop them
     # we should retrain the model with also this new columns (that will be 0 in the original train)
     columns_not_in_test = [x for x in train_columns if x not in df.columns]
@@ -240,24 +240,34 @@ def sort_df(df):
     df.sort_values([df.columns[0], df.columns[1]], axis=0, ascending=True, inplace=True, kind='quicksort', na_position='last')
     return df
 
-def clean_df(df, case_id_position):
-    #clean rows where case id = null
-    df = df.drop(df[df[df.columns[case_id_position]].isnull()].index).reset_index(drop=True)
+def fillna(df, date_format):
+    for i, column in enumerate(df.columns):
+        if df[column].dtype != 'object':
+            df[column] = df[column].fillna(0)
+        else:
+            try:
+                #datetime columns have null encoded as 0
+                pd.to_datetime(df[column], format=date_format)
+                df[column] = df[column].fillna(0)
+            # exception means it is a string
+            except (ValueError, TypeError, OverflowError):
+                pass
+                #categorical missing values have no sense encoded as 0
+                #df[column] = df[column].fillna("Not present")
     return df
 
-
-def prepare_data_and_add_features(df, case_id_position, start_date_position, date_column_format, end_date_position):
-    df = clean_df(df, case_id_position)
-    df = df.fillna(0)
+def prepare_data_and_add_features(df, case_id_position, start_date_position, date_format, end_date_position):
+    df = fillna(df, date_format)
     if end_date_position is not None:
         df = fill_missing_end_dates(df, start_date_position, end_date_position)
-    df = convert_strings_to_datetime(df, date_column_format, end_date_position)
+    df = convert_strings_to_datetime(df, date_format)
     df = move_essential_columns(df, case_id_position, start_date_position)
     df = sort_df(df)
     df = add_features(df, end_date_position)
+    df["weekday"].replace({0: "Monday", 1: "Tuesday", 2: "Wednesday", 3: "Thursday", 4: "Friday", 5: "Saturday", 6: "Sunday"}, inplace=True)
     return df
 
-def normalize_data(df, target_column, target_column_name, model):
+def normalize_data(df):
     # normalize data (except for case id column and test column)
     case_column = df.iloc[:, 0].reset_index(drop=True)
     case_column_name = df.columns[0]
@@ -267,14 +277,6 @@ def normalize_data(df, target_column, target_column_name, model):
     df = pd.DataFrame(scaled, columns=columns)
     # reinsert case id column and target column
     df.insert(0, case_column_name, case_column)
-    # if train phase and only one test column (numeric) reattach test column
-    if model is None:
-        #if it is a string the target column is one (otherwise it would cycle on the letters of the column)
-        if not type(target_column_name) == np.str:
-            for i, name in enumerate(target_column_name):
-                df[name] = target_column[target_column_name[i]]
-        else:
-            df[target_column_name] = target_column
     print("Normalized Data")
     return df
 
@@ -293,21 +295,70 @@ def detect_case_level_attribute(df, pred_column):
             break
     return event_level
 
+def save_case_event_column_type(X_train, df, info, target_column_name):
+    #function to understand if a particular column is of type case/event (needed for explanations later - if case no timestep info)
+    if not type(target_column_name) == np.str:
+        feature_columns = df.iloc[:, 1:-len(list(target_column_name))]
+    else:
+        feature_columns = df.iloc[:, 1:-1]
+    column_types = {}
+    for column in feature_columns:
+        event_level = 0
+        case_ids = df[df.columns[0]].unique()
+        case_ids = case_ids[:int((len(case_ids) / 100))]
+        for case in case_ids:
+            df_reduced = df[df[df.columns[0]] == case]
+            if len(df_reduced[column].unique()) == 1:
+                continue
+            else:
+                event_level = 1
+                break
+        if event_level == 0:
+            column_types[column] = "case"
+        else:
+            column_types[column] = "event"
+    ohe_types = {}
+    for column in X_train.columns[1:]:
+        for key in column_types:
+            if key in column:
+                ohe_types[column] = column_types[key]
+        pass
+    info['columns_info'] = ohe_types
+    return info
 
-def save_column_information_for_real_predictions(dfTrain, row_process_name, event_level, target_column_name):
-    # save columns names (except for case id column and test columns) and event/case level test attribute in a file
-    # (you need that for the shape when you have to predict real data)
-    with open("model/" + row_process_name + "_column_names.json", "w") as json_file:
+
+def save_column_information_for_real_predictions(X_train, dfTrain, experiment_name, event_level, target_column_name):
+    # save columns names (except for case id column and test columns) and event/case information the attributes in a file
+    # you need this for the shape when you have to predict real data and for the explanations
+    # save also case indexes you have randomly taken (in case you want just to reload the model and work on the explanation part)
+    info = {}
+    with open(experiment_name + "/model/data_info.json", "w") as json_file:
+        info["case_indexes"] = X_train[X_train.columns[0]].unique().tolist()
         if event_level == 0:
             if not type(target_column_name) == np.str:
-                json.dump({'columns': dfTrain.iloc[:, 1:-len(list(target_column_name))].columns.to_list(), 'test': 'case', 'y_columns': list(target_column_name)}, json_file)
+                info['columns'] = X_train.iloc[:, 1:].columns.to_list()
+                info['test'] = 'case'
+                info['y_columns'] = list(target_column_name)
+                #json.dump({'columns': dfTrain.iloc[:, 1:-len(list(target_column_name))].columns.to_list(), 'test': 'case', 'y_columns': list(target_column_name)}, json_file)
             else:
-                json.dump({'columns': dfTrain.iloc[:, 1:-1].columns.to_list(), 'test': 'case', 'y_columns': [target_column_name]}, json_file)
+                info['columns'] = X_train.iloc[:, 1:].columns.to_list()
+                info['test'] = 'case'
+                info['y_columns'] = [target_column_name]
+                #json.dump({'columns': dfTrain.iloc[:, 1:-1].columns.to_list(), 'test': 'case', 'y_columns': [target_column_name]}, json_file)
         else:
             if not type(target_column_name) == np.str:
-                json.dump({'columns': dfTrain.iloc[:, 1:-len(list(target_column_name))].columns.to_list(), 'test': 'event', 'y_columns': list(target_column_name)}, json_file)
+                info['columns'] = X_train.iloc[:, 1:].columns.to_list()
+                info['test'] = 'event'
+                info['y_columns'] = list(target_column_name)
+                #json.dump({'columns': dfTrain.iloc[:, 1:-len(list(target_column_name))].columns.to_list(), 'test': 'event', 'y_columns': list(target_column_name)}, json_file)
             else:
-                json.dump({'columns': dfTrain.iloc[:, 1:-1].columns.to_list(), 'test': 'event', 'y_columns': [target_column_name]}, json_file)
+                info['columns'] = X_train.iloc[:, 1:].columns.to_list()
+                info['test'] = 'event'
+                info['y_columns'] = [target_column_name]
+                #json.dump({'columns': dfTrain.iloc[:, 1:-1].columns.to_list(), 'test': 'event', 'y_columns': [target_column_name]}, json_file)
+        info = save_case_event_column_type(X_train, dfTrain, info, target_column_name)
+        json.dump(info, json_file)
+
 
 def create_class_weights(dfTrain, target_column_name):
     #for every class calculate number of instances
@@ -320,35 +371,86 @@ def create_class_weights(dfTrain, target_column_name):
             class_weights[i] = 1
     return class_weights
 
-def generate_train_and_test_sets(df, test_case_ids, target_column_name, event_level, column_type, row_process_name, running):
+def generate_train_and_test_sets(df, target_column, target_column_name, event_level, column_type, experiment_name, mode, override):
+    #reattach predict column before splitting
+    # if it is a string the target column is one (otherwise it would cycle on the letters of the column)
+    if not type(target_column_name) == np.str:
+        for i, name in enumerate(target_column_name):
+            df[name] = target_column[target_column_name[i]]
+    else:
+        df[target_column_name] = target_column
+
+    # around 2/3 cases are the training set, 1/3 is the test set
+    # use median since you have no more cases with only one event (distribution changed)
     second_quartile = median(np.unique(df.iloc[:, 0]))
     third_quartile = median(np.unique(df[df.iloc[:, 0] > second_quartile].iloc[:, 0]))
-    dfTrain = df[df.iloc[:, 0] < ((second_quartile + third_quartile) / 2)]
-    dfTest = df[df.iloc[:, 0] >= ((second_quartile + third_quartile) / 2)]
+
+    #if trained model exists just pick the previously chosen case indexes
+    if os.path.exists(experiment_name + "/model/model_100_8.json") and override is False:
+        case_indexes = json.load(open(experiment_name + "/model/data_info.json"))["case_indexes"]
+        print("Reloaded train cases")
+        dfTrain = df[df[df.columns[0]].isin(case_indexes)]
+        dfTest = df[~df[df.columns[0]].isin(case_indexes)]
+    else:
+        #take cases for training in random order
+        cases = df[df.columns[0]].unique()
+        number_train_cases = len(df[df.iloc[:, 0] < ((second_quartile + third_quartile) / 2)][df.columns[0]].unique())
+        train_cases = random.sample(cases.tolist(), number_train_cases)
+        dfTrain = df[df[df.columns[0]].isin(train_cases)]
+        dfTest = df[~df[df.columns[0]].isin(train_cases)]
+
+    # dfTrain = df[df.iloc[:, 0] < ((second_quartile + third_quartile) / 2)]
+    # dfTest = df[df.iloc[:, 0] >= ((second_quartile + third_quartile) / 2)]
+
     if column_type == 'Categorical':
         class_weights = create_class_weights(dfTrain, target_column_name)
     else:
         class_weights = None
+
     # separate target variable (if a string there is only one y_column)
     if not type(target_column_name) == np.str:
         y_train = dfTrain.iloc[:, -len(list(target_column_name)):]
         y_test = dfTest.iloc[:, -len(list(target_column_name)):]
+        X_train = dfTrain.iloc[:, :-len(list(target_column_name))]
+        X_test = dfTest.iloc[:, :-len(list(target_column_name))]
     else:
         y_train = dfTrain.iloc[:, -1]
         y_test = dfTest.iloc[:, -1]
+        X_train = dfTrain.iloc[:, :-1]
+        X_test = dfTest.iloc[:, :-1]
     # retrieve test case id to later show predictions
-    test_case_ids = test_case_ids[dfTrain.shape[0]:]
-    save_column_information_for_real_predictions(dfTrain, row_process_name, event_level, target_column_name)
+    test_case_ids = dfTest.iloc[:, 0]
+
+    X_train = one_hot_encoding(X_train)
+    X_train = normalize_data(X_train)
+    X_test = one_hot_encoding(X_test)
+    X_test = normalize_data(X_test)
+
+    #test columns should be the same as train
+    columns_not_in_test = [x for x in X_train.columns if x not in X_test.columns]
+    df2 = pd.DataFrame(columns=columns_not_in_test)
+    # enrich test df with missing columns seen in train
+    X_test = pd.concat([X_test, df2], axis=1)
+    X_test = X_test.fillna(0)
+    # reorder data as in train
+    X_test = X_test[X_train.columns]
+
+    if not os.path.exists(experiment_name + "/model/model_100_8.json") or override is True:
+        save_column_information_for_real_predictions(X_train, dfTrain, experiment_name, event_level, target_column_name)
 
     # create sequences (only for lstm)
     if not type(target_column_name) == np.str:
-        feature_columns = dfTrain.columns[1:-len(list(target_column_name))]
-        X_train = generate_sequences_for_lstm(dfTrain.iloc[:, :-len(list(target_column_name))].values, running)
-        X_test = generate_sequences_for_lstm(dfTest.iloc[:, :-len(list(target_column_name))].values, running)
+        feature_columns = X_train.columns[1:]
+        X_train = generate_sequences_for_lstm(X_train.values, mode)
+        X_test = generate_sequences_for_lstm(X_test.values, mode)
+        # X_train = generate_sequences_for_lstm(dfTrain.iloc[:, :-len(list(target_column_name))].values, mode)
+        # X_test = generate_sequences_for_lstm(dfTest.iloc[:, :-len(list(target_column_name))].values, mode)
     else:
-        feature_columns = dfTrain.columns[1:-1]
-        X_train = generate_sequences_for_lstm(dfTrain.iloc[:, :-1].values, running)
-        X_test = generate_sequences_for_lstm(dfTest.iloc[:, :-1].values, running)
+        feature_columns = X_train.columns[1:]
+        X_train = generate_sequences_for_lstm(X_train.values, mode)
+        X_test = generate_sequences_for_lstm(X_test.values, mode)
+        # X_train = generate_sequences_for_lstm(dfTrain.iloc[:, :-1].values, mode)
+        # X_test = generate_sequences_for_lstm(dfTest.iloc[:, :-1].values, mode)
     # at every sequence must correspond a value (or array of values) to be predicted
     assert (len(y_train) == len(X_train))
     assert (len(y_test) == len(X_test))
@@ -378,14 +480,12 @@ def label_target_columns(df, case_ids, pred_column):
     return df
 
 
-def load_dataset(filename, row_process_name, case_id_position, start_date_position, date_column_format,
-                 end_date_position, pred_column, model):
-    df = pd.read_csv(filename, header=0)
-    df = prepare_data_and_add_features(df, case_id_position, start_date_position, date_column_format, end_date_position)
-
+def prepare_dataset(df, experiment_name, case_id_position, start_date_position, date_format, end_date_position,
+                    pred_column, mode, override=False, pred_attributes=None):
+    df = prepare_data_and_add_features(df, case_id_position, start_date_position, date_format, end_date_position)
     df = convert_datetime_columns_to_seconds(df)
     # if target column != remaining time exclude target column
-    if pred_column != 'remaining_time' and model is None:
+    if pred_column != 'remaining_time' and mode == "train":
         event_level = detect_case_level_attribute(df, pred_column)
         if event_level == 0:
             # case level - test column as is
@@ -400,18 +500,17 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
             else:
                 # case level string (you want to discover if a client recess will be performed)
                 column_type = 'Categorical'
-                pred_values = df[pred_column].unique()
                 # add one more test column for every value to be predicted
-                for value in pred_values:
+                for value in pred_attributes:
                     df[value] = 0
                 # assign 1 to the column corresponding to that value
-                for value in pred_values:
+                for value in pred_attributes:
                     df.loc[df[pred_column] == value, value] = 1
                 #eliminate old test column and take columns that are one-hot encoded test
                 del df[pred_column]
-                target_column = df[pred_values]
-                target_column_name = pred_values
-                df.drop(pred_values, axis=1, inplace=True)
+                target_column = df[pred_attributes]
+                target_column_name = pred_attributes
+                df.drop(pred_attributes, axis=1, inplace=True)
                 target_column = target_column.join(df['remaining_time'])
         else:
             # event level - in test column you have the last numeric value or vector for string
@@ -433,12 +532,13 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
                 # assign 1 to the columns that will be encountered during the case (ex: different activities)
                 case_ids = df[df.columns[0]].unique()
                 df = label_target_columns(df, case_ids, pred_column)
-                target_column = df[pred_values]
-                target_column_name = pred_values
+                # we take only the columns we are interested in
+                target_column = df[pred_attributes]
+                target_column_name = pred_attributes
                 df.drop(pred_values, axis=1, inplace=True)
                 target_column = target_column.join(df['remaining_time'])
 
-    elif pred_column == 'remaining_time' and model is None:
+    elif pred_column == 'remaining_time' and mode == "train":
         column_type = 'Numeric'
         event_level = 1
         df = df[df.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
@@ -447,8 +547,8 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
         del df[target_column_name]
     else:
         # case when you have true data to be predicted (running cases)
-        type_test = json.load(open("model/" + row_process_name + "_column_names.json"))['test']
-        target_column_name = json.load(open("model/" + row_process_name + "_column_names.json"))['y_columns']
+        type_test = json.load(open(experiment_name + "/model/data_info.json"))['test']
+        target_column_name = json.load(open(experiment_name + "/model/data_info.json"))['y_columns']
         #clean name (you have this when you save event-level column)
         cleaned_names = []
         for name in target_column_name:
@@ -462,18 +562,17 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
         del df['remaining_time']
 
     #eliminate rows where remaining time = 0 (nothing to predict) - only in train
-    if model is None and pred_column != 'remaining_time':
+    if mode == "train" and pred_column != 'remaining_time':
         df = df[df.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
         target_column = target_column[target_column.loc[:, 'remaining_time'] != 0].reset_index(drop=True)
         del df['remaining_time']
         del target_column['remaining_time']
 
-    # one-hot encoding(except for case id column and remaining time column)
-    df = one_hot_encoding(df)
-    df = normalize_data(df, target_column, target_column_name, model)
+    # one-hot encoding(except for case id column and remaining time column) - for train we need to do that separately for train and test
+    if mode == "predict":
+        df = one_hot_encoding(df)
+        df = normalize_data(df)
 
-    # around 2/3 cases are the training set, 1/3 is the test set
-    # use median since you have no more cases with only one event (distribution changed)
     #convert case id series to string and cut spaces if we have dirty data (both int and string)
     df.iloc[:, 0] = df.iloc[:, 0].apply(str)
     df.iloc[:, 0] = df.iloc[:, 0].apply(lambda x: x.strip())
@@ -483,12 +582,15 @@ def load_dataset(filename, row_process_name, case_id_position, start_date_positi
         df.iloc[:, 0] = pd.to_numeric(df.iloc[:, 0])
     except ValueError:
         df.iloc[:, 0] = pd.Series(df.iloc[:, 0]).astype('category').cat.codes.values
-    if model is None:
-        X_train, y_train, X_test, y_test, test_case_ids, class_weights, feature_columns = generate_train_and_test_sets(df, test_case_ids, target_column_name, event_level, column_type, row_process_name, model)
+    if mode == "train":
+        X_train, y_train, X_test, y_test, test_case_ids, class_weights, feature_columns = generate_train_and_test_sets(df, target_column, target_column_name,
+                                                                                                    event_level, column_type, experiment_name, mode, override)
         return X_train, y_train, X_test, y_test, test_case_ids, target_column_name, event_level, column_type, class_weights, feature_columns
     else:
-        df = pad_columns_in_real_data(df.iloc[:, 1:], df.iloc[:, 0], row_process_name)
+        df = pad_columns_in_real_data(df.iloc[:, 1:], df.iloc[:, 0], experiment_name)
         #here we have only the true running cases to predict
         feature_columns = df.columns[1:]
-        X_test = generate_sequences_for_lstm(df.values, model)
-        return X_test, test_case_ids, target_column_name, feature_columns
+        #for each running case understand how many events you have (with two events you can consider also the explanations from the previous timestep)
+        num_events = (df.groupby(df.columns[0]).count()["time_from_start"]).reset_index(drop=True)
+        X_test = generate_sequences_for_lstm(df.values, mode)
+        return X_test, test_case_ids, target_column_name, feature_columns, num_events

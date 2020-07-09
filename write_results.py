@@ -5,40 +5,46 @@ import math, random
 from itertools import cycle
 from sklearn.metrics import f1_score
 from scipy import interp
-from sklearn.metrics import roc_auc_score, roc_curve, auc, precision_recall_curve, average_precision_score
+from sklearn.metrics import roc_curve, auc, precision_recall_curve, average_precision_score
+from scipy import stats
 import matplotlib.pyplot as plt
 
-def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, model_name):
+def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, mode, column_type):
     # calculate and reshape predictions
     predictions = model.predict(X_test)
     predictions = np.squeeze(predictions)
     # qui deve appendere o una serie o un dataframe
-    if np.issubdtype(type(predictions[0]), np.number):
+    # if np.issubdtype(type(predictions[0]), np.number):
+    if column_type == "Numeric":
         predictions = pd.Series(predictions)
         predictions.rename(pred_column, inplace=True)
-        if model_name is None:
+        if mode == "train":
             y_test.rename('TEST', inplace=True)
     else:
         predictions = pd.DataFrame(predictions)
         predictions.columns = target_column_name
-        if model_name is None:
+        if mode == "train":
             target_column_name = ['TEST_' + x for x in target_column_name]
             y_test.columns = target_column_name
 
     # compute a df with predictions against the real values to be plotted later
-    if model_name is None:
+    if mode == "train":
         df = pd.concat([test_case_ids.reset_index(drop=True), predictions.reset_index(drop=True), y_test.reset_index(drop=True)], axis=1)
     else:
         #if you are in real running cases you have only one prediction per case
         df = pd.concat([pd.Series(test_case_ids.unique()), predictions.reset_index(drop=True)], axis=1)
     if pred_column == 'remaining_time':
-        # convert to days only if you predict remaining time
-        df.iloc[:, 1:] = df.iloc[:, 1:] / (24.0 * 3600)
+        # convert to days only if you predict remaining time and if you're not returning results to MyInvenio
+        if mode == "train":
+            df.iloc[:, 1:] = df.iloc[:, 1:] / (24.0 * 3600)
+        else:
+            #convert to milliseconds
+            df.iloc[:, 1:] = df.iloc[:, 1:] * 1000
     df.rename(columns={df.columns[0]: 'CASE ID'}, inplace=True)
     return df
 
 
-def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layers):
+def write_results_to_be_plotted(df, experiment_name, n_neurons, n_layers):
     df['Events from start'] = 0
     df['Events from end'] = 0
     unique_keys = np.unique(df[df.columns[0]])
@@ -48,17 +54,22 @@ def write_results_to_be_plotted(df, y_test, row_process_name, n_neurons, n_layer
         events_from_end = events_from_start[::-1]
         df.loc[df[df.columns[0]] == key, 'Events from start'] = events_from_start
         df.loc[df[df.columns[0]] == key, 'Events from end'] = events_from_end
-    df.to_csv("results/results_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
+    df.to_csv(experiment_name + "/results/results_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
 
 
-def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, column_type, event_level, target_column_name, df):
-    with open("results/scores_" + row_process_name + "_" + str(n_neurons) + "_" + str(n_layers) + ".txt", "w") as file:
-        if pred_column == 'remaining_time':
-            file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
-            print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1] / ((24.0 * 3600) ** 2)), scores[2] / (24.0 * 3600), scores[3]))
-        elif column_type == 'Numeric':
-            file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
-            print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
+def write_scores(scores, experiment_name, n_neurons, n_layers, pred_column, column_type, event_level, target_column_name, df):
+    with open(experiment_name + "/results/scores_" + str(n_neurons) + "_" + str(n_layers) + ".txt", "w") as file:
+        if column_type == "Numeric":
+            if pred_column == 'remaining_time':
+                file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]/((24.0*3600)**2)), scores[2]/(24.0*3600), scores[3]))
+                print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1] / ((24.0 * 3600) ** 2)), scores[2] / (24.0 * 3600), scores[3]))
+            else:
+                file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
+                print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
+            errors = df["TEST"] - df[pred_column]
+            mad = stats.median_absolute_deviation(errors)
+            file.write(f"\nConfidence intervals: {errors.median() - 2 * mad:.2f} / {errors.median() + 2 * mad:.2f}")
+            print(f"Confidence intervals: {errors.median() - 2 * mad:.2f} / {errors.median() + 2 * mad:.2f}")
         elif event_level == 0:
             df.loc[:, target_column_name] = df.loc[:, target_column_name].round(0)
             for column in target_column_name:
@@ -75,7 +86,7 @@ def write_scores(scores, row_process_name, n_neurons, n_layers, pred_column, col
             file.write("\nAccuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
             print("Accuracy: %.4f Binary Accuracy: %.4f F1: %.4f%%" % (scores[1], scores[2], scores[3]))
 
-def plot_auroc_curve(df, predictions_names, target_column_names, row_process_name):
+def plot_auroc_curve(df, predictions_names, target_column_names, experiment_name):
     false_positive_rates = dict()
     true_positive_rates = dict()
     roc_auc = dict()
@@ -129,10 +140,10 @@ def plot_auroc_curve(df, predictions_names, target_column_names, row_process_nam
     plt.ylabel('True Positive Rate')
     #plt.title('Some extension of Receiver operating characteristic to multi-class')
     plt.legend(loc=(1, -.10))
-    plt.savefig("plots/auroc_" + row_process_name + ".png", dpi=300, bbox_inches="tight")
+    plt.savefig(experiment_name + "/plots/auroc.png", dpi=300, bbox_inches="tight")
 
 
-def plot_precision_recall_curve(df, predictions_names, target_column_names, row_process_name):
+def plot_precision_recall_curve(df, predictions_names, target_column_names, experiment_name):
     precisions = dict()
     recalls = dict()
     average_precisions = dict()
@@ -176,4 +187,4 @@ def plot_precision_recall_curve(df, predictions_names, target_column_names, row_
     plt.ylabel('Precision')
     #plt.title('Extension of Precision-Recall curve to multi-class')
     plt.legend(lines, labels, loc=(1.02,+.01), prop=dict(size=14))
-    plt.savefig("plots/apr_curve_" + row_process_name + ".png", dpi=300, bbox_inches="tight")
+    plt.savefig(experiment_name + "/plots/apr_curve.png", dpi=300, bbox_inches="tight")
