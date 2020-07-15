@@ -1,0 +1,5 @@
+F1_score for Back-Office Adjustment Requested: 0.655
+F1_score for Authorization Requested: 0.987
+F1_score for Pending Request for acquittance of heirs: 0.902
+
+Accuracy: 0.9716 Binary Accuracy: 0.9716 F1: 0.8754%

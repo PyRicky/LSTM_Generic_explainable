@@ -1,0 +1,51 @@
+CASE ID,remaining_time,Explanations for increasing remaining_time,Explanations for decreasing remaining_time
+201810000114,4d 23h 55m,CE_UO=264,CLOSURE_TYPE!=Inheritance AND High value of case_cost AND weekday=Monday
+201810000206,5d 2h 12m,ROLE=DIRECTOR,CLOSURE_TYPE=Bank Recess
+201810000374,6d 17h 1m,,CLOSURE_TYPE!=Inheritance
+201810000473,7d 11m,,CLOSURE_TYPE!=Inheritance
+201810000599,7d 1h 36m,CE_UO=220,CLOSURE_TYPE!=Inheritance
+201810001900,7d 11h ,,CLOSURE_TYPE!=Inheritance
+201810003422,7d 3h 42m,,CLOSURE_TYPE!=Inheritance
+201810004787,1d 22h 38m,weekday=Friday,CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE!=Inheritance AND ACTIVITY=Service closure Request with BO responsibility AND ROLE=BACK-OFFICE
+201810004793,2d 19h 17m,weekday=Friday,CLOSURE_TYPE!=Inheritance AND ACTIVITY=Service closure Request with BO responsibility
+201810004931,1d 16h 10m,,ROLE=BACK-OFFICE AND CE_UO=BOC AND ROLE!=APPLICANT AND weekday=Monday
+201810004949,1d 16h 11m,,ROLE=BACK-OFFICE AND CE_UO=BOC AND CLOSURE_TYPE!=Inheritance AND weekday=Monday AND ROLE!=APPLICANT
+201810005363,1d 15h 31m,CLOSURE_REASON=7 - Keep other relationships. Same dip,ROLE=BACK-OFFICE AND CE_UO=BOC AND ACTIVITY=Pending Liquidation Request
+201810006478,7d 10h 53m,,CLOSURE_TYPE!=Inheritance
+201810006511,7d 11h 3m,,CLOSURE_TYPE!=Inheritance
+201810007236,7d 6h 2m,,CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE=Bank Recess
+201810007716,1d 16h 6m,,ROLE=BACK-OFFICE AND CE_UO=BOC AND CLOSURE_TYPE!=Inheritance AND weekday=Monday
+201810008058,7d 10h 40m,,CLOSURE_TYPE!=Inheritance
+201810008137,5d 13h 57m,ROLE=DIRECTOR AND ACTIVITY=Authorization Requested,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE!=Inheritance AND weekday=Monday
+201810008162,2d 4h 51m,,ACTIVITY=Pending Request for Network Information AND CLOSURE_TYPE!=Inheritance
+201810009685,7d 4h 36m,,CLOSURE_TYPE!=Inheritance
+201810009774,12d 13h 18m,CLOSURE_TYPE=Inheritance AND ROLE!=BACK-OFFICE,
+201810011235,1d 15h 30m,,ACTIVITY=Pending Liquidation Request AND ROLE=BACK-OFFICE AND CE_UO=BOC AND CLOSURE_TYPE=Bank Recess
+201810011257,2d 2h 34m,ACTIVITY!=Service closure Request with BO responsibility (-1) AND ROLE!=BACK-OFFICE (-1) AND CE_UO!=BOC (-1),CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE!=Inheritance
+201810011258,5d 6h 7m,ACTIVITY=Evaluating Request (NO registered letter),CLOSURE_TYPE!=Inheritance
+201811003928,12d 13h ,CLOSURE_TYPE=Inheritance,
+201811004173,1d 16h 40m,,ROLE=BACK-OFFICE AND CE_UO=BOC
+201811004769,5d 20h 37m,CE_UO=113,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE!=Inheritance
+201811005420,6d 23h 12m,,CLOSURE_TYPE!=Inheritance AND High value of case_cost
+201811007324,6d 17h 39m,,CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE=Client Recess
+201811007754,1d 15h 6m,,ACTIVITY=Pending Liquidation Request AND ROLE=BACK-OFFICE AND CE_UO=BOC AND ROLE=BACK-OFFICE (-1) AND CE_UO=BOC (-1)
+201811008237,2d 12h 32m,,ACTIVITY=Pending Request for Network Information AND CLOSURE_TYPE!=Inheritance
+201811009640,7d 8h 17m,,CLOSURE_TYPE!=Inheritance
+201811009682,4d 20h 4m,ACTIVITY=Service closure Request with network responsibility,CLOSURE_TYPE!=Inheritance AND High value of case_cost AND weekday=Monday
+201811010647,3d 17h 22m,weekday=Friday,ROLE=BACK-OFFICE
+201811010829,2d 2h 31m,ACTIVITY!=Service closure Request with BO responsibility (-1) AND ROLE!=BACK-OFFICE (-1),
+201811010975,6d 18h 14m,CE_UO=268,CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE=Bank Recess
+201811011149,1d 20h 34m,ACTIVITY!=Service closure Request with BO responsibility (-1),CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE!=Inheritance AND ACTIVITY=Service closure Request with BO responsibility AND CLOSURE_TYPE=Bank Recess AND ROLE=BACK-OFFICE
+201812000158,2d 3h 52m,,ACTIVITY=Service closure Request with BO responsibility AND ROLE=BACK-OFFICE AND CLOSURE_TYPE!=Inheritance AND CE_UO=BOC AND CLOSURE_TYPE!=Inheritance
+201812001382,7d 6h 27m,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE!=Inheritance
+201812002231,7d 11h 3m,,CLOSURE_TYPE!=Inheritance
+201812004657,1d 21h 43m,weekday=Friday,ACTIVITY=Service closure Request with BO responsibility AND CLOSURE_TYPE!=Inheritance AND ROLE=BACK-OFFICE AND CLOSURE_TYPE!=Inheritance
+201812004749,12d 16h 56m,CLOSURE_TYPE=Inheritance,
+201812005701,7d 10h 54m,,CLOSURE_TYPE!=Inheritance
+201812005741,2d 4h 33m,,
+201812006296,12d 16h 57m,CLOSURE_TYPE=Inheritance,
+201812007189,12d 12h 58m,CLOSURE_TYPE=Inheritance AND ROLE!=BACK-OFFICE,
+201812007446,1d 15h 38m,,ROLE=BACK-OFFICE AND ACTIVITY=Pending Liquidation Request AND ROLE=BACK-OFFICE (-2) AND ACTIVITY=Service closure Request with BO responsibility (-2)
+201812007724,2d 2h 26m,weekday=Friday,CLOSURE_TYPE!=Inheritance AND CLOSURE_TYPE!=Inheritance AND ACTIVITY=Service closure Request with BO responsibility AND ROLE=BACK-OFFICE
+201812007950,1d 15h 55m,,ROLE=BACK-OFFICE AND CE_UO=BOC AND CLOSURE_TYPE!=Inheritance
+201812009053,2d 2h 33m,,CLOSURE_TYPE!=Inheritance AND ROLE=BACK-OFFICE AND ACTIVITY=Service closure Request with BO responsibility AND CLOSURE_TYPE!=Inheritance AND CE_UO=BOC

@@ -1,0 +1,51 @@
+CASE ID,case_cost,Explanations for increasing case_cost,Explanations for decreasing case_cost
+201810000114,19.83068,CLOSURE_REASON=1 - Client lost AND ACTIVITY=Evaluating Request (NO registered letter) (-1) AND High value of case_cost (-1),
+201810000206,8.4137745,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess
+201810000374,19.704454,CLOSURE_REASON=6 - Relationship changed,
+201810000473,8.230047,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON!=1 - Client lost
+201810000599,19.810385,CLOSURE_REASON=1 - Client lost,
+201810001900,8.215775,,CLOSURE_REASON=2 - Keep bank account. Same dip
+201810003422,8.228378,,CLOSURE_REASON=2 - Keep bank account. Same dip
+201810004787,19.837204,ACTIVITY=Evaluating Request (NO registered letter) (-2) AND CLOSURE_REASON=1 - Client lost AND High value of case_cost (-2) AND High value of case_cost AND High value of case_cost (-1),
+201810004793,5.1750364,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess
+201810004931,19.795431,ACTIVITY=Evaluating Request (NO registered letter) (-3) AND High value of case_cost AND High value of case_cost (-3) AND High value of case_cost (-1) AND CLOSURE_REASON=1 - Client lost AND High value of case_cost (-2),
+201810004949,19.795,ACTIVITY=Evaluating Request (NO registered letter) (-3) AND High value of case_cost (-3) AND CLOSURE_REASON=1 - Client lost AND High value of case_cost AND High value of case_cost (-1) AND High value of case_cost (-2),
+201810005363,35.256683,CLOSURE_REASON=7 - Keep other relationships. Same dip AND CLOSURE_REASON=7 - Keep other relationships. Same dip AND High value of case_cost,
+201810006478,19.724945,CLOSURE_REASON=7 - Keep other relationships. Same dip,
+201810006511,19.700388,CLOSURE_REASON=1 - Client lost,
+201810007236,5.5629864,,CLOSURE_TYPE=Bank Recess
+201810007716,19.79559,High value of case_cost AND ACTIVITY=Evaluating Request (NO registered letter) (-3) AND High value of case_cost (-3) AND High value of case_cost (-1) AND High value of case_cost (-2) AND CLOSURE_REASON=1 - Client lost,
+201810008058,19.720486,CLOSURE_REASON=1 - Client lost,
+201810008137,8.511648,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess
+201810008162,12.525482,CLOSURE_TYPE!=Bank Recess,
+201810009685,8.228447,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON=2 - Keep bank account. Same dip
+201810009774,12.838159,CLOSURE_TYPE!=Bank Recess AND CLOSURE_TYPE=Inheritance,ACTIVITY=Authorization Requested
+201810011235,16.723288,ACTIVITY=Pending Liquidation Request AND CLOSURE_REASON=1 - Client lost AND Low value of case_cost AND ACTIVITY=Pending Request for Reservation Closure (-1),CLOSURE_REASON=1 - Client lost
+201810011257,8.336745,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON!=1 - Client lost AND CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_TYPE!=Inheritance
+201810011258,19.816196,CLOSURE_REASON=1 - Client lost,
+201811003928,13.376564,CLOSURE_TYPE!=Bank Recess AND CLOSURE_TYPE=Inheritance,
+201811004173,8.249695,,CLOSURE_REASON=2 - Keep bank account. Same dip AND ACTIVITY=Pending Request for Reservation Closure AND CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_TYPE!=Inheritance
+201811004769,8.482888,,CLOSURE_TYPE=Bank Recess AND ACTIVITY=Authorization Requested
+201811005420,19.809803,CLOSURE_REASON=7 - Keep other relationships. Same dip,
+201811007324,8.226311,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON!=1 - Client lost AND CLOSURE_REASON=2 - Keep bank account. Same dip
+201811007754,12.911192,ACTIVITY=Pending Liquidation Request AND CLOSURE_TYPE!=Bank Recess,CLOSURE_REASON!=1 - Client lost
+201811008237,12.529141,CLOSURE_TYPE!=Bank Recess,
+201811009640,8.21569,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON!=1 - Client lost
+201811009682,19.812386,CLOSURE_REASON=1 - Client lost AND ACTIVITY=Evaluating Request (NO registered letter) (-1) AND High value of case_cost (-1),
+201811010647,5.217114,,CLOSURE_TYPE!=Inheritance AND CLOSURE_REASON!=1 - Client lost AND CLOSURE_REASON!=1 - Client lost AND CLOSURE_TYPE!=Bank Recess
+201811010829,8.385451,,CLOSURE_TYPE=Bank Recess AND ACTIVITY=Service closure Request with BO responsibility AND CLOSURE_TYPE!=Inheritance
+201811010975,8.227412,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess
+201811011149,8.339591,,CLOSURE_TYPE=Bank Recess AND CLOSURE_TYPE=Bank Recess AND ACTIVITY=Service closure Request with BO responsibility
+201812000158,8.341458,,CLOSURE_REASON=2 - Keep bank account. Same dip AND CLOSURE_REASON!=1 - Client lost AND CLOSURE_REASON=2 - Keep bank account. Same dip AND ACTIVITY=Service closure Request with BO responsibility
+201812001382,8.215638,,CLOSURE_TYPE=Bank Recess
+201812002231,8.215772,,CLOSURE_REASON=2 - Keep bank account. Same dip
+201812004657,19.837355,CLOSURE_REASON=1 - Client lost AND ACTIVITY=Evaluating Request (NO registered letter) (-2) AND High value of case_cost (-2) AND High value of case_cost AND High value of case_cost (-1),
+201812004749,13.383332,CLOSURE_TYPE!=Bank Recess,
+201812005701,12.5280075,CLOSURE_TYPE!=Bank Recess,
+201812005741,12.537078,CLOSURE_TYPE!=Bank Recess,CLOSURE_REASON!=1 - Client lost
+201812006296,13.421332,CLOSURE_TYPE=Inheritance AND CLOSURE_TYPE!=Bank Recess,
+201812007189,13.33867,CLOSURE_TYPE!=Bank Recess AND CLOSURE_TYPE=Inheritance,
+201812007446,14.897535,ACTIVITY=Pending Liquidation Request AND CLOSURE_TYPE!=Bank Recess,CLOSURE_REASON!=1 - Client lost
+201812007724,19.83769,CLOSURE_REASON=1 - Client lost AND ACTIVITY=Evaluating Request (NO registered letter) (-2) AND High value of case_cost (-2) AND High value of case_cost AND High value of case_cost (-1),
+201812007950,17.170986,ACTIVITY=Back-Office Adjustment Requested AND High value of case_cost,
+201812009053,14.933664,CLOSURE_REASON=1 - Client lost,
