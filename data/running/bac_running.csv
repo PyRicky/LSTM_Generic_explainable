@@ -1,0 +1,143 @@
+REQUEST_ID,ACTIVITY,START_DATE,END_DATE,CE_UO,ROLE,CLOSURE_TYPE,CLOSURE_REASON,WORKING_STATE,case_cost
+201810001900,Request created,2018-10-04 16:27:28.000,2018-10-04 16:28:51.000,421,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201811003928,Request created,2018-11-12 11:14:21.000,2018-11-12 11:14:38.000,354,APPLICANT,Inheritance,,Completed,1.5
+201811003928,Service closure Request with network responsibility,2018-11-12 11:14:38.000,2018-11-12 11:18:39.000,,APPLICANT,Inheritance,,Completed,2.1
+201811010647,Request created,2018-11-28 12:28:14.000,2018-11-28 12:28:42.000,195,APPLICANT,Client Recess,,Completed,1.5
+201811010647,Service closure Request with BO responsibility,2018-11-28 12:28:42.000,2018-11-30 11:02:55.000,,BACK-OFFICE,Client Recess,,Completed,2.3
+201811010647,Pending Request for Reservation Closure,2018-11-30 11:02:55.000,2018-11-30 11:03:29.000,303,BACK-OFFICE,Client Recess,,Completed,3.1
+201812007950,Request created,2018-12-21 08:06:03.000,2018-12-21 17:58:51.000,261,APPLICANT,Client Recess,,Completed,1.5
+201812007950,Service closure Request with BO responsibility,2018-12-21 17:58:51.000,2018-12-21 17:59:40.000,BOF,BACK-OFFICE,Client Recess,,Completed,2.3
+201812007950,Pending Request for Reservation Closure,2018-12-21 17:59:40.000,2018-12-21 18:01:21.000,BOF,BACK-OFFICE,Client Recess,,Completed,3.1
+201812007950,Pending Liquidation Request,2018-12-21 18:01:21.000,2018-12-25 03:24:33.000,BOF,BACK-OFFICE,Client Recess,,Completed,3.9
+201812007950,Back-Office Adjustment Requested,2018-12-25 03:24:33.000,2018-12-31 09:18:23.000,BOF,BACK-OFFICE,Client Recess,,Completed,11.9
+201812000158,Request created,2018-12-03 10:24:04.000,2018-12-03 10:24:44.000,358,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201812000158,Service closure Request with network responsibility,2018-12-03 10:24:44.000,2018-12-05 09:03:14.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201812000158,Authorization Requested,2018-12-05 09:03:14.000,2018-12-05 15:08:37.000,166,DIRECTOR,Client Recess,2 - Keep bank account. Same dip,Completed,4.91
+201812000158,Service closure Request with BO responsibility,2018-12-05 15:08:37.000,2018-12-07 16:08:38.000,BOF,BACK-OFFICE,Client Recess,2 - Keep bank account. Same dip,Completed,5.71
+201810000206,Request created,2018-10-01 12:01:44.000,2018-10-01 12:02:04.000,266,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201810000206,Service closure Request with network responsibility,2018-10-01 12:02:04.000,2018-10-01 12:02:26.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201810000206,Authorization Requested,2018-10-01 12:02:26.000,2018-10-11 09:58:11.000,22,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201811004173,Request created,2018-11-12 15:38:25.000,2018-11-12 15:38:57.000,134,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201811004173,Service closure Request with network responsibility,2018-11-12 15:38:57.000,2018-11-12 15:45:12.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201811004173,Authorization Requested,2018-11-12 15:45:12.000,2018-11-19 12:00:36.000,199,DIRECTOR,Client Recess,2 - Keep bank account. Same dip,Completed,4.91
+201811004173,Service closure Request with BO responsibility,2018-11-19 12:00:36.000,2018-11-20 15:50:44.000,BOF,BACK-OFFICE,Client Recess,2 - Keep bank account. Same dip,Completed,5.71
+201811004173,Pending Request for Reservation Closure,2018-11-20 15:50:44.000,2018-11-20 15:53:52.000,BOF,BACK-OFFICE,Client Recess,2 - Keep bank account. Same dip,Completed,6.51
+201810000114,Request created,2018-10-01 10:17:33.000,2018-10-01 10:18:19.000,66,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810000114,Evaluating Request (NO registered letter),2018-10-01 10:18:19.000,2018-10-01 10:22:31.000,264,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810000114,Service closure Request with network responsibility,2018-10-01 10:26:03.000,2018-10-01 10:27:40.000,264,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810008058,Request created,2018-10-22 09:43:22.000,2018-10-22 09:43:59.000,403,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201811008237,Request created,2018-11-22 09:17:14.000,2018-11-22 09:17:57.000,139,APPLICANT,Porting,,Completed,1.5
+201811008237,Pending Request for Network Information,2018-11-22 09:17:57.000,2018-11-30 11:48:00.000,48,APPLICANT,Porting,,Completed,2.1
+201811004769,Request created,2018-11-13 16:27:08.000,2018-11-13 16:27:24.000,326,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201811004769,Service closure Request with network responsibility,2018-11-13 16:27:24.000,2018-11-13 16:27:58.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201811004769,Authorization Requested,2018-11-13 16:27:58.000,2018-11-13 16:28:52.000,113,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201811009682,Request created,2018-11-26 15:35:17.000,2018-11-26 15:35:32.000,53,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201811009682,Evaluating Request (NO registered letter),2018-11-26 15:35:32.000,2018-11-26 15:51:09.000,404,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201811009682,Service closure Request with network responsibility,2018-11-26 16:53:02.000,2018-11-26 16:54:10.000,404,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810007236,Request created,2018-10-18 15:35:47.000,2018-10-18 15:36:03.000,359,APPLICANT,Bank Recess,,Completed,1.5
+201811010829,Request created,2018-11-28 16:05:08.000,2018-11-28 16:05:37.000,300,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201811010829,Service closure Request with network responsibility,2018-11-28 16:05:37.000,2018-11-28 16:12:26.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201811010829,Authorization Requested,2018-11-28 16:12:26.000,2018-11-28 16:13:47.000,474,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201811010829,Service closure Request with BO responsibility,2018-11-28 16:13:47.000,2018-11-29 13:26:50.000,BOF,BACK-OFFICE,Bank Recess,1 - Client lost,Completed,5.71
+201812007724,Request created,2018-12-20 13:09:12.000,2018-12-20 13:09:31.000,483,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201812007724,Evaluating Request (NO registered letter),2018-12-20 13:09:31.000,2018-12-20 15:09:22.000,75,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201812007724,Service closure Request with network responsibility,2018-12-21 08:33:22.000,2018-12-21 08:35:43.000,75,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201812007724,Service closure Request with BO responsibility,2018-12-21 08:35:43.000,2018-12-21 10:35:43.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201810000599,Request created,2018-10-02 10:49:54.000,2018-10-02 10:50:30.000,416,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810000599,Evaluating Request (NO registered letter),2018-10-02 10:50:30.000,2018-10-02 11:09:52.000,220,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201812001382,Request created,2018-12-05 10:58:28.000,2018-12-05 11:00:04.000,476,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201810011257,Request created,2018-10-29 16:07:11.000,2018-10-29 16:07:27.000,44,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810011257,Service closure Request with network responsibility,2018-10-29 16:07:27.000,2018-10-29 16:08:47.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201810011257,Authorization Requested,2018-10-29 16:08:47.000,2018-10-29 17:10:17.000,559,DIRECTOR,Client Recess,2 - Keep bank account. Same dip,Completed,4.91
+201810011257,Service closure Request with BO responsibility,2018-10-29 17:10:17.000,2018-10-29 17:17:53.000,BOF,BACK-OFFICE,Client Recess,2 - Keep bank account. Same dip,Completed,5.71
+201810006478,Request created,2018-10-17 15:20:06.000,2018-10-17 15:20:44.000,397,APPLICANT,Client Recess,7 - Keep other relationships. Same dip,Completed,1.5
+201812002231,Request created,2018-12-06 16:22:29.000,2018-12-06 16:24:33.000,398,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810004949,Request created,2018-10-12 16:14:48.000,2018-10-12 16:15:27.000,50,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810004949,Evaluating Request (NO registered letter),2018-10-12 16:15:27.000,2018-10-15 11:22:47.000,530,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810004949,Service closure Request with network responsibility,2018-10-15 14:43:10.000,2018-10-15 14:44:30.000,530,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810004949,Service closure Request with BO responsibility,2018-10-15 14:44:30.000,2018-10-22 11:10:43.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201810004949,Pending Request for Reservation Closure,2018-10-22 11:10:43.000,2018-10-22 11:10:49.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,18.200000000000006
+201810005363,Request created,2018-10-15 14:34:03.000,2018-10-15 14:37:45.000,204,APPLICANT,Client Recess,7 - Keep other relationships. Same dip,Completed,1.5
+201810005363,Evaluating Request (NO registered letter),2018-10-15 14:37:45.000,2018-10-16 08:29:08.000,305,DIRECTOR,Client Recess,7 - Keep other relationships. Same dip,Completed,16.0
+201810005363,Service closure Request with network responsibility,2018-10-16 08:29:08.000,2018-10-16 08:29:58.000,305,APPLICANT,Client Recess,7 - Keep other relationships. Same dip,Completed,16.6
+201810005363,Service closure Request with BO responsibility,2018-10-16 08:29:58.000,2018-10-16 09:56:33.000,BOF,BACK-OFFICE,Client Recess,7 - Keep other relationships. Same dip,Completed,17.400000000000002
+201810005363,Pending Request for Reservation Closure,2018-10-16 09:56:33.000,2018-10-16 09:59:14.000,BOF,BACK-OFFICE,Client Recess,7 - Keep other relationships. Same dip,Completed,18.200000000000006
+201810005363,Pending Liquidation Request,2018-10-16 09:59:14.000,2018-10-18 03:20:45.000,BOF,BACK-OFFICE,Client Recess,7 - Keep other relationships. Same dip,Completed,19.000000000000004
+201810009774,Request created,2018-10-24 18:45:46.000,2018-10-24 18:47:23.000,422,APPLICANT,Inheritance,,Completed,1.5
+201810009774,Service closure Request with network responsibility,2018-10-24 18:47:23.000,2018-10-24 18:56:30.000,,APPLICANT,Inheritance,,Completed,2.1
+201810009774,Authorization Requested,2018-10-24 18:56:30.000,2018-10-25 09:36:44.000,465,DIRECTOR,Inheritance,,Completed,4.91
+201811011149,Request created,2018-11-29 12:05:33.000,2018-11-29 12:06:03.000,506,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201811011149,Service closure Request with network responsibility,2018-11-29 12:06:03.000,2018-11-29 12:06:36.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201811011149,Authorization Requested,2018-11-29 12:06:36.000,2018-11-29 12:39:36.000,138,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201811011149,Service closure Request with BO responsibility,2018-11-29 12:39:36.000,2018-11-29 14:30:54.000,BOF,BACK-OFFICE,Bank Recess,1 - Client lost,Completed,5.71
+201812004749,Request created,2018-12-13 10:25:38.000,2018-12-13 10:27:21.000,266,APPLICANT,Inheritance,,Completed,1.5
+201810000473,Request created,2018-10-02 08:28:06.000,2018-10-02 08:28:56.000,370,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810000473,Service closure Request with network responsibility,2018-10-02 08:28:56.000,2018-10-02 08:31:47.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201810000374,Request created,2018-10-01 15:45:14.000,2018-10-01 15:45:27.000,141,APPLICANT,Client Recess,6 - Relationship changed,Completed,1.5
+201811009640,Request created,2018-11-26 15:04:24.000,2018-11-26 15:05:54.000,217,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810008162,Request created,2018-10-22 10:52:01.000,2018-10-22 10:52:31.000,230,APPLICANT,Porting,,Completed,1.5
+201810008162,Pending Request for Network Information,2018-10-22 10:52:31.000,2018-11-08 18:19:47.000,332,APPLICANT,Porting,,Completed,2.1
+201811007754,Request created,2018-11-21 10:23:11.000,2018-11-21 10:23:54.000,331,APPLICANT,Inheritance,,Completed,1.5
+201811007754,Service closure Request with network responsibility,2018-11-21 10:23:54.000,2018-11-21 10:24:21.000,,APPLICANT,Inheritance,,Completed,2.1
+201811007754,Authorization Requested,2018-11-21 10:24:21.000,2019-01-08 11:14:11.000,417,DIRECTOR,Inheritance,,Completed,4.91
+201811007754,Service closure Request with BO responsibility,2019-01-08 11:14:11.000,2019-01-15 15:53:21.000,BOF,BACK-OFFICE,Inheritance,,Completed,5.71
+201811007754,Pending Request for Reservation Closure,2019-01-15 15:53:21.000,2019-01-15 15:55:03.000,BOF,BACK-OFFICE,Inheritance,,Completed,6.51
+201811007754,Pending Liquidation Request,2019-01-15 15:55:03.000,2019-01-17 03:17:27.000,BOF,BACK-OFFICE,Inheritance,,Completed,7.31
+201810004787,Request created,2018-10-12 12:23:47.000,2018-10-12 12:26:35.000,107,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810004787,Evaluating Request (NO registered letter),2018-10-12 12:26:35.000,2018-10-12 12:28:49.000,149,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810004787,Service closure Request with network responsibility,2018-10-12 12:29:58.000,2018-10-12 12:35:40.000,149,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810004787,Service closure Request with BO responsibility,2018-10-12 12:35:40.000,2018-10-18 09:04:21.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201812007446,Request created,2018-12-19 16:47:55.000,2018-12-19 16:48:11.000,408,APPLICANT,Client Recess,,Completed,1.5
+201812007446,Service closure Request with BO responsibility,2018-12-19 16:48:11.000,2018-12-24 11:39:07.000,,BACK-OFFICE,Client Recess,,Completed,2.3
+201812007446,Pending Request for Reservation Closure,2018-12-24 11:39:07.000,2018-12-24 11:42:54.000,303,BACK-OFFICE,Client Recess,,Completed,3.1
+201812007446,Pending Liquidation Request,2018-12-24 11:42:54.000,2018-12-28 03:08:34.000,303,BACK-OFFICE,Client Recess,,Completed,3.9
+201811005420,Request created,2018-11-14 16:37:29.000,2018-11-14 16:38:03.000,368,APPLICANT,Client Recess,7 - Keep other relationships. Same dip,Completed,1.5
+201811005420,Evaluating Request (NO registered letter),2018-11-14 16:38:03.000,2018-11-14 19:38:06.000,557,DIRECTOR,Client Recess,7 - Keep other relationships. Same dip,Completed,16.0
+201812007189,Request created,2018-12-19 11:43:53.000,2018-12-19 11:46:51.000,110,APPLICANT,Inheritance,,Completed,1.5
+201812007189,Service closure Request with network responsibility,2018-12-19 11:46:51.000,2018-12-19 11:57:43.000,,APPLICANT,Inheritance,,Completed,2.1
+201812005741,Request created,2018-12-15 08:07:19.000,2018-12-17 08:57:14.000,419,APPLICANT,Client Recess,,Completed,1.5
+201812005741,Service closure Request with BO responsibility,2018-12-17 08:57:14.000,2018-12-27 08:44:29.000,BOF,BACK-OFFICE,Client Recess,,Completed,2.3
+201810011235,Request created,2018-10-29 15:36:02.000,2018-10-29 15:36:21.000,478,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201810011235,Service closure Request with network responsibility,2018-10-29 15:36:21.000,2018-10-29 15:37:22.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201810011235,Authorization Requested,2018-10-29 15:37:22.000,2018-10-29 15:39:08.000,65,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201810011235,Service closure Request with BO responsibility,2018-10-29 15:39:08.000,2018-10-29 17:20:54.000,BOF,BACK-OFFICE,Bank Recess,1 - Client lost,Completed,5.71
+201810011235,Pending Request for Reservation Closure,2018-10-29 17:20:54.000,2018-10-29 17:23:01.000,BOF,BACK-OFFICE,Bank Recess,1 - Client lost,Completed,6.51
+201810011235,Pending Liquidation Request,2018-10-29 17:23:01.000,2018-10-31 03:22:20.000,BOF,BACK-OFFICE,Bank Recess,1 - Client lost,Completed,7.31
+201810008137,Request created,2018-10-22 10:40:53.000,2018-10-22 10:42:05.000,525,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201810008137,Service closure Request with network responsibility,2018-10-22 10:42:05.000,2018-10-22 10:42:46.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201810008137,Authorization Requested,2018-10-22 10:42:46.000,2018-11-08 17:25:09.000,204,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201812004657,Request created,2018-12-13 09:25:15.000,2018-12-13 09:26:03.000,408,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201812004657,Evaluating Request (NO registered letter),2018-12-13 09:26:03.000,2018-12-13 09:57:53.000,634,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201812004657,Service closure Request with network responsibility,2018-12-13 12:38:10.000,2018-12-14 10:54:24.000,634,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201812004657,Service closure Request with BO responsibility,2018-12-14 10:54:24.000,2018-12-18 13:58:54.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201810004793,Request created,2018-10-12 12:27:01.000,2018-10-12 12:27:21.000,79,APPLICANT,Bank Recess,,Completed,1.5
+201810004793,Service closure Request with BO responsibility,2018-10-12 12:27:21.000,2018-10-12 12:30:10.000,,BACK-OFFICE,Bank Recess,,Completed,2.3
+201810006511,Request created,2018-10-17 13:16:07.000,2018-10-17 13:16:56.000,537,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810007716,Request created,2018-10-19 12:57:32.000,2018-10-19 12:58:16.000,66,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810007716,Evaluating Request (NO registered letter),2018-10-22 10:52:46.000,2018-10-22 10:53:09.000,285,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810007716,Service closure Request with network responsibility,2018-10-22 12:02:20.000,2018-10-22 12:04:13.000,285,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810007716,Service closure Request with BO responsibility,2018-10-22 12:04:13.000,2018-10-22 12:45:15.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201810007716,Pending Request for Reservation Closure,2018-10-22 12:45:15.000,2018-10-22 12:47:06.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,18.200000000000006
+201812005701,Request created,2018-12-15 08:03:12.000,2018-12-17 14:41:04.000,427,APPLICANT,Client Recess,,Completed,1.5
+201811007324,Request created,2018-11-20 12:04:43.000,2018-11-20 12:04:49.000,323,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201811007324,Service closure Request with network responsibility,2018-11-20 12:04:49.000,2018-11-20 12:07:58.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201811007324,Authorization Requested,2018-11-20 12:07:58.000,2018-11-20 12:10:21.000,474,DIRECTOR,Client Recess,2 - Keep bank account. Same dip,Completed,4.91
+201810011258,Request created,2018-10-29 16:10:33.000,2018-10-29 16:10:50.000,542,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810011258,Evaluating Request (NO registered letter),2018-10-29 16:10:50.000,2018-10-29 16:24:54.000,188,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810009685,Request created,2018-10-24 15:47:09.000,2018-10-24 15:48:14.000,232,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810009685,Service closure Request with network responsibility,2018-10-24 15:48:14.000,2018-10-24 15:48:48.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201812006296,Request created,2018-12-17 18:03:06.000,2018-12-17 18:04:06.000,107,APPLICANT,Inheritance,,Completed,1.5
+201812009053,Request created,2018-12-27 14:08:24.000,2018-12-27 14:13:48.000,459,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201812009053,Evaluating Request (WITH registered letter),2018-12-27 14:13:48.000,2018-12-27 14:28:13.000,251,DIRECTOR,Client Recess,1 - Client lost,Completed,11.31
+201812009053,Service closure Request with network responsibility,2018-12-27 14:30:29.000,2018-12-27 14:30:49.000,251,APPLICANT,Client Recess,1 - Client lost,Completed,11.91
+201812009053,Service closure Request with BO responsibility,2018-12-27 14:30:49.000,2019-01-08 09:15:05.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,12.71
+201810003422,Request created,2018-10-09 15:30:09.000,2018-10-09 15:31:38.000,73,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,1.5
+201810003422,Service closure Request with network responsibility,2018-10-09 15:31:38.000,2018-11-06 12:45:57.000,,APPLICANT,Client Recess,2 - Keep bank account. Same dip,Completed,2.1
+201811010975,Request created,2018-11-29 09:23:45.000,2018-11-29 09:24:21.000,201,APPLICANT,Bank Recess,1 - Client lost,Completed,1.5
+201811010975,Service closure Request with network responsibility,2018-11-29 09:24:21.000,2018-11-29 09:24:56.000,,APPLICANT,Bank Recess,1 - Client lost,Completed,2.1
+201811010975,Authorization Requested,2018-11-29 09:24:56.000,2018-11-29 09:40:27.000,268,DIRECTOR,Bank Recess,1 - Client lost,Completed,4.91
+201810004931,Request created,2018-10-12 15:40:10.000,2018-10-12 15:40:32.000,333,APPLICANT,Client Recess,1 - Client lost,Completed,1.5
+201810004931,Evaluating Request (NO registered letter),2018-10-12 15:40:32.000,2018-10-22 11:29:34.000,219,DIRECTOR,Client Recess,1 - Client lost,Completed,16.0
+201810004931,Service closure Request with network responsibility,2018-10-29 09:50:44.000,2018-10-29 09:51:03.000,219,APPLICANT,Client Recess,1 - Client lost,Completed,16.6
+201810004931,Service closure Request with BO responsibility,2018-10-29 09:51:03.000,2018-10-29 17:07:08.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,17.400000000000002
+201810004931,Pending Request for Reservation Closure,2018-10-29 17:07:08.000,2018-10-29 17:10:51.000,BOF,BACK-OFFICE,Client Recess,1 - Client lost,Completed,18.200000000000006
