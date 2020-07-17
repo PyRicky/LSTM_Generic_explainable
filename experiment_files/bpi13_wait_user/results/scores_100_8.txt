@@ -1,0 +1,3 @@
+F1_score for Wait - User: 0.566
+
+Accuracy: 0.6456 Binary Accuracy: 0.6456 F1: 0.4480%

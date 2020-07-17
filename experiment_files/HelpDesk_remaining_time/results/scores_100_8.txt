@@ -1,0 +1,2 @@
+
+Root Mean Squared Error: 8.0687 MAE: 6.0168 MAPE: 3583.9631%

@@ -30,37 +30,25 @@ from write_results import write_results_to_be_plotted, write_scores, prepare_df,
 from keras import backend as K
 import json, sys, os
 from explainable import compute_shap_values, compute_shap_values_for_running_cases, find_explanations_for_running_cases
-from azure_facilities import store_blobs, remove_files_in_experiment
+from datetime import datetime, timedelta
 
-
-class LogRunMetrics(Callback):
-    def __init__(self, run, column_type):
-        self.run = run
-        self.column_type = column_type
-    # callback at the end of every epoch
-    def on_epoch_end(self, epoch, log):
-        # log on azure console the metrics defined in keras
-        if self.column_type == 'Categorical':
-            self.run.log('Loss', log['loss'])
-            self.run.log('Accuracy', log['accuracy'])
-            self.run.log('F1', log['f1'])
-        else:
-            self.run.log('Loss', log['loss'])
-            self.run.log('Mean_squared_error', log['mean_squared_error'])
 
 def cast_predictions_to_days_hours(df, pred_column):
-    days = [int(str(x).split('.')[0]) for x in df[pred_column]]
-    hours = [round((24 / 100 * int(str(x).split('.')[1][:2]))) for x in df[pred_column]]
-    # increment day by 1 if hours are 24 and set hours to 0
-    days = [i + 1 if j == 24 else i for i, j in zip(days, hours)]
-    hours = [0 if j == 24 else j for i, j in zip(days, hours)]
-    hours = [str(x) + 'h' if x != 0 else '' for x in hours]
-    days = [str(x) + 'd' for x in days]
-    res = [i + ' ' + j if j != '' else i for i, j in zip(days, hours)]
-    #delete 0d becuase it makes no sense
-    res = [x.replace('0d ', '') if '0d ' in x else x for x in res]
-    df[pred_column] = res
+    dates = []
+    for time_seconds in df[pred_column]:
+        date_extended = datetime(1, 1, 1) + timedelta(seconds=int(time_seconds))
+        date = ""
+        if date_extended.day != 0:
+            date += f"{date_extended.day - 1}d "
+        if date_extended.hour != 0:
+            date += f"{date_extended.hour}h "
+        if date_extended.minute != 0:
+            date += f"{date_extended.minute}m"
+
+        dates.append(date)
+    df[pred_column] = dates
     return df
+
 
 def f1(y_true, y_pred):
     def recall(y_true, y_pred):
@@ -98,7 +86,7 @@ def compile_model(model, event_level, column_type):
         model.compile(loss='mae', optimizer='Nadam', metrics=['mean_squared_error', 'mae', 'mape'])
     return model
 
-def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, experiment_name, maxlen, num_epochs, run=None):
+def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, experiment_name, maxlen, num_epochs):
     # create the model
     model = Sequential()
     if n_layers == 1:
@@ -138,9 +126,6 @@ def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_leve
                                    epsilon=0.0001, cooldown=0, min_lr=0)
 
     callbacks = [early_stopping, model_checkpoint, lr_reducer]
-    if run is not None:
-        #we are in Azure, log metrics in Azure console
-        callbacks.append(LogRunMetrics(run, column_type))
 
     # train the model (maxlen) - adjust weights if needed and categorical column (more than one class to be predicted)
     if class_weights is not None and (len(class_weights.keys()) != 1):
@@ -159,7 +144,7 @@ def train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_leve
 
 def prepare_data_predict_and_obtain_explanations(experiment_name, df, case_id_position, start_date_position, date_format,
                                     end_date_position, pred_column, mode, pred_attributes, n_neurons, n_layers,
-                                    shap_calculation, override, num_epochs=500, run=None, storage_dir=None):
+                                    shap_calculation, override, num_epochs=500):
     # fix random seed for reproducibility
     np.random.seed(7)
     # train model
@@ -181,7 +166,7 @@ def prepare_data_predict_and_obtain_explanations(experiment_name, df, case_id_po
             json.dump(info, json_file)
 
         if override is True or (override is False and not os.path.exists(experiment_name + "/model/model_100_8.json")):
-            model = train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, experiment_name, X_train.shape[1], num_epochs, run)
+            model = train_model(X_train, y_train, n_neurons, n_layers, class_weights, event_level, column_type, experiment_name, X_train.shape[1], num_epochs)
             df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, mode, column_type)
             write_results_to_be_plotted(df, experiment_name, n_neurons, n_layers)
             scores = model.evaluate(X_test, y_test, verbose=0)
@@ -199,10 +184,6 @@ def prepare_data_predict_and_obtain_explanations(experiment_name, df, case_id_po
             target_column_name = ['TEST_' + x for x in target_column_name]
             plot_auroc_curve(df, predictions_names, target_column_name, experiment_name)
             plot_precision_recall_curve(df, predictions_names, target_column_name, experiment_name)
-        if run is not None:
-            #we copy only the model and the shap folder (results and plots can be seen in the experiment)
-            store_blobs(storage_dir, ['model'])
-            remove_files_in_experiment(['model'])
         if shap_calculation is True:
             indexes_to_plot = []
             attributes_to_plot = []
@@ -214,9 +195,7 @@ def prepare_data_predict_and_obtain_explanations(experiment_name, df, case_id_po
             compute_shap_values(df, experiment_name, X_train, X_test, model, column_type,
                                  feature_columns, indexes_to_plot, attributes_to_plot, pred_column)
             print("Generated histogram containing the explanations on the test set")
-            if run is not None:
-                store_blobs(storage_dir, ['shap'])
-                remove_files_in_experiment(['shap'])
+
     #model already trained (here is the case when you have the true test - no response variable)
     elif mode == "predict":
         X_test, test_case_ids, target_column_name, feature_columns, num_events = prepare_dataset(df, experiment_name, case_id_position, start_date_position,
@@ -234,36 +213,12 @@ def prepare_data_predict_and_obtain_explanations(experiment_name, df, case_id_po
         y_test = None
         df = prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_column, mode, column_type)
         # if you are predicting remaining time you should cast results to days and hours
-        #if pred_column == 'remaining_time':
-            #df = cast_predictions_to_days_hours(df, pred_column)
+        if pred_column == 'remaining_time':
+            df = cast_predictions_to_days_hours(df, pred_column)
         #if pred_attributes are not specified means that it is a numerical column
         if pred_attributes is None:
             pred_attributes = [pred_column]
         shapley_test = compute_shap_values_for_running_cases(experiment_name, X_test, model)
-        df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attributes, column_type, num_events, experiment_name)
+        df = find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attributes, column_type, num_events, experiment_name, mode)
         print("Generated predictions for running cases along with explanations")
-        #resp = []
-        # resp.append(df.columns.to_list())
-        # for i in range(df.shape[0]):
-        #     resp.append(df.iloc[i].to_list())
-        # for i in range(df.shape[0]):
-        #     row = {}
-        #     values = df.loc[i, :].to_list()
-        #     for j in range(len(values)):
-        #         row[df.columns[j]] = values[j]
-        #     resp.append(row)
-
-        resp = {}
-        for column in df.columns:
-            resp[column] = df[column].to_list()
-
-        if os.path.isdir("./outputs"):
-            #we are in the cloud (write in output folder)
-            experiment_name = "./outputs"
         df.to_csv(experiment_name + "/results/results_running_" + str(n_neurons) + "_" + str(n_layers) + ".csv", index=False)
-        #write the results as json ready to be returned
-        with open(experiment_name + "/results/results_running_" + str(n_neurons) + "_" + str(n_layers) + ".json", "w") as json_file:
-            json.dump(resp, json_file)
-        if run is not None:
-            store_blobs(storage_dir, ['results'])
-            remove_files_in_experiment(['results'])

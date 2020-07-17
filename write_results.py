@@ -38,8 +38,8 @@ def prepare_df(model, X_test, y_test, test_case_ids, target_column_name, pred_co
         if mode == "train":
             df.iloc[:, 1:] = df.iloc[:, 1:] / (24.0 * 3600)
         else:
-            #convert to milliseconds
-            df.iloc[:, 1:] = df.iloc[:, 1:] * 1000
+            #convert to milliseconds if you have to return results to MyInvenio, otherwise predict in local in seconds
+            df.iloc[:, 1:] = df.iloc[:, 1:]
     df.rename(columns={df.columns[0]: 'CASE ID'}, inplace=True)
     return df
 

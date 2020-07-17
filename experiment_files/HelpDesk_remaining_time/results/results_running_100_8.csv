@@ -1,0 +1,51 @@
+CASE ID,remaining_time,Explanations for remaining_time
+Case 1086,2825204000.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 1119,3732701400.0,Low value of time_from_start AND seriousness_2=Value 2 AND Low value of time_from_previous_event(start) increased the prediction
+Case 1415,2774230800.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction; seriousness_2!=Value 2 AND customer=Value 261 decreased the prediction
+Case 1446,3732182300.0,customer=Value 219 AND Low value of time_from_start increased the prediction; workgroup=Value 3 decreased the prediction
+Case 1460,2943978000.0,Low value of time_from_start AND Low value of time_from_previous_event(start) AND Resource=Value 18 1 timestep ago AND Low value of time_from_start 1 timestep ago increased the prediction; seriousness_2!=Value 2 decreased the prediction
+Case 1598,2825628400.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 1611,3779959800.0,Low value of time_from_start AND customer=Value 101 AND seriousness_2=Value 2 AND Low value of time_from_previous_event(start) AND customer=Value 101 increased the prediction
+Case 1637,3389939500.0,customer=Value 36 AND Low value of time_from_start increased the prediction
+Case 1674,1477167100.0,Low value of time_from_start AND Low value of time_from_start 1 timestep ago AND Low value of time_from_start 2 timesteps ago AND Low value of time_from_previous_event(start) 2 timesteps ago decreased the prediction
+Case 1707,2887407000.0,service_level=Value 3 AND Low value of time_from_start AND Low value of time_from_previous_event(start) AND service_level=Value 3 1 timestep ago AND Resource=Value 8 1 timestep ago increased the prediction; seriousness_2!=Value 2 AND customer=Value 35 AND customer=Value 35 AND seriousness_2=Value 1 decreased the prediction
+Case 1823,1363419400.0,Low value of time_from_start AND Low value of time_from_start 1 timestep ago AND Low value of time_from_start 2 timesteps ago AND customer=Value 123 decreased the prediction
+Case 2,2819589400.0,Resource=Value 4 AND Low value of time_from_start AND customer=Value 2 AND product=Value 2 AND weekday=Thursday increased the prediction; seriousness_2!=Value 2 AND seriousness_2=Value 1 AND Activity=Resolve ticket decreased the prediction
+Case 2137,3445010700.0,Low value of time_from_start AND customer=Value 5 AND Low value of time_from_previous_event(start) AND Resource=Value 8 AND service_level=Value 3 increased the prediction
+Case 2213,2912262100.0,seriousness_2=Value 2 AND Resource=Value 13 AND product=Value 2 increased the prediction; Low value of time_from_start AND Low value of time_from_previous_event(start) decreased the prediction
+Case 2320,3436684500.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 249,2865748200.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction; customer=Value 11 decreased the prediction
+Case 2530,1465201000.0,High value of time_from_start AND High value of time_from_previous_event(start) decreased the prediction
+Case 2599,1336679200.0,High value of time_from_start AND High value of time_from_start 1 timestep ago AND Low value of time_from_start 2 timesteps ago AND Low value of time_from_previous_event(start) 2 timesteps ago decreased the prediction
+Case 2671,2450866700.0,Low value of time_from_previous_event(start) AND Low value of time_from_start increased the prediction; customer=Value 153 AND customer=Value 153 decreased the prediction
+Case 2674,3732705500.0,Low value of time_from_start AND seriousness_2=Value 2 AND Low value of time_from_previous_event(start) increased the prediction
+Case 2701,2772649000.0,Low value of time_from_start AND Low value of time_from_previous_event(start) AND Resource=Value 8 increased the prediction; seriousness_2!=Value 2 decreased the prediction
+Case 2796,3732712200.0,Low value of time_from_start AND seriousness_2=Value 2 AND customer=Value 97 increased the prediction
+Case 2937,3694319400.0,Low value of time_from_start AND seriousness_2=Value 2 AND High value of Variant index AND Low value of time_from_previous_event(start) increased the prediction
+Case 2944,1488796200.0,High value of time_from_start AND High value of time_from_previous_event(start) decreased the prediction
+Case 2960,2887047700.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction; customer=Value 31 decreased the prediction
+Case 3010,1747662600.0,customer=Value 3 AND Low value of time_from_previous_event(start) increased the prediction; Low value of time_from_start AND Low value of time_from_start 1 timestep ago AND Low value of time_from_previous_event(start) 1 timestep ago decreased the prediction
+Case 3066,3732705300.0,Low value of time_from_start AND seriousness_2=Value 2 increased the prediction; customer=Value 241 decreased the prediction
+Case 3215,1412754300.0,High value of time_from_start AND High value of time_from_previous_event(start) decreased the prediction
+Case 3247,2819648000.0,Low value of time_from_start increased the prediction; seriousness_2!=Value 2 AND seriousness_2=Value 1 decreased the prediction
+Case 3252,2674228000.0,service_level=Value 3 AND Low value of time_from_previous_event(start) AND weekday=Thursday increased the prediction; Low value of time_from_start 1 timestep ago AND Low value of time_from_start AND Low value of time_from_start 2 timesteps ago AND seriousness_2!=Value 2 AND Low value of time_from_start 3 timesteps ago AND Activity=Resolve ticket AND Low value of time_from_previous_event(start) 3 timesteps ago decreased the prediction
+Case 3320,3205365800.0,customer=Value 178 AND customer=Value 178 AND Low value of time_from_start increased the prediction; seriousness_2=Value 1 AND seriousness_2!=Value 2 decreased the prediction
+Case 3327,3501262000.0,Low value of time_from_start AND seriousness_2=Value 2 AND Low value of time_from_previous_event(start) increased the prediction
+Case 3376,1382096500.0,High value of time_from_start AND High value of time_from_previous_event(start) decreased the prediction
+Case 3445,2965374500.0,Low value of time_from_start AND Resource=Value 8 AND Resource=Value 8 1 timestep ago AND Low value of time_from_previous_event(start) AND customer=Value 63 increased the prediction; seriousness_2!=Value 2 decreased the prediction
+Case 3630,3043064600.0,seriousness_2=Value 2 AND Low value of time_from_previous_event(start) increased the prediction; Low value of time_from_start 1 timestep ago AND Low value of time_from_previous_event(start) 1 timestep ago AND Low value of time_from_start decreased the prediction
+Case 3649,2819078400.0,Low value of time_from_start AND Resource=Value 8 AND Low value of time_from_previous_event(start) AND Resource=Value 8 1 timestep ago increased the prediction; seriousness_2!=Value 2 AND seriousness_2=Value 1 decreased the prediction
+Case 3717,3787769600.0,Low value of time_from_start AND seriousness_2=Value 2 AND Low value of time_from_previous_event(start) AND customer=Value 9 AND seriousness_2!=Value 1 increased the prediction
+Case 3775,1410087000.0,High value of time_from_start AND High value of time_from_previous_event(start) AND Low value of time_from_start 1 timestep ago decreased the prediction
+Case 3812,3414179800.0,seriousness_2=Value 2 AND Low value of time_from_previous_event(start) AND customer=Value 9 AND weekday=Thursday AND Resource=Value 6 increased the prediction; Low value of time_from_start AND Low value of time_from_start 1 timestep ago AND Low value of time_from_start 2 timesteps ago decreased the prediction
+Case 3984,1385758300.0,Resource=Value 13 increased the prediction; Low value of time_from_start AND Low value of time_from_previous_event(start) decreased the prediction
+Case 402,3517386800.0,Low value of time_from_start AND Low value of time_from_previous_event(start) AND seriousness_2=Value 2 increased the prediction
+Case 4087,3425150700.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 4389,1386675500.0,Low value of time_from_start AND Low value of time_from_start 1 timestep ago AND Low value of time_from_previous_event(start) 1 timestep ago decreased the prediction
+Case 4495,2713741800.0,Low value of time_from_start AND Resource=Value 13 AND Low value of time_from_previous_event(start) increased the prediction; seriousness_2!=Value 2 AND seriousness_2=Value 1 AND Activity=Resolve ticket decreased the prediction
+Case 4544,3435806000.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 487,3603646500.0,Low value of time_from_start AND Low value of time_from_previous_event(start) increased the prediction
+Case 75,3213294600.0,customer=Value 22 AND Low value of time_from_start AND responsible_section=Value 3 increased the prediction; seriousness_2=Value 1 AND seriousness_2!=Value 2 decreased the prediction
+Case 865,2685002800.0,product=Value 12 increased the prediction; seriousness_2!=Value 2 AND customer=Value 240 AND seriousness_2=Value 1 decreased the prediction
+Case 958,1465263500.0,Resource=Value 13 increased the prediction; Low value of time_from_start AND Low value of time_from_previous_event(start) AND Low value of time_from_start 1 timestep ago AND Low value of time_from_previous_event(start) 1 timestep ago decreased the prediction
+Case 97,1466609000.0,High value of time_from_start AND High value of time_from_previous_event(start) decreased the prediction

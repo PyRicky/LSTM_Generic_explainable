@@ -39,11 +39,13 @@ def plot_heatmap(explanation_histogram, experiment_name, index_name=None):
     df["sort"] = df.abs().max(axis=1)
     #bigger values are on top
     df = df.sort_values("sort", ascending=False).drop("sort", axis=1)
-    # df = df[df.columns[::-1]]
     df.columns.rename(["#", "Timesteps"], inplace=True)
     df = df.iloc[:15]
-    fig, ax = plt.subplots(figsize=(40, 10))
-    sns.heatmap(df, cbar=True, cmap="RdBu_r", center=0, annot=True, fmt='g', robust=True, ax=ax)
+    fig, ax = plt.subplots(figsize=(40, 15))
+    heatmap = sns.heatmap(df, cbar=True, cmap="RdBu_r", center=0, robust=True, annot=True, fmt='g', ax=ax, annot_kws={"fontsize": 13})
+    heatmap.set_yticklabels(heatmap.get_ymajorticklabels(), fontsize=13)
+    heatmap.set_xticklabels(heatmap.get_xmajorticklabels(), fontsize=13)
+
     if index_name is None:
         plt.savefig(experiment_name + "/plots/shap_heatmap.png", dpi=300, bbox_inches="tight")
     else:
@@ -72,8 +74,6 @@ def add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_
     if (num_events - (timestep + 1)) != 0 and (columns_info[explanation_name] == "event"):
         explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
         print("Instance {} Timestep: {}/{} --> {} : {}".format(i + 1, timestep + 1, num_events, explanation_name, shapley_value))
-        #for now we silence the timestep information for the historical histogram
-        #explanation_name = explanation_name + f" - Timestep -{num_events - (timestep + 1)}"
         explanation["feature"] = explanation_name
         explanation["ts"] = (num_events - (timestep + 1))
         if f"#-{num_events - (timestep + 1)}" not in timestep_histogram:
@@ -108,16 +108,6 @@ def add_explanation_to_histogram(x_test_instance, shap_values_instance, feature_
             explanation["#"] = -1
         explanation_histogram.append(explanation)
 
-    # if explanation_name not in explanation_histogram:
-    #     if shapley_value > 0:
-    #         explanation_histogram[explanation_name] = 1
-    #     else:
-    #         explanation_histogram[explanation_name] = -1
-    # else:
-    #     if shapley_value > 0:
-    #         explanation_histogram[explanation_name] += 1
-    #     else:
-    #         explanation_histogram[explanation_name] -= 1
     return explanation_histogram, timestep_histogram
 
 
@@ -147,43 +137,24 @@ def calculate_histogram_for_shap_chunk(X_test, shapley_chunk, index_name, index,
     #current case id and num_events must be returned because you could be in the middle of a case when you do another chunk
     return explanation_histograms, current_case_id, num_events, timestep_histograms
 
-def find_instance_explanation_values(X_test, shapley_test, i, num_events, prediction_index=0, more_explanation_values=False):
+def find_instance_explanation_values(X_test, shapley_test, i, num_events, prediction_index=0, mode="train"):
     #mean and std dev are now done on a matrix of all timesteps (up to n events of that case)
     x_test_instance = X_test[i][-num_events:]
     shap_values_instance = shapley_test[prediction_index][i][-num_events:]
     mean = shap_values_instance[np.nonzero(shap_values_instance)].mean()
     sd = shap_values_instance[np.nonzero(shap_values_instance)].std()
 
-    # x_test_instance = X_test[i][-1]
-    # shap_values_instance = shapley_test[prediction_index][i][-1]
-    # mean = shap_values_instance[np.nonzero(shap_values_instance)].mean()
-    # sd = shap_values_instance[np.nonzero(shap_values_instance)].std()
-    #mean = np.mean([x for x in shap_values_instance if x != 0])
-    #sd = np.std([x for x in shap_values_instance if x != 0])
-
-    upper_threshold = mean + 3 * sd
-    lower_threshold = mean - 3 * sd
+    if mode == "train":
+        upper_threshold = mean + 3 * sd
+        lower_threshold = mean - 3 * sd
+    else:
+        upper_threshold = mean + 4 * sd
+        lower_threshold = mean - 4 * sd
 
     # calculate most important values for explanation (+-3sd from the mean)
     explanation_values = shap_values_instance[(shap_values_instance > upper_threshold) | (shap_values_instance < lower_threshold)]
     # order shapley values for decrescent importance
     explanation_values = sorted(explanation_values, key=abs, reverse=True)
-    #explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-
-    # TODO decide if you want to find some more explanations in case you don't find anything or just say "no explanation found"
-    # if len(explanation_values) == 0 or more_explanation_values is True:
-    #     upper_threshold = mean + 3 * sd
-    #     lower_threshold = mean - 3 * sd
-    #     explanation_values = shap_values_instance[(shap_values_instance > upper_threshold) | (shap_values_instance < lower_threshold)]
-    #     #explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-    #     if len(explanation_values) == 0 or more_explanation_values is True:
-    #         upper_threshold = mean + sd
-    #         lower_threshold = mean - sd
-    #         explanation_values = shap_values_instance[(shap_values_instance > upper_threshold) | (shap_values_instance < lower_threshold)]
-            #explanation_values = [x for x in shap_values_instance if x > upper_threshold or x < lower_threshold]
-    # if they are more take only the first 5
-    # if len(explanation_values) > 10:
-    #     explanation_values = explanation_values[:10]
     return x_test_instance, shap_values_instance, explanation_values
 
 def reduce_instances_for_shap(X_test, df):
@@ -263,7 +234,7 @@ def compute_shap_values(df, experiment_name, X_train, X_test, model, column_type
             #         essential_histogram[key] = explanation_histogram[key]
             with open(experiment_name + f"/shap/timestep_histogram_{index_name}.json", "w") as json_file:
                 json.dump(timestep_histogram, json_file)
-            with open(experiment_name + f"/shap/shap_histogram_{index_name}.json", "w") as json_file:
+            with open(experiment_name + f"/shap/shap_heatmap_{index_name}.json", "w") as json_file:
                 json.dump(explanation_histogram, json_file, default=convert)
             plot_heatmap(explanation_histogram, experiment_name, index_name)
             #plot_histogram(essential_histogram, experiment_name, index_name)
@@ -315,12 +286,12 @@ def calculate_histogram_for_shap_values(df, column_type, X_test, shapley_test, f
     #         break
     #     else:
     #         essential_histogram[key] = explanation_histogram[key]
-    with open(experiment_name + "/shap/shap_histogram_new.json", "w") as json_file:
+    with open(experiment_name + "/shap/shap_heatmap.json", "w") as json_file:
         json.dump(explanation_histogram, json_file, default=convert)
     with open(experiment_name + "/shap/timestep_histogram.json", "w") as json_file:
         json.dump(timestep_histogram, json_file)
-    #plot_histogram(essential_histogram, experiment_name)
     plot_heatmap(explanation_histogram, experiment_name)
+    # plot_histogram(essential_histogram, experiment_name)
 
 
 def compute_shap_values_for_running_cases(experiment_name, X_test, model):
@@ -348,21 +319,16 @@ def find_explanation_for_categorical_prediction(df, explanation_name, explainabl
     # in categorical case attribute prediction can be 0 or 1 (attribute will be performed or not)
     attribute_prediction = df.loc[i, pred_attribute]
     if attribute_prediction == 1:
-        # keep only positive shap values (those who say attribute will be performed)
+        # makes sense to focus to keep only positive shap values (those who say attribute will be performed)
         if shapley_value > 0:
             explainable_response_positive = add_explanation(explainable_response_positive, explanation_name)
-            # explainable_response += explanation_name + " has predicted that " + pred_attribute \
-            #                         + " will be performed; "
     else:
         if shapley_value < 0:
             explainable_response_negative = add_explanation(explainable_response_negative, explanation_name)
-            # explainable_response += explanation_name + " has predicted that " + pred_attribute \
-            #                         + " won't be performed; "
     return explainable_response_positive, explainable_response_negative
 
 
-def find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attributes, column_type, num_events, experiment_name):
-    #not_useful_explanations = json.load(open("conf/ignore_explanation_columns.json"))['columns']
+def find_explanations_for_running_cases(shapley_test, X_test, df, feature_columns, pred_attributes, column_type, num_events, experiment_name, mode):
     if column_type == 'Categorical':
         # round results between 0 and 1 (activity will be performed or not)
         df.loc[:, pred_attributes] = df.loc[:, pred_attributes].round(0)
@@ -371,93 +337,50 @@ def find_explanations_for_running_cases(shapley_test, X_test, df, feature_column
     #for every attribute to be predicted find its explanations
     for prediction_index in range(len(pred_attributes)):
         pred_attribute = pred_attributes[prediction_index]
-        df['Explanations for ' + pred_attribute] = ''
+        if column_type != 'Categorical':
+            df['Explanations for increasing ' + pred_attribute] = ''
+            df['Explanations for decreasing ' + pred_attribute] = ''
+        else:
+            df[f'Explanations for {pred_attribute} happening'] = ''
+            df[f'Explanations for {pred_attribute} not happening'] = ''
         for i in range(len(shapley_test[prediction_index])):
-            x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, num_events.iloc[i], prediction_index)
+            x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, num_events.iloc[i], prediction_index, mode)
             explainable_response_positive = ""
             explainable_response_negative = ""
-            explainable_response = ""
             for shapley_value in explanation_values:
-                #skip = False
                 # take the column name for every explanation
                 explanation_index = np.where(shap_values_instance == shapley_value)[1][0]
                 timestep = np.where(shap_values_instance == shapley_value)[0][0]
-                #explanation_index = np.where(shap_values_instance == shapley_value)[0][0]
                 explanation_name = feature_columns[explanation_index]
-                # for useless_explanation in not_useful_explanations:
-                #     if useless_explanation in explanation_name:
-                #         skip = True
-                # if skip is True:
-                #     continue
-                if (num_events.iloc[i] - (timestep + 1)) == 0 or (columns_info[explanation_name] == "case"):
+
+                if columns_info[explanation_name] == "case":
+                    explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
+                    # could be that an attribute of type case influenced also in the past, don't insert duplicates
+                    if (explanation_name in explainable_response_positive) or (explanation_name in explainable_response_negative):
+                        continue
+                elif (num_events.iloc[i] - (timestep + 1)) == 0:
                     explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
                 else:
                     explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
-                    #add timestep information to the timestep - only if it is not of type case
-                    if (num_events.iloc[i] - (timestep + 1)) == 1:
-                        explanation_name = explanation_name + f" {num_events.iloc[i] - (timestep + 1)} timestep ago"
-                    else:
-                        explanation_name = explanation_name + f" {num_events.iloc[i] - (timestep + 1)} timesteps ago"
+                    #add timestep information to the timestep - only if type event
+                    explanation_name = explanation_name + f" (-{num_events.iloc[i] - (timestep + 1)})"
+
 
                 if column_type != 'Categorical':
                     if shapley_value >= 0:
-                        #explainable_response += explanation_name + " has increased the prediction; "
                         explainable_response_positive = add_explanation(explainable_response_positive, explanation_name)
                     else:
                         explainable_response_negative = add_explanation(explainable_response_negative, explanation_name)
-                        #explainable_response += explanation_name + " has decreased the prediction; "
 
                 else:
                     explainable_response_positive, explainable_response_negative = \
                         find_explanation_for_categorical_prediction(df, explanation_name, explainable_response_positive,
                                                                     explainable_response_negative, pred_attribute, shapley_value, i)
-            # TODO: decide also if we want to find more explanations in this inefficient way
-            #if we haven't found any explanation for categorical prediction we should find more explanations
-            if explainable_response_positive == "" and explainable_response_negative == "" and column_type == 'Categorical':
-                x_test_instance, shap_values_instance, explanation_values = find_instance_explanation_values(X_test, shapley_test, i, num_events.iloc[i], prediction_index, True)
-                for shapley_value in explanation_values:
-                    #skip = False
-                    # take the column name for every explanation
-                    explanation_index = np.where(shap_values_instance == shapley_value)[1][0]
-                    timestep = np.where(shap_values_instance == shapley_value)[0][0]
-                    #explanation_index = np.where(shap_values_instance == shapley_value)[0][0]
-                    explanation_name = feature_columns[explanation_index]
-                    # for useless_explanation in not_useful_explanations:
-                    #     if useless_explanation in explanation_name:
-                    #         skip = True
-                    # if skip is True:
-                    #     continue
-                    if (num_events.iloc[i] - (timestep + 1)) == 0 or (columns_info[explanation_name] == "case"):
-                        explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
-                    else:
-                        explanation_name = refine_explanation_name(x_test_instance, explanation_index, explanation_name, timestep)
-                        if (num_events.iloc[i] - (timestep + 1)) == 1:
-                            explanation_name = explanation_name + f" {num_events.iloc[i] - (timestep + 1)} timestep ago"
-                        else:
-                            explanation_name = explanation_name + f" {num_events.iloc[i] - (timestep + 1)} timesteps ago"
-                    explainable_response_positive, explainable_response_negative = \
-                        find_explanation_for_categorical_prediction(df, explanation_name, explainable_response_positive,
-                                                                    explainable_response_negative, pred_attribute, shapley_value, i)
 
-            #at the end put the explanations in the correspondent row of the df
-            if explainable_response_positive == "" and explainable_response_negative == "":
-                explainable_response = "No explanation found"
+            if column_type != 'Categorical':
+                df.loc[i, 'Explanations for increasing ' + pred_attribute] = explainable_response_positive
+                df.loc[i, 'Explanations for decreasing ' + pred_attribute] = explainable_response_negative
             else:
-                if column_type != 'Categorical':
-                    # in numerical case both negative and positive explanations can happen
-                    if explainable_response_positive != "":
-                        explainable_response = explainable_response_positive + " increased the prediction"
-                    if explainable_response_negative != "":
-                        if explainable_response != "":
-                            explainable_response += "; "
-                        explainable_response += explainable_response_negative + " decreased the prediction"
-                else:
-                    if explainable_response_positive != "":
-                        explainable_response = explainable_response_positive + " predicted that " + pred_attribute \
-                                                                            + " will be performed"
-                    else:
-                        explainable_response = explainable_response_negative + " predicted that " + pred_attribute \
-                                               + " won't be performed"
-
-            df.loc[i, 'Explanations for ' + pred_attribute] = explainable_response
+                df.loc[i, f'Explanations for {pred_attribute} happening'] = explainable_response_positive
+                df.loc[i, f'Explanations for {pred_attribute} not happening'] = explainable_response_negative
     return df

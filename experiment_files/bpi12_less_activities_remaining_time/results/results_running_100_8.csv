@@ -1,0 +1,50 @@
+CASE ID,remaining_time,Explanations for remaining_time
+44,1023244700.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+298,1022214600.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+1448,1024910140.0,Resource=R11122 AND Activity=a2 AND concept:name=W_Completeren aanvraag 2 timesteps ago AND concept:name=W_Nabellen offertes AND Activity=a1 2 timesteps ago increased the prediction
+1768,1026272640.0,concept:name=W_Completeren aanvraag 2 timesteps ago AND Activity=a1 2 timesteps ago AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a2 AND Activity=a1 1 timestep ago AND concept:name=W_Nabellen offertes increased the prediction
+1921,511088350.0,Resource=R11259 decreased the prediction
+2136,965791600.0,Resource=R11189 AND Activity=a2 AND concept:name=W_Nabellen offertes AND Activity=a2 1 timestep ago AND concept:name=W_Nabellen offertes 1 timestep ago AND concept:name!=W_Nabellen incomplete dossiers 1 timestep ago AND Activity!=a5 1 timestep ago increased the prediction; High value of time_from_start 1 timestep ago decreased the prediction
+2304,1023376960.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND concept:name=W_Completeren aanvraag 1 timestep ago increased the prediction
+2568,1013060900.0,Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+2602,745718500.0,weekday=Friday increased the prediction; Activity=a4 AND concept:name=W_Afhandelen leads decreased the prediction
+2778,155737260.0,concept:name=W_Nabellen offertes 1 timestep ago AND Activity=a2 1 timestep ago AND concept:name=W_Nabellen offertes 2 timesteps ago increased the prediction; Resource=R10789 1 timestep ago AND Activity!=a1 AND concept:name!=W_Completeren aanvraag AND concept:name!=W_Completeren aanvraag 1 timestep ago AND Activity!=a1 1 timestep ago AND Resource=R10609 AND concept:name=W_Valideren aanvraag decreased the prediction
+3194,313792480.0,Activity=a2 AND concept:name=W_Nabellen offertes increased the prediction; Resource=R11049 AND concept:name!=W_Completeren aanvraag AND Activity!=a1 decreased the prediction
+3417,154455680.0,Resource=R11049 1 timestep ago AND concept:name=W_Valideren aanvraag AND Activity=a3 AND concept:name!=W_Completeren aanvraag AND Activity!=a1 decreased the prediction
+3678,983464960.0,Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+3954,1023540400.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago increased the prediction
+4100,1020049200.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R11003 AND concept:name!=W_Nabellen incomplete dossiers AND Activity!=a5 AND Activity=a2 1 timestep ago AND concept:name=W_Nabellen offertes 1 timestep ago increased the prediction
+4220,1024777100.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+4260,1024777660.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+4381,998297150.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago AND High value of time_from_midnight increased the prediction; Activity!=a2 decreased the prediction
+4443,1025169400.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R11181 AND weekday=Saturday AND weekday=Saturday 1 timestep ago AND Activity=a2 1 timestep ago increased the prediction; High value of time_from_start 1 timestep ago decreased the prediction
+4631,1024776400.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+4638,767384000.0,Activity=a4 AND concept:name=W_Afhandelen leads decreased the prediction
+4652,844470200.0,Activity=a4 AND concept:name=W_Afhandelen leads decreased the prediction
+4843,492746940.0,Activity=a4 AND concept:name=W_Afhandelen leads AND concept:name=W_Afhandelen leads 1 timestep ago decreased the prediction
+5058,1024047600.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R10909 increased the prediction
+5158,986650940.0,Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+5258,154219260.0,Activity=a2 1 timestep ago AND concept:name=W_Nabellen offertes 1 timestep ago increased the prediction; Resource=R11049 1 timestep ago AND concept:name!=W_Completeren aanvraag 1 timestep ago AND Activity!=a1 1 timestep ago AND Activity!=a1 AND concept:name!=W_Completeren aanvraag AND concept:name=W_Valideren aanvraag AND Activity=a3 decreased the prediction
+5358,987830600.0,Activity=a2 AND concept:name=W_Completeren aanvraag 1 timestep ago AND concept:name=W_Nabellen offertes AND Activity=a1 1 timestep ago increased the prediction
+5417,1015397570.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND High value of time_from_midnight increased the prediction
+5832,1023169300.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R11180 increased the prediction; High value of time_from_start AND High value of time_from_start 1 timestep ago decreased the prediction
+5848,1024537660.0,Activity=a2 AND concept:name=W_Nabellen offertes AND High value of time_from_midnight AND Resource=R11119 AND weekday=Wednesday increased the prediction
+5981,1025801900.0,Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+6108,157665700.0,Activity=a2 1 timestep ago AND concept:name=W_Nabellen offertes 1 timestep ago increased the prediction; Resource=R11259 1 timestep ago AND concept:name!=W_Completeren aanvraag 1 timestep ago AND Activity!=a1 1 timestep ago decreased the prediction
+6208,1017909250.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R10881 AND High value of time_from_midnight AND Resource=R10881 1 timestep ago AND concept:name!=W_Nabellen incomplete dossiers AND Activity!=a5 AND Resource=R11201 2 timesteps ago increased the prediction; High value of time_from_start 1 timestep ago AND High value of time_from_start decreased the prediction
+6219,1025043650.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+6255,760984640.0,Activity=a4 AND concept:name=W_Afhandelen leads decreased the prediction
+6655,1022164030.0,Resource=R11203 AND Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R11203 1 timestep ago AND concept:name!=W_Nabellen incomplete dossiers increased the prediction; High value of time_from_start AND High value of time_from_start 1 timestep ago decreased the prediction
+6712,848899600.0,Resource=R10889 increased the prediction; Activity=a4 1 timestep ago AND concept:name=W_Afhandelen leads 1 timestep ago AND Activity=a4 AND concept:name=W_Afhandelen leads decreased the prediction
+7133,959555260.0,Activity=a2 AND concept:name=W_Nabellen offertes increased the prediction
+7481,1025072260.0,concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago AND Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+7967,1022094300.0,Activity=a2 AND concept:name=W_Nabellen offertes increased the prediction
+7991,1015696900.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND Resource=R11180 AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago AND High value of time_from_midnight AND Activity=a1 2 timesteps ago AND concept:name=W_Completeren aanvraag 2 timesteps ago increased the prediction
+8195,1025069600.0,Activity=a2 AND concept:name=W_Nabellen offertes AND Resource=R10932 AND concept:name=W_Completeren aanvraag 2 timesteps ago AND weekday=Wednesday AND Activity=a2 1 timestep ago AND Activity=a1 2 timesteps ago AND concept:name=W_Nabellen offertes 1 timestep ago increased the prediction
+8719,344940220.0,Resource=R10899 AND concept:name!=W_Completeren aanvraag AND Activity!=a1 decreased the prediction
+8776,1024973100.0,Activity=a1 AND concept:name=W_Completeren aanvraag AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago increased the prediction
+8862,1024818050.0,concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction
+9387,1025763500.0,Activity=a2 AND concept:name=W_Nabellen offertes AND High value of time_from_midnight AND concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago AND Resource=R11119 AND concept:name=W_Completeren aanvraag 2 timesteps ago AND Activity=a1 2 timesteps ago increased the prediction; Resource=R11299 1 timestep ago decreased the prediction
+9510,1024729100.0,concept:name=W_Completeren aanvraag 1 timestep ago AND Activity=a1 1 timestep ago AND concept:name=W_Completeren aanvraag AND Activity=a1 increased the prediction; Resource=R11319 1 timestep ago decreased the prediction
+9582,1024760770.0,Activity=a1 AND concept:name=W_Completeren aanvraag increased the prediction
+9619,183417000.0,weekday=Friday increased the prediction; Activity!=a1 AND concept:name!=W_Completeren aanvraag AND Activity=a3 1 timestep ago AND concept:name=W_Valideren aanvraag 1 timestep ago AND Resource=R10899 AND concept:name=W_Valideren aanvraag AND Activity=a3 AND Resource=R10899 1 timestep ago AND Activity!=a2 decreased the prediction

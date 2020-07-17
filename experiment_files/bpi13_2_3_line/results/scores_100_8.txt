@@ -1,0 +1,3 @@
+F1_score for 2nd_3rd line: 0.808
+
+Accuracy: 0.8146 Binary Accuracy: 0.8146 F1: 0.7181%

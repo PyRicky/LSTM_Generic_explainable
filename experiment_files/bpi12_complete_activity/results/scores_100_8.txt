@@ -1,0 +1,5 @@
+F1_score for A_ACCEPTED: 0.603
+F1_score for A_CANCELLED: 0.371
+F1_score for A_DECLINED: 0.514
+
+Accuracy: 0.7634 Binary Accuracy: 0.7634 F1: 0.4735%
