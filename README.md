@@ -45,6 +45,29 @@ There are also up to 5 optional parameters:
 				    NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
 
 
+**TRAIN OTHER EXPERIMENTS**
+<b> Bpic 2012</b>
+
+python init_local.py --mandatory data/bpi12_complete.csv 0 2 "%Y/%m/%d %H:%M:%S" remaining_time bpi12_complete_remaining_time train --end_date_position 3
+
+python init_local.py --mandatory data/bpi12_complete.csv 0 2 "%Y/%m/%d %H:%M:%S" event bpi12_complete_activity train --end_date_position 3 --pred_attributes "A_ACCEPTED,A_CANCELLED,A_DECLINED"
+
+<b> Bpic 2012-W</b>
+
+python init_local.py --mandatory data/BPI12_anonimyzed_less_activities.csv 0 2 "%Y-%m-%d %H:%M:%S" remaining_time bpi12_less_activities_remaining_time train
+
+<b> Bpic 2013</b>
+
+python init_local.py --mandatory "data/VINST cases incidents.csv" 0 1 "%Y-%m-%d %H:%M:%S%z" remaining_time bpi13_remaining_time train
+
+python init_local.py --mandatory "data/VINST_cases_incidents_2_3_line.csv" 0 1 "%Y-%m-%d %H:%M:%S%z" "Involved ST" bpi13_push_to_front train --pred_attributes "2nd_3rd line"
+
+python init_local.py --mandatory "data/VINST cases incidents.csv" 0 1 "%Y-%m-%d %H:%M:%S%z" "Sub Status" bpi13_wait_user train --pred_attributes "Wait - User"
+
+<b> HelpDesk 2017</b>
+
+python init_local.py --mandatory data/Helpdesk2017_anonimyzed.csv 0 3 "%Y/%m/%d %H:%M:%S" remaining_time HelpDesk_remaining_time train
+
 ## Installation
 The code requires python 3.7+ and the following libraries:
 
