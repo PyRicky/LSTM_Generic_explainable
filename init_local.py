@@ -34,7 +34,6 @@ parser.add_argument('--shap', default=True)
 parser.add_argument('--end_date_position', default=None)
 parser.add_argument('--pred_attributes', default=None)
 #if True retrains model and overrides previous one (if developer wants to train with different parameters)
-parser.add_argument('--override', default=False)
 parser.add_argument('--num_epochs', default=500, type=int)
 
 args = parser.parse_args()
@@ -54,7 +53,7 @@ mode = mandatory[6]
 shap_calculation = args.shap
 pred_attributes = args.pred_attributes
 end_date_position = args.end_date_position
-override = args.override
+override = False
 num_epochs = args.num_epochs
 
 if pred_attributes is not None:

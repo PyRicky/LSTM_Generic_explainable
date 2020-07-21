@@ -66,10 +66,6 @@ def write_scores(scores, experiment_name, n_neurons, n_layers, pred_column, colu
             else:
                 file.write("\nRoot Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
                 print("Root Mean Squared Error: %.4f MAE: %.4f MAPE: %.4f%%" % (sqrt(scores[1]), scores[2], scores[3]))
-            errors = df["TEST"] - df[pred_column]
-            mad = stats.median_absolute_deviation(errors)
-            file.write(f"\nConfidence intervals: {errors.median() - 2 * mad:.2f} / {errors.median() + 2 * mad:.2f}")
-            print(f"Confidence intervals: {errors.median() - 2 * mad:.2f} / {errors.median() + 2 * mad:.2f}")
         elif event_level == 0:
             df.loc[:, target_column_name] = df.loc[:, target_column_name].round(0)
             for column in target_column_name:
