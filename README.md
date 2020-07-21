@@ -46,6 +46,7 @@ There are also up to 5 optional parameters:
 
 
 **TRAIN OTHER EXPERIMENTS**
+
 <b> Bpic 2012</b>
 
 python init_local.py --mandatory data/bpi12_complete.csv 0 2 "%Y/%m/%d %H:%M:%S" remaining_time bpi12_complete_remaining_time train --end_date_position 3
