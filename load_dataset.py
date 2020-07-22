@@ -385,8 +385,8 @@ def generate_train_and_test_sets(df, target_column, target_column_name, event_le
     second_quartile = median(np.unique(df.iloc[:, 0]))
     third_quartile = median(np.unique(df[df.iloc[:, 0] > second_quartile].iloc[:, 0]))
 
-    #if trained model exists just pick the previously chosen case indexes
-    if os.path.exists(experiment_name + "/model/model_100_8.json") and override is False:
+    #if trained model exists or you want to replicate the experiments just pick the previously chosen case indexes
+    if (os.path.exists(experiment_name + "/model/model_100_8.json") and override is False) or (os.path.exists(experiment_name + "/model/data_info.json")):
         case_indexes = json.load(open(experiment_name + "/model/data_info.json"))["case_indexes"]
         print("Reloaded train cases")
         dfTrain = df[df[df.columns[0]].isin(case_indexes)]
