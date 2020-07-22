@@ -39,11 +39,13 @@ There are also up to 4 optional parameters:
 
 
 **IMPORTANT NOTE**: Please find attached in the repository the results obtained in the several datasets and described in the paper and in the appendix.
-                    If you want to retrain from scratch an experiment (Offline phase) you should delete the relative experiment folder in the experiment_files folder and retrain the model
+                    If you want to retrain from scratch an experiment (Offline phase) you should delete the relative experiment folder in the experiment_files folder and retrain the model.
+					
 					If you want to replicate the experiments (using the same training cases) delete model and model weights in the model folder, 
 					delete all content inside shap folder (but not shap directory) and retrain the model.
 					Shapley values need between half a day and a day to be calculated and have not been uploaded since they are very heavy.
-				    NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
+				    
+					NOTE: the training of LSTM may be very slow on CPUs, so we suggest to run this code on GPUs instead (and in a Unix environment).
 
 
 **TRAIN OTHER EXPERIMENTS**
