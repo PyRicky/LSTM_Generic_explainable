@@ -4,6 +4,8 @@ This is the code associated to the paper:
 
 **Explainable Predictive Process Monitoring**, Riccardo Galanti, Bernat Coma Puig, Massimiliano de Leoni, Josep Carmona, Nicolò Navarin. In ICPM 2020, to appear.
 
+The preprint of the paper is available in <a href="https://arxiv.org/abs/2008.01807">arXiv</a>.
+
 ## Code Example
 
 Command examples to run the code:
